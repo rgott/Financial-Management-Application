@@ -1,18 +1,16 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Financial_Management_Application.Models;
 using Financial_Management_Application.Identity;
+using Financial_Management_Application.App_Start;
 
 namespace Financial_Management_Application.Controllers
 {
     [Authorize]
-    public class ManageController : Controller
+    public class ManageController : ControllerModel
     {
 
         public ManageController()
@@ -24,22 +22,16 @@ namespace Financial_Management_Application.Controllers
             UserManager = userManager;
         }
 
-        private AccountUserManager _userManager;
-        public AccountUserManager UserManager
+        public enum ManageMessageId
         {
-            get
-            {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<AccountUserManager>();
-            }
-            private set
-            {
-                _userManager = value;
-            }
+            AddPhoneSuccess,
+            ChangePasswordSuccess,
+            SetTwoFactorSuccess,
+            SetPasswordSuccess,
+            RemoveLoginSuccess,
+            RemovePhoneSuccess,
+            Error
         }
-
-        
-
-
 
         //
         // GET: /Manage/Index
@@ -232,10 +224,7 @@ namespace Financial_Management_Application.Controllers
             AddErrors(result);
             return View(model);
         }
-        public long getUserId()
-        {
-            return long.Parse(User.Identity.GetUserId());
-        }
+        
         //
         // GET: /Manage/SetPassword
         public ActionResult SetPassword()
@@ -268,115 +257,50 @@ namespace Financial_Management_Application.Controllers
             return View(model);
         }
 
-        ////
-        //// GET: /Manage/ManageLogins
-        //public async Task<ActionResult> ManageLogins(ManageMessageId? message)
-        //{
-        //    ViewBag.StatusMessage =
-        //        message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
-        //        : message == ManageMessageId.Error ? "An error has occurred."
-        //        : "";
-        //    var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-        //    if (user == null)
-        //    {
-        //        return View("Error");
-        //    }
-        //    var userLogins = await UserManager.GetLoginsAsync(User.Identity.GetUserId());
-        //    var otherLogins = AuthenticationManager.GetExternalAuthenticationTypes().Where(auth => userLogins.All(ul => auth.AuthenticationType != ul.LoginProvider)).ToList();
-        //    ViewBag.ShowRemoveButton = user.PasswordHash != null || userLogins.Count > 1;
-        //    return View(new ManageLoginsViewModel
-        //    {
-        //        CurrentLogins = userLogins,
-        //        OtherLogins = otherLogins
-        //    });
-        //}
-
-        ////
-        //// POST: /Manage/LinkLogin
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult LinkLogin(string provider)
-        //{
-        //    // Request a redirect to the external login provider to link a login for the current user
-        //    return new AccountController.ChallengeResult(provider, Url.Action("LinkLoginCallback", "Manage"), User.Identity.GetUserId());
-        //}
-
-        ////
-        //// GET: /Manage/LinkLoginCallback
-        //public async Task<ActionResult> LinkLoginCallback()
-        //{
-        //    var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync(XsrfKey, User.Identity.GetUserId());
-        //    if (loginInfo == null)
-        //    {
-        //        return RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
-        //    }
-        //    var result = await UserManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
-        //    return result.Succeeded ? RedirectToAction("ManageLogins") : RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
-        //}
-
-        //protected override void Dispose(bool disposing)
-        //{
-        //    if (disposing && _userManager != null)
-        //    {
-        //        _userManager.Dispose();
-        //        _userManager = null;
-        //    }
-
-        //    base.Dispose(disposing);
-        //}
-
-        #region Helpers
-        // Used for XSRF protection when adding external logins
-        private const string XsrfKey = "XsrfId";
-
-        private IAuthenticationManager AuthenticationManager
+        //
+        // GET: /Manage/ManageLogins
+        public async Task<ActionResult> ManageLogins(ManageMessageId? message)
         {
-            get
+            ViewBag.StatusMessage =
+                message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
+                : message == ManageMessageId.Error ? "An error has occurred."
+                : "";
+            var user = await UserManager.FindByIdAsync(getUserId());
+            if (user == null)
             {
-                return HttpContext.GetOwinContext().Authentication;
+                return View("Error");
             }
-        }
-
-        private void AddErrors(IdentityResult result)
-        {
-            foreach (var error in result.Errors)
+            var userLogins = await UserManager.GetLoginsAsync(getUserId());
+            var otherLogins = AuthenticationManager.GetExternalAuthenticationTypes().Where(auth => userLogins.All(ul => auth.AuthenticationType != ul.LoginProvider)).ToList();
+            ViewBag.ShowRemoveButton = user.PasswordHash != null || userLogins.Count > 1;
+            return View(new ManageLoginsViewModel
             {
-                ModelState.AddModelError("", error);
-            }
+                CurrentLogins = userLogins,
+                OtherLogins = otherLogins
+            });
         }
 
-        private bool HasPassword()
+        //
+        // POST: /Manage/LinkLogin
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult LinkLogin(string provider)
         {
-            var user = UserManager.FindById(long.Parse(User.Identity.GetUserId()));
-            if (user != null)
+            // Request a redirect to the external login provider to link a login for the current user
+            return new AccountController.ChallengeResult(provider, Url.Action("LinkLoginCallback", "Manage"), User.Identity.GetUserId());
+        }
+
+        //
+        // GET: /Manage/LinkLoginCallback
+        public async Task<ActionResult> LinkLoginCallback()
+        {
+            var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync(XsrfKey, User.Identity.GetUserId());
+            if (loginInfo == null)
             {
-                return user.PasswordHash != null;
+                return RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
             }
-            return false;
+            var result = await UserManager.AddLoginAsync(getUserId(), loginInfo.Login);
+            return result.Succeeded ? RedirectToAction("ManageLogins") : RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
         }
-
-        private bool HasPhoneNumber()
-        {
-            var user = UserManager.FindById(long.Parse(User.Identity.GetUserId()));
-            if (user != null)
-            {
-                return user.PhoneNumber != null;
-            }
-            return false;
-        }
-
-        public enum ManageMessageId
-        {
-            AddPhoneSuccess,
-            ChangePasswordSuccess,
-            SetTwoFactorSuccess,
-            SetPasswordSuccess,
-            RemoveLoginSuccess,
-            RemovePhoneSuccess,
-            Error
-        }
-
-        #endregion
-       
     }
 }
