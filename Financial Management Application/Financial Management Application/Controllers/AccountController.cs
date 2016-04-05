@@ -39,27 +39,8 @@ namespace Financial_Management_Application.Controllers
             }
         }
 
-        private async Task SignInAsync(AccountUser user, bool isPersistent)
-        {
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
-            AuthenticationManager.SignIn(
-                new AuthenticationProperties
-                {
-                    IsPersistent = isPersistent
-                },
-                await user.GenerateUserIdentityAsync(UserManager));
-        }
-
-
-
-
-
-
-
-
-
-
-
+        
+        
         //
         // GET: /Account/Login
         [AllowAnonymous]
@@ -445,6 +426,18 @@ namespace Financial_Management_Application.Controllers
             }
             return RedirectToAction("Index", "Home");
         }
+
+        private async Task SignInAsync(AccountUser user, bool isPersistent)
+        {
+            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
+            AuthenticationManager.SignIn(
+                new AuthenticationProperties
+                {
+                    IsPersistent = isPersistent
+                },
+                await user.GenerateUserIdentityAsync(UserManager));
+        }
+
 
         internal class ChallengeResult : HttpUnauthorizedResult
         {

@@ -8,17 +8,13 @@
 
     public class AccountUser : IdentityUser<long, AccountLogin, AccountUserRole, AccountClaim>
     {
-        #region properties
-
         public string ActivationToken { get; set; }
 
         public string PasswordAnswer { get; set; }
 
         public string PasswordQuestion { get; set; }
 
-        #endregion
 
-        #region methods
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(AccountUserManager userManager)
         {
@@ -26,7 +22,5 @@
             // Add custom user claims here
             return userIdentity;
         }
-
-        #endregion
     }
 }

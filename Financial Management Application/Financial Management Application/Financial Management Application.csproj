@@ -175,7 +175,6 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\Identity\ApplicationDbContext.cs" />
     <Compile Include="App_Start\Identity\EmailService.cs" />
     <Compile Include="App_Start\Identity\AccountClaim.cs" />
@@ -210,7 +209,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>FM_Datastore_Entity.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Role.cs">
       <DependentUpon>FM_Datastore_Entity.tt</DependentUpon>

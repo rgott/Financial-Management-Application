@@ -7,15 +7,9 @@
 
     public class AccountUserManager : UserManager<AccountUser, long>
     {
-        #region constructors and destructors
-
         public AccountUserManager(IUserStore<AccountUser, long> store) : base(store)
         {
         }
-
-        #endregion
-
-        #region methods
 
         public static AccountUserManager Create(IdentityFactoryOptions<AccountUserManager> options, IOwinContext context)
         {
@@ -59,7 +53,5 @@
             }
             return manager;
         }
-
-        #endregion
     }
 }

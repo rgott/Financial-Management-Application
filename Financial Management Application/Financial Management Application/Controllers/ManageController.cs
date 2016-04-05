@@ -7,73 +7,64 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Financial_Management_Application.Models;
+using Financial_Management_Application.Identity;
 
 namespace Financial_Management_Application.Controllers
 {
     [Authorize]
     public class ManageController : Controller
     {
-        //private ApplicationSignInManager _signInManager;
-        //private ApplicationUserManager _userManager;
 
-        //public ManageController()
-        //{
-        //}
+        public ManageController()
+        {
+        }
 
-        //public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
-        //{
-        //    UserManager = userManager;
-        //    SignInManager = signInManager;
-        //}
+        public ManageController(AccountUserManager userManager)
+        {
+            UserManager = userManager;
+        }
 
-        //public ApplicationSignInManager SignInManager
-        //{
-        //    get
-        //    {
-        //        return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
-        //    }
-        //    private set 
-        //    { 
-        //        _signInManager = value; 
-        //    }
-        //}
+        private AccountUserManager _userManager;
+        public AccountUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<AccountUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
 
-        //public ApplicationUserManager UserManager
-        //{
-        //    get
-        //    {
-        //        return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-        //    }
-        //    private set
-        //    {
-        //        _userManager = value;
-        //    }
-        //}
+        
 
-        ////
-        //// GET: /Manage/Index
-        //public async Task<ActionResult> Index(ManageMessageId? message)
-        //{
-        //    ViewBag.StatusMessage =
-        //        message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
-        //        : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
-        //        : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
-        //        : message == ManageMessageId.Error ? "An error has occurred."
-        //        : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
-        //        : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
-        //        : "";
 
-        //    var userId = User.Identity.GetUserId();
-        //    var model = new IndexViewModel
-        //    {
-        //        HasPassword = HasPassword(),
-        //        PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
-        //        TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
-        //        Logins = await UserManager.GetLoginsAsync(userId),
-        //        BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
-        //    };
-        //    return View(model);
-        //}
+
+        //
+        // GET: /Manage/Index
+        public async Task<ActionResult> Index(ManageMessageId? message)
+        {
+            ViewBag.StatusMessage =
+                message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
+                : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
+                : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
+                : message == ManageMessageId.Error ? "An error has occurred."
+                : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
+                : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
+                : ""; 
+
+             var userId = long.Parse(User.Identity.GetUserId());
+            var model = new IndexViewModel
+            {
+                HasPassword = HasPassword(),
+                PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
+                TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
+                Logins = await UserManager.GetLoginsAsync(userId),
+                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId.ToString())
+            };
+            return View(model);
+        }
 
         ////
         //// POST: /Manage/RemoveLogin
@@ -211,68 +202,71 @@ namespace Financial_Management_Application.Controllers
         //    return RedirectToAction("Index", new { Message = ManageMessageId.RemovePhoneSuccess });
         //}
 
-        ////
-        //// GET: /Manage/ChangePassword
-        //public ActionResult ChangePassword()
-        //{
-        //    return View();
-        //}
+        //
+        // GET: /Manage/ChangePassword
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
 
-        ////
-        //// POST: /Manage/ChangePassword
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return View(model);
-        //    }
-        //    var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
-        //    if (result.Succeeded)
-        //    {
-        //        var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-        //        if (user != null)
-        //        {
-        //            await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-        //        }
-        //        return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
-        //    }
-        //    AddErrors(result);
-        //    return View(model);
-        //}
+        //
+        // POST: /Manage/ChangePassword
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var result = await UserManager.ChangePasswordAsync(getUserId(), model.OldPassword, model.NewPassword);
+            if (result.Succeeded)
+            {
+                var user = await UserManager.FindByIdAsync(getUserId());
+                if (user != null)
+                {
+                    await UserManager.FindAsync(user.Email,model.NewPassword);
+                }
+                return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
+            }
+            AddErrors(result);
+            return View(model);
+        }
+        public long getUserId()
+        {
+            return long.Parse(User.Identity.GetUserId());
+        }
+        //
+        // GET: /Manage/SetPassword
+        public ActionResult SetPassword()
+        {
+            return View();
+        }
 
-        ////
-        //// GET: /Manage/SetPassword
-        //public ActionResult SetPassword()
-        //{
-        //    return View();
-        //}
+        //
+        // POST: /Manage/SetPassword
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> SetPassword(SetPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await UserManager.AddPasswordAsync(getUserId(), model.NewPassword);
+                if (result.Succeeded)
+                {
+                    var user = await UserManager.FindByIdAsync(getUserId());
+                    if (user != null)
+                    {
+                        await UserManager.FindAsync(user.Email,model.NewPassword);
+                    }
+                    return RedirectToAction("Index", new { Message = ManageMessageId.SetPasswordSuccess });
+                }
+                AddErrors(result);
+            }
 
-        ////
-        //// POST: /Manage/SetPassword
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<ActionResult> SetPassword(SetPasswordViewModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var result = await UserManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
-        //        if (result.Succeeded)
-        //        {
-        //            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-        //            if (user != null)
-        //            {
-        //                await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-        //            }
-        //            return RedirectToAction("Index", new { Message = ManageMessageId.SetPasswordSuccess });
-        //        }
-        //        AddErrors(result);
-        //    }
-
-        //    // If we got this far, something failed, redisplay form
-        //    return View(model);
-        //}
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
 
         ////
         //// GET: /Manage/ManageLogins
@@ -331,57 +325,58 @@ namespace Financial_Management_Application.Controllers
         //    base.Dispose(disposing);
         //}
 
-//#region Helpers
-//        // Used for XSRF protection when adding external logins
-//        private const string XsrfKey = "XsrfId";
+        #region Helpers
+        // Used for XSRF protection when adding external logins
+        private const string XsrfKey = "XsrfId";
 
-//        private IAuthenticationManager AuthenticationManager
-//        {
-//            get
-//            {
-//                return HttpContext.GetOwinContext().Authentication;
-//            }
-//        }
+        private IAuthenticationManager AuthenticationManager
+        {
+            get
+            {
+                return HttpContext.GetOwinContext().Authentication;
+            }
+        }
 
-//        private void AddErrors(IdentityResult result)
-//        {
-//            foreach (var error in result.Errors)
-//            {
-//                ModelState.AddModelError("", error);
-//            }
-//        }
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error);
+            }
+        }
 
-//        private bool HasPassword()
-//        {
-//            var user = UserManager.FindById(User.Identity.GetUserId());
-//            if (user != null)
-//            {
-//                return user.PasswordHash != null;
-//            }
-//            return false;
-//        }
+        private bool HasPassword()
+        {
+            var user = UserManager.FindById(long.Parse(User.Identity.GetUserId()));
+            if (user != null)
+            {
+                return user.PasswordHash != null;
+            }
+            return false;
+        }
 
-//        private bool HasPhoneNumber()
-//        {
-//            var user = UserManager.FindById(User.Identity.GetUserId());
-//            if (user != null)
-//            {
-//                return user.PhoneNumber != null;
-//            }
-//            return false;
-//        }
+        private bool HasPhoneNumber()
+        {
+            var user = UserManager.FindById(long.Parse(User.Identity.GetUserId()));
+            if (user != null)
+            {
+                return user.PhoneNumber != null;
+            }
+            return false;
+        }
 
-//        public enum ManageMessageId
-//        {
-//            AddPhoneSuccess,
-//            ChangePasswordSuccess,
-//            SetTwoFactorSuccess,
-//            SetPasswordSuccess,
-//            RemoveLoginSuccess,
-//            RemovePhoneSuccess,
-//            Error
-//        }
+        public enum ManageMessageId
+        {
+            AddPhoneSuccess,
+            ChangePasswordSuccess,
+            SetTwoFactorSuccess,
+            SetPasswordSuccess,
+            RemoveLoginSuccess,
+            RemovePhoneSuccess,
+            Error
+        }
 
-//#endregion
+        #endregion
+       
     }
 }
