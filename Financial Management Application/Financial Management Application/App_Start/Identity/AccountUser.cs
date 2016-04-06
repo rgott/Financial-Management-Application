@@ -8,13 +8,11 @@
 
     public class AccountUser : IdentityUser<long, AccountLogin, AccountUserRole, AccountClaim>
     {
-        public string ActivationToken { get; set; }
-
         public string PasswordAnswer { get; set; }
 
         public string PasswordQuestion { get; set; }
 
-
+        
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(AccountUserManager userManager)
         {

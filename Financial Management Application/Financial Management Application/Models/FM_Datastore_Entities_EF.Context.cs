@@ -13,10 +13,10 @@ namespace Financial_Management_Application.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class FM_Datastore_Entities : DbContext
+    public partial class FM_Datastore_Entities_EF : DbContext
     {
-        public FM_Datastore_Entities()
-            : base("name=FM_Datastore_Entities")
+        public FM_Datastore_Entities_EF()
+            : base("name=FM_Datastore_Entities_EF")
         {
         }
     
@@ -29,6 +29,5 @@ namespace Financial_Management_Application.Models
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserClaim> UserClaims { get; set; }
         public virtual DbSet<UserLogin> UserLogins { get; set; }
-        public virtual DbSet<UserRegistrationToken> UserRegistrationTokens { get; set; }
     }
 }

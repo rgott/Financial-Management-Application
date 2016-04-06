@@ -12,6 +12,9 @@ using Financial_Management_Application.Models;
 using Financial_Management_Application.Identity;
 using Financial_Management_Application.App_Start;
 using System.Net;
+using System.Collections.Generic;
+using System.Net.Mail;
+using System.Collections.Specialized;
 
 namespace Financial_Management_Application.Controllers
 {
@@ -27,6 +30,7 @@ namespace Financial_Management_Application.Controllers
         {
             UserManager = userManager;
         }
+
         
         
         //
@@ -102,7 +106,24 @@ namespace Financial_Management_Application.Controllers
         //            return View(model);
         //    }
         //}
+        
+        //
+        // GET: /Account/Register
+        [AllowAnonymous]
+        public ActionResult RegisterRequest()
+        {
+            return View();
+        }
 
+        //
+        // GET: /Account/Register
+        [AllowAnonymous]
+        [HttpPost]
+        public ActionResult RegisterRequest(RegisterRequestViewModel model)
+        {
+            // TODO:send notificiation to admins
+            return View();
+        }
         //
         // GET: /Account/Register
         [AllowAnonymous]
@@ -125,7 +146,23 @@ namespace Financial_Management_Application.Controllers
                     UserName = model.Email,
                     Email = model.Email
                 };
+                
                 var result = await UserManager.CreateAsync(user, model.Password);
+
+                // TODO: make temporary encrypted url that holds => timeCreated,email,role
+                //display email as text not textbox
+
+                if (!RoleManager.RoleExists("Role"))
+                {
+                    var res = await RoleManager.CreateAsync(new AccountRole() { Name = "Role" });
+                    if(!res.Succeeded)
+                    {
+                        AddErrors(res);
+                        return View(model);
+                    }
+                }
+                UserManager.AddToRole(UserManager.FindByEmail(model.Email).Id, "Role");
+
                 if (result.Succeeded)
                 {
                     await SignInAsync(user, false);

@@ -18,7 +18,7 @@
           </Key>
           <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Login" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="EMail" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="Password" Type="nvarchar" MaxLength="500" />
           <Property Name="CreationDate" Type="datetime" />
           <Property Name="ApprovalDate" Type="datetime" />
@@ -26,7 +26,6 @@
           <Property Name="IsLocked" Type="bit" Nullable="false" />
           <Property Name="PasswordQuestion" Type="nvarchar(max)" />
           <Property Name="PasswordAnswer" Type="nvarchar(max)" />
-          <Property Name="ActivationToken" Type="nvarchar" MaxLength="200" />
           <Property Name="EmailConfirmed" Type="bit" Nullable="false" />
           <Property Name="SecurityStamp" Type="nvarchar(max)" />
           <Property Name="PhoneNumber" Type="nvarchar" MaxLength="50" />
@@ -54,14 +53,6 @@
           <Property Name="UserId" Type="bigint" Nullable="false" />
           <Property Name="LoginProvider" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="ProviderKey" Type="nvarchar" MaxLength="128" Nullable="false" />
-        </EntityType>
-        <EntityType Name="UserRegistrationToken">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserId" Type="bigint" />
-          <Property Name="Token" Type="nchar" MaxLength="10" Nullable="false" />
         </EntityType>
         <EntityType Name="UserRole">
           <Key>
@@ -132,7 +123,6 @@
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserClaim" EntityType="Self.UserClaim" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserLogin" EntityType="Self.UserLogin" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="UserRegistrationToken" EntityType="Self.UserRegistrationToken" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserRole" EntityType="Self.UserRole" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_UserClaim_User" Association="Self.FK_UserClaim_User">
             <End Role="User" EntitySet="User" />
@@ -170,7 +160,7 @@
           </Key>
           <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="EMail" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="CreationDate" Type="DateTime" Precision="3" />
           <Property Name="ApprovalDate" Type="DateTime" Precision="3" />
@@ -178,7 +168,6 @@
           <Property Name="IsLocked" Type="Boolean" Nullable="false" />
           <Property Name="PasswordQuestion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="PasswordAnswer" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ActivationToken" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
           <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="PhoneNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -212,14 +201,6 @@
           <Property Name="ProviderKey" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="User" Relationship="Self.FK_UserLogin_User" FromRole="UserLogin" ToRole="User" />
         </EntityType>
-        <EntityType Name="UserRegistrationToken">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="Int64" />
-          <Property Name="Token" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
-        </EntityType>
         <Association Name="FK_UserClaim_User">
           <End Role="User" Type="Self.User" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -252,12 +233,11 @@
           <End Role="Role" Type="Self.Role" Multiplicity="*" />
           <End Role="User" Type="Self.User" Multiplicity="*" />
         </Association>
-        <EntityContainer Name="FM_Datastore_Entities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="FM_Datastore_Entities_EF" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Roles" EntityType="Self.Role" />
           <EntitySet Name="Users" EntityType="Self.User" />
           <EntitySet Name="UserClaims" EntityType="Self.UserClaim" />
           <EntitySet Name="UserLogins" EntityType="Self.UserLogin" />
-          <EntitySet Name="UserRegistrationTokens" EntityType="Self.UserRegistrationToken" />
           <AssociationSet Name="FK_UserClaim_User" Association="Self.FK_UserClaim_User">
             <End Role="User" EntitySet="Users" />
             <End Role="UserClaim" EntitySet="UserClaims" />
@@ -276,7 +256,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="FM_DatastoreModelStoreContainer" CdmEntityContainer="FM_Datastore_Entities">
+        <EntityContainerMapping StorageEntityContainer="FM_DatastoreModelStoreContainer" CdmEntityContainer="FM_Datastore_Entities_EF">
           <EntitySetMapping Name="Roles">
             <EntityTypeMapping TypeName="FM_DatastoreModel.Role">
               <MappingFragment StoreEntitySet="Role">
@@ -290,7 +270,7 @@
               <MappingFragment StoreEntitySet="User">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Login" ColumnName="Login" />
-                <ScalarProperty Name="EMail" ColumnName="EMail" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
                 <ScalarProperty Name="ApprovalDate" ColumnName="ApprovalDate" />
@@ -298,7 +278,6 @@
                 <ScalarProperty Name="IsLocked" ColumnName="IsLocked" />
                 <ScalarProperty Name="PasswordQuestion" ColumnName="PasswordQuestion" />
                 <ScalarProperty Name="PasswordAnswer" ColumnName="PasswordAnswer" />
-                <ScalarProperty Name="ActivationToken" ColumnName="ActivationToken" />
                 <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
                 <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
                 <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
@@ -326,15 +305,6 @@
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
                 <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="UserRegistrationTokens">
-            <EntityTypeMapping TypeName="FM_DatastoreModel.UserRegistrationToken">
-              <MappingFragment StoreEntitySet="UserRegistrationToken">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Token" ColumnName="Token" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

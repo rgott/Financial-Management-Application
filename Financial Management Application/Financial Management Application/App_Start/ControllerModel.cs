@@ -8,6 +8,8 @@ using System.Web.Mvc;
 
 namespace Financial_Management_Application.App_Start
 {
+    
+
     public class ControllerModel : Controller
     {
         private AccountUserManager _userManager;
@@ -22,6 +24,19 @@ namespace Financial_Management_Application.App_Start
                 _userManager = value;
             }
         }
+
+        private ApplicationRoleManager _roleManager;
+        protected ApplicationRoleManager RoleManager
+        {
+            get
+            {
+                return _roleManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationRoleManager>();
+            }
+            set
+            {
+                _roleManager = value;
+            }
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing && UserManager != null)
@@ -32,10 +47,12 @@ namespace Financial_Management_Application.App_Start
             base.Dispose(disposing);
         }
 
+        
+
         #region Helpers
-        
+
         #region Model
-        
+
         // Used for XSRF protection when adding external logins
         protected const string XsrfKey = "XsrfId";
 

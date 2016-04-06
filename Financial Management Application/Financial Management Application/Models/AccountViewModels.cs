@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace Financial_Management_Application.Models
 {
@@ -46,6 +47,8 @@ namespace Financial_Management_Application.Models
         public string Email { get; set; }
     }
 
+    
+
     public class LoginViewModel
     {
         [Required]
@@ -61,7 +64,20 @@ namespace Financial_Management_Application.Models
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
     }
+    public class RegisterRequestViewModel
+    {
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
 
+        [Display(Name = "Existing Roles")]
+        public List<SelectListItem> ExistingRoles = ApplicationSettings.Roles;
+
+        [Required]
+        [Display(Name = "Role")]
+        public string Role { get; set; }
+    }
     public class RegisterViewModel
     {
         [Required]
@@ -75,9 +91,11 @@ namespace Financial_Management_Application.Models
         [Display(Name = "Password")]
         public string Password { get; set; }
 
+        public string Role { get; set; }
+
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }
 
@@ -96,7 +114,7 @@ namespace Financial_Management_Application.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }

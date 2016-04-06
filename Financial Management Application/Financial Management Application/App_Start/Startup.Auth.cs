@@ -7,6 +7,7 @@ using Microsoft.Owin.Security.Google;
 using Owin;
 using Financial_Management_Application.Models;
 using Financial_Management_Application.Identity;
+using Financial_Management_Application.App_Start;
 
 namespace Financial_Management_Application
 {
@@ -18,6 +19,9 @@ namespace Financial_Management_Application
             // Configure the db context, user manager and signin manager to use a single instance per request
             app.CreatePerOwinContext(ApplicationDbContext.Create);
             app.CreatePerOwinContext<AccountUserManager>(AccountUserManager.Create);
+            app.CreatePerOwinContext<ApplicationRoleManager>(ApplicationRoleManager.Create);
+
+            
 
             // Enable the application to use a cookie to store information for the signed in user
             // and to use a cookie to temporarily store information about a user logging in with a third party login provider

@@ -24,7 +24,7 @@ namespace Financial_Management_Application.Models
     
         public long Id { get; set; }
         public string Login { get; set; }
-        public string EMail { get; set; }
+        public string Email { get; set; }
         public string Password { get; set; }
         public Nullable<System.DateTime> CreationDate { get; set; }
         public Nullable<System.DateTime> ApprovalDate { get; set; }
@@ -32,7 +32,6 @@ namespace Financial_Management_Application.Models
         public bool IsLocked { get; set; }
         public string PasswordQuestion { get; set; }
         public string PasswordAnswer { get; set; }
-        public string ActivationToken { get; set; }
         public bool EmailConfirmed { get; set; }
         public string SecurityStamp { get; set; }
         public string PhoneNumber { get; set; }
