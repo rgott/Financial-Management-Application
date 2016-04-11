@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewBag.Title = "Request";
+}
+@Scripts.Render("~/Scripts/Transaction_Page.js")
+<h2>Request Form</h2>
+
+<form class="col
+      ">
+    <fieldset>
+        <legend>Please enter the details below</legend>
+        <div>
+            <label for="ProductNumber">Enter your product number:</label>
+            <input class="form-control"id="ProductNumber" /> 
+        </div>
+        <br/>
+        <div>
+            <label for="Quantity">Enter your quantity:</label>
+            <input class="form-control" id="Quantity" />
+        </div>
+    </fieldset>
+</form>
+<button onclick="addItem()">Add</button>
+
+<br/>
+<div class="container">
+    <h3>My Cart</h3>
+    <table id="myCart" class="table" style="width:20%">
+    <thead>
+         <tr>
+            <th>Your items</th>
+            <th>Quantity</th>
+     </tr>
+        <tr></tr>
+     </thead>
+    </table>
+</div>
