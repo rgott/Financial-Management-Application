@@ -1,5 +1,77 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="FM_DatastoreModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Address">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="addressLine1" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="addressLine2" Type="nvarchar(max)" />
+    <Property Name="city" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="state" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="postalCode" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="country" Type="nchar" MaxLength="10" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Division">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Notifications">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AddressId" Type="bigint" Nullable="false" />
+    <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="DivisionId" Type="bigint" Nullable="false" />
+    <Property Name="notifyType" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="notifyText" Type="text" Nullable="false" />
+    <Property Name="timeStamp" Type="datetime2" Precision="7" Nullable="false" />
+  </EntityType>
+  <EntityType Name="NotRestricted">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Role" Type="bigint" Nullable="false" />
+    <Property Name="Division" Type="bigint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Product">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="categoryId" Type="bigint" Nullable="false" />
+    <Property Name="price" Type="money" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ReturnLink">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="transactionId" Type="bigint" Nullable="false" />
+    <Property Name="returnStateId" Type="bigint" Nullable="false" />
+    <Property Name="dateStateChanged" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ReturnState">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="state" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
   <EntityType Name="Role">
     <Key>
       <PropertyRef Name="Id" />
@@ -7,17 +79,35 @@
     <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
+  <EntityType Name="Transaction">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="purchaserId" Type="bigint" Nullable="false" />
+    <Property Name="requestedForUserId" Type="bigint" />
+    <Property Name="productId" Type="bigint" Nullable="false" />
+    <Property Name="quantity" Type="int" Nullable="false" />
+    <Property Name="unitPrice" Type="money" Nullable="false" />
+    <Property Name="purchaseDate" Type="datetime" Nullable="false" />
+    <Property Name="cartId" Type="bigint" Nullable="false" />
+    <Property Name="isDeleted" Type="bit" Nullable="false" />
+  </EntityType>
   <EntityType Name="User">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Address" Type="bigint" Nullable="false" />
+    <Property Name="Division" Type="bigint" Nullable="false" />
+    <Property Name="TimeZoneOffset" Type="datetime2" Precision="7" Nullable="false" />
     <Property Name="Login" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="Email" Type="nvarchar" MaxLength="255" Nullable="false" />
     <Property Name="Password" Type="nvarchar" MaxLength="500" />
-    <Property Name="CreationDate" Type="datetime" />
-    <Property Name="ApprovalDate" Type="datetime" />
-    <Property Name="LastLoginDate" Type="datetime" />
+    <Property Name="CreationDate" Type="datetime2" Precision="7" />
+    <Property Name="ApprovalDate" Type="datetime2" Precision="7" />
+    <Property Name="ExpireDate" Type="datetime2" Precision="7" />
+    <Property Name="LastLoginDate" Type="datetime2" Precision="7" />
     <Property Name="IsLocked" Type="bit" Nullable="false" />
     <Property Name="PasswordQuestion" Type="nvarchar(max)" />
     <Property Name="PasswordAnswer" Type="nvarchar(max)" />
@@ -57,6 +147,126 @@
     <Property Name="UserId" Type="bigint" Nullable="false" />
     <Property Name="RoleId" Type="bigint" Nullable="false" />
   </EntityType>
+  <Association Name="FK_Address">
+    <End Role="Address" Type="Self.Address" Multiplicity="1" />
+    <End Role="User" Type="Self.User" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Address">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="User">
+        <PropertyRef Name="Address" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_categoryId">
+    <End Role="Category" Type="Self.Category" Multiplicity="1" />
+    <End Role="Product" Type="Self.Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Category">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Product">
+        <PropertyRef Name="categoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Division">
+    <End Role="Division" Type="Self.Division" Multiplicity="1" />
+    <End Role="User" Type="Self.User" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Division">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="User">
+        <PropertyRef Name="Division" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Notifications_AddressId">
+    <End Role="Address" Type="Self.Address" Multiplicity="1" />
+    <End Role="Notifications" Type="Self.Notifications" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Address">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Notifications">
+        <PropertyRef Name="AddressId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Notifications_DivisionId">
+    <End Role="Division" Type="Self.Division" Multiplicity="1" />
+    <End Role="Notifications" Type="Self.Notifications" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Division">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Notifications">
+        <PropertyRef Name="DivisionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_productId">
+    <End Role="Product" Type="Self.Product" Multiplicity="1" />
+    <End Role="Transaction" Type="Self.Transaction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Transaction">
+        <PropertyRef Name="productId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_purchaserId">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="Transaction" Type="Self.Transaction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Transaction">
+        <PropertyRef Name="purchaserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_requestedForUserId">
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Transaction" Type="Self.Transaction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Transaction">
+        <PropertyRef Name="requestedForUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_returnStateId">
+    <End Role="ReturnState" Type="Self.ReturnState" Multiplicity="1" />
+    <End Role="ReturnLink" Type="Self.ReturnLink" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ReturnState">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ReturnLink">
+        <PropertyRef Name="returnStateId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_transactionId">
+    <End Role="Transaction" Type="Self.Transaction" Multiplicity="1" />
+    <End Role="ReturnLink" Type="Self.ReturnLink" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Transaction">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ReturnLink">
+        <PropertyRef Name="transactionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_UserClaim_User">
     <End Role="User" Type="Self.User" Multiplicity="1">
       <OnDelete Action="Cascade" />
@@ -113,12 +323,85 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FKLink_Division">
+    <End Role="Division" Type="Self.Division" Multiplicity="1" />
+    <End Role="NotRestricted" Type="Self.NotRestricted" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Division">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="NotRestricted">
+        <PropertyRef Name="Division" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FKLink_Role">
+    <End Role="Role" Type="Self.Role" Multiplicity="1" />
+    <End Role="NotRestricted" Type="Self.NotRestricted" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Role">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="NotRestricted">
+        <PropertyRef Name="Role" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <EntityContainer Name="FM_DatastoreModelStoreContainer">
+    <EntitySet Name="Address" EntityType="Self.Address" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Division" EntityType="Self.Division" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Notifications" EntityType="Self.Notifications" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="NotRestricted" EntityType="Self.NotRestricted" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ReturnLink" EntityType="Self.ReturnLink" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ReturnState" EntityType="Self.ReturnState" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Transaction" EntityType="Self.Transaction" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="UserClaim" EntityType="Self.UserClaim" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="UserLogin" EntityType="Self.UserLogin" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="UserRole" EntityType="Self.UserRole" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Address" Association="Self.FK_Address">
+      <End Role="Address" EntitySet="Address" />
+      <End Role="User" EntitySet="User" />
+    </AssociationSet>
+    <AssociationSet Name="FK_categoryId" Association="Self.FK_categoryId">
+      <End Role="Category" EntitySet="Category" />
+      <End Role="Product" EntitySet="Product" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Division" Association="Self.FK_Division">
+      <End Role="Division" EntitySet="Division" />
+      <End Role="User" EntitySet="User" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Notifications_AddressId" Association="Self.FK_Notifications_AddressId">
+      <End Role="Address" EntitySet="Address" />
+      <End Role="Notifications" EntitySet="Notifications" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Notifications_DivisionId" Association="Self.FK_Notifications_DivisionId">
+      <End Role="Division" EntitySet="Division" />
+      <End Role="Notifications" EntitySet="Notifications" />
+    </AssociationSet>
+    <AssociationSet Name="FK_productId" Association="Self.FK_productId">
+      <End Role="Product" EntitySet="Product" />
+      <End Role="Transaction" EntitySet="Transaction" />
+    </AssociationSet>
+    <AssociationSet Name="FK_purchaserId" Association="Self.FK_purchaserId">
+      <End Role="User" EntitySet="User" />
+      <End Role="Transaction" EntitySet="Transaction" />
+    </AssociationSet>
+    <AssociationSet Name="FK_requestedForUserId" Association="Self.FK_requestedForUserId">
+      <End Role="User" EntitySet="User" />
+      <End Role="Transaction" EntitySet="Transaction" />
+    </AssociationSet>
+    <AssociationSet Name="FK_returnStateId" Association="Self.FK_returnStateId">
+      <End Role="ReturnState" EntitySet="ReturnState" />
+      <End Role="ReturnLink" EntitySet="ReturnLink" />
+    </AssociationSet>
+    <AssociationSet Name="FK_transactionId" Association="Self.FK_transactionId">
+      <End Role="Transaction" EntitySet="Transaction" />
+      <End Role="ReturnLink" EntitySet="ReturnLink" />
+    </AssociationSet>
     <AssociationSet Name="FK_UserClaim_User" Association="Self.FK_UserClaim_User">
       <End Role="User" EntitySet="User" />
       <End Role="UserClaim" EntitySet="UserClaim" />
@@ -134,6 +417,14 @@
     <AssociationSet Name="FK_UserRole_User" Association="Self.FK_UserRole_User">
       <End Role="User" EntitySet="User" />
       <End Role="UserRole" EntitySet="UserRole" />
+    </AssociationSet>
+    <AssociationSet Name="FKLink_Division" Association="Self.FKLink_Division">
+      <End Role="Division" EntitySet="Division" />
+      <End Role="NotRestricted" EntitySet="NotRestricted" />
+    </AssociationSet>
+    <AssociationSet Name="FKLink_Role" Association="Self.FKLink_Role">
+      <End Role="Role" EntitySet="Role" />
+      <End Role="NotRestricted" EntitySet="NotRestricted" />
     </AssociationSet>
   </EntityContainer>
 </Schema>

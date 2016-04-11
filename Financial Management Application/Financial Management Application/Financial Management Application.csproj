@@ -174,6 +174,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\ApplicationSettings.cs" />
+    <Compile Include="App_Start\GmailMail.cs" />
     <Compile Include="App_Start\Identity\ApplicationRoleManager.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\ControllerModel.cs" />
@@ -193,10 +194,20 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\TransactionController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Address.cs">
+      <DependentUpon>FM_Datastore_Entities_EF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Category.cs">
+      <DependentUpon>FM_Datastore_Entities_EF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Division.cs">
+      <DependentUpon>FM_Datastore_Entities_EF.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\FM_Datastore_Entities_EF.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -213,9 +224,28 @@
       <DependentUpon>FM_Datastore_Entities_EF.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Notification.cs">
+      <DependentUpon>FM_Datastore_Entities_EF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\NotRestricted.cs">
+      <DependentUpon>FM_Datastore_Entities_EF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Product.cs">
+      <DependentUpon>FM_Datastore_Entities_EF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ReturnLink.cs">
+      <DependentUpon>FM_Datastore_Entities_EF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ReturnState.cs">
+      <DependentUpon>FM_Datastore_Entities_EF.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Role.cs">
       <DependentUpon>FM_Datastore_Entities_EF.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Transaction.cs">
+      <DependentUpon>FM_Datastore_Entities_EF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UrlEncryption.cs" />
     <Compile Include="Models\User.cs">
       <DependentUpon>FM_Datastore_Entities_EF.tt</DependentUpon>
     </Compile>
@@ -306,6 +336,10 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Account\RegisterRequest.cshtml" />
+    <Content Include="Views\Transaction\Request.cshtml" />
+    <Content Include="Views\Manage\Setup.cshtml" />
+    <Content Include="Views\Manage\Notify.cshtml" />
+    <Content Include="Views\Account\RegisterRequestCompletion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

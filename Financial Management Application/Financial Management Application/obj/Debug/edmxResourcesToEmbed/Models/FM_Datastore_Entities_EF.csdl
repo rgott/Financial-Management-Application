@@ -1,24 +1,209 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="FM_DatastoreModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="FM_Datastore_Entities_EF" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Addresses" EntityType="FM_DatastoreModel.Address" />
+    <EntitySet Name="Categories" EntityType="FM_DatastoreModel.Category" />
+    <EntitySet Name="Divisions" EntityType="FM_DatastoreModel.Division" />
+    <EntitySet Name="Notifications" EntityType="FM_DatastoreModel.Notification" />
+    <EntitySet Name="NotRestricteds" EntityType="FM_DatastoreModel.NotRestricted" />
+    <EntitySet Name="Products" EntityType="FM_DatastoreModel.Product" />
+    <EntitySet Name="ReturnLinks" EntityType="FM_DatastoreModel.ReturnLink" />
+    <EntitySet Name="ReturnStates" EntityType="FM_DatastoreModel.ReturnState" />
+    <EntitySet Name="Roles" EntityType="FM_DatastoreModel.Role" />
+    <EntitySet Name="Transactions" EntityType="FM_DatastoreModel.Transaction" />
+    <EntitySet Name="Users" EntityType="FM_DatastoreModel.User" />
+    <EntitySet Name="UserClaims" EntityType="FM_DatastoreModel.UserClaim" />
+    <EntitySet Name="UserLogins" EntityType="FM_DatastoreModel.UserLogin" />
+    <AssociationSet Name="FK_Address" Association="FM_DatastoreModel.FK_Address">
+      <End Role="Address" EntitySet="Addresses" />
+      <End Role="User" EntitySet="Users" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Notifications_AddressId" Association="FM_DatastoreModel.FK_Notifications_AddressId">
+      <End Role="Address" EntitySet="Addresses" />
+      <End Role="Notification" EntitySet="Notifications" />
+    </AssociationSet>
+    <AssociationSet Name="FK_categoryId" Association="FM_DatastoreModel.FK_categoryId">
+      <End Role="Category" EntitySet="Categories" />
+      <End Role="Product" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Division" Association="FM_DatastoreModel.FK_Division">
+      <End Role="Division" EntitySet="Divisions" />
+      <End Role="User" EntitySet="Users" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Notifications_DivisionId" Association="FM_DatastoreModel.FK_Notifications_DivisionId">
+      <End Role="Division" EntitySet="Divisions" />
+      <End Role="Notification" EntitySet="Notifications" />
+    </AssociationSet>
+    <AssociationSet Name="FKLink_Division" Association="FM_DatastoreModel.FKLink_Division">
+      <End Role="Division" EntitySet="Divisions" />
+      <End Role="NotRestricted" EntitySet="NotRestricteds" />
+    </AssociationSet>
+    <AssociationSet Name="FKLink_Role" Association="FM_DatastoreModel.FKLink_Role">
+      <End Role="Role" EntitySet="Roles" />
+      <End Role="NotRestricted" EntitySet="NotRestricteds" />
+    </AssociationSet>
+    <AssociationSet Name="FK_productId" Association="FM_DatastoreModel.FK_productId">
+      <End Role="Product" EntitySet="Products" />
+      <End Role="Transaction" EntitySet="Transactions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_returnStateId" Association="FM_DatastoreModel.FK_returnStateId">
+      <End Role="ReturnState" EntitySet="ReturnStates" />
+      <End Role="ReturnLink" EntitySet="ReturnLinks" />
+    </AssociationSet>
+    <AssociationSet Name="FK_transactionId" Association="FM_DatastoreModel.FK_transactionId">
+      <End Role="Transaction" EntitySet="Transactions" />
+      <End Role="ReturnLink" EntitySet="ReturnLinks" />
+    </AssociationSet>
+    <AssociationSet Name="FK_purchaserId" Association="FM_DatastoreModel.FK_purchaserId">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Transaction" EntitySet="Transactions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_requestedForUserId" Association="FM_DatastoreModel.FK_requestedForUserId">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Transaction" EntitySet="Transactions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserClaim_User" Association="FM_DatastoreModel.FK_UserClaim_User">
+      <End Role="User" EntitySet="Users" />
+      <End Role="UserClaim" EntitySet="UserClaims" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserLogin_User" Association="FM_DatastoreModel.FK_UserLogin_User">
+      <End Role="User" EntitySet="Users" />
+      <End Role="UserLogin" EntitySet="UserLogins" />
+    </AssociationSet>
+    <AssociationSet Name="UserRole" Association="FM_DatastoreModel.UserRole">
+      <End Role="Role" EntitySet="Roles" />
+      <End Role="User" EntitySet="Users" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Address">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="addressLine1" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="addressLine2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="city" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="state" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="postalCode" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="country" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+    <NavigationProperty Name="Users" Relationship="FM_DatastoreModel.FK_Address" FromRole="Address" ToRole="User" />
+    <NavigationProperty Name="Notifications" Relationship="FM_DatastoreModel.FK_Notifications_AddressId" FromRole="Address" ToRole="Notification" />
+  </EntityType>
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Products" Relationship="FM_DatastoreModel.FK_categoryId" FromRole="Category" ToRole="Product" />
+  </EntityType>
+  <EntityType Name="Division">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Users" Relationship="FM_DatastoreModel.FK_Division" FromRole="Division" ToRole="User" />
+    <NavigationProperty Name="Notifications" Relationship="FM_DatastoreModel.FK_Notifications_DivisionId" FromRole="Division" ToRole="Notification" />
+    <NavigationProperty Name="NotRestricteds" Relationship="FM_DatastoreModel.FKLink_Division" FromRole="Division" ToRole="NotRestricted" />
+  </EntityType>
+  <EntityType Name="Notification">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AddressId" Type="Int64" Nullable="false" />
+    <Property Name="Email" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="DivisionId" Type="Int64" Nullable="false" />
+    <Property Name="notifyType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="notifyText" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="timeStamp" Type="DateTime" Nullable="false" Precision="7" />
+    <NavigationProperty Name="Address" Relationship="FM_DatastoreModel.FK_Notifications_AddressId" FromRole="Notification" ToRole="Address" />
+    <NavigationProperty Name="Division" Relationship="FM_DatastoreModel.FK_Notifications_DivisionId" FromRole="Notification" ToRole="Division" />
+  </EntityType>
+  <EntityType Name="NotRestricted">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Role" Type="Int64" Nullable="false" />
+    <Property Name="Division" Type="Int64" Nullable="false" />
+    <NavigationProperty Name="Division1" Relationship="FM_DatastoreModel.FKLink_Division" FromRole="NotRestricted" ToRole="Division" />
+    <NavigationProperty Name="Role1" Relationship="FM_DatastoreModel.FKLink_Role" FromRole="NotRestricted" ToRole="Role" />
+  </EntityType>
+  <EntityType Name="Product">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="categoryId" Type="Int64" Nullable="false" />
+    <Property Name="price" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+    <NavigationProperty Name="Category" Relationship="FM_DatastoreModel.FK_categoryId" FromRole="Product" ToRole="Category" />
+    <NavigationProperty Name="Transactions" Relationship="FM_DatastoreModel.FK_productId" FromRole="Product" ToRole="Transaction" />
+  </EntityType>
+  <EntityType Name="ReturnLink">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="transactionId" Type="Int64" Nullable="false" />
+    <Property Name="returnStateId" Type="Int64" Nullable="false" />
+    <Property Name="dateStateChanged" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="ReturnState" Relationship="FM_DatastoreModel.FK_returnStateId" FromRole="ReturnLink" ToRole="ReturnState" />
+    <NavigationProperty Name="Transaction" Relationship="FM_DatastoreModel.FK_transactionId" FromRole="ReturnLink" ToRole="Transaction" />
+  </EntityType>
+  <EntityType Name="ReturnState">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="state" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="ReturnLinks" Relationship="FM_DatastoreModel.FK_returnStateId" FromRole="ReturnState" ToRole="ReturnLink" />
+  </EntityType>
   <EntityType Name="Role">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-    <NavigationProperty Name="Users" Relationship="Self.UserRole" FromRole="Role" ToRole="User" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="NotRestricteds" Relationship="FM_DatastoreModel.FKLink_Role" FromRole="Role" ToRole="NotRestricted" />
+    <NavigationProperty Name="Users" Relationship="FM_DatastoreModel.UserRole" FromRole="Role" ToRole="User" />
+  </EntityType>
+  <EntityType Name="Transaction">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="purchaserId" Type="Int64" Nullable="false" />
+    <Property Name="requestedForUserId" Type="Int64" />
+    <Property Name="productId" Type="Int64" Nullable="false" />
+    <Property Name="quantity" Type="Int32" Nullable="false" />
+    <Property Name="unitPrice" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+    <Property Name="purchaseDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="cartId" Type="Int64" Nullable="false" />
+    <Property Name="isDeleted" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Product" Relationship="FM_DatastoreModel.FK_productId" FromRole="Transaction" ToRole="Product" />
+    <NavigationProperty Name="ReturnLinks" Relationship="FM_DatastoreModel.FK_transactionId" FromRole="Transaction" ToRole="ReturnLink" />
+    <NavigationProperty Name="User" Relationship="FM_DatastoreModel.FK_purchaserId" FromRole="Transaction" ToRole="User" />
+    <NavigationProperty Name="User1" Relationship="FM_DatastoreModel.FK_requestedForUserId" FromRole="Transaction" ToRole="User" />
   </EntityType>
   <EntityType Name="User">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Address" Type="Int64" Nullable="false" />
+    <Property Name="Division" Type="Int64" Nullable="false" />
+    <Property Name="TimeZoneOffset" Type="DateTime" Nullable="false" Precision="7" />
+    <Property Name="Login" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
     <Property Name="Password" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-    <Property Name="CreationDate" Type="DateTime" Precision="3" />
-    <Property Name="ApprovalDate" Type="DateTime" Precision="3" />
-    <Property Name="LastLoginDate" Type="DateTime" Precision="3" />
+    <Property Name="CreationDate" Type="DateTime" Precision="7" />
+    <Property Name="ApprovalDate" Type="DateTime" Precision="7" />
+    <Property Name="ExpireDate" Type="DateTime" Precision="7" />
+    <Property Name="LastLoginDate" Type="DateTime" Precision="7" />
     <Property Name="IsLocked" Type="Boolean" Nullable="false" />
     <Property Name="PasswordQuestion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="PasswordAnswer" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -30,9 +215,13 @@
     <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="7" />
     <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
     <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="UserClaims" Relationship="Self.FK_UserClaim_User" FromRole="User" ToRole="UserClaim" />
-    <NavigationProperty Name="UserLogins" Relationship="Self.FK_UserLogin_User" FromRole="User" ToRole="UserLogin" />
-    <NavigationProperty Name="Roles" Relationship="Self.UserRole" FromRole="User" ToRole="Role" />
+    <NavigationProperty Name="Address1" Relationship="FM_DatastoreModel.FK_Address" FromRole="User" ToRole="Address" />
+    <NavigationProperty Name="Division1" Relationship="FM_DatastoreModel.FK_Division" FromRole="User" ToRole="Division" />
+    <NavigationProperty Name="Transactions" Relationship="FM_DatastoreModel.FK_purchaserId" FromRole="User" ToRole="Transaction" />
+    <NavigationProperty Name="Transactions1" Relationship="FM_DatastoreModel.FK_requestedForUserId" FromRole="User" ToRole="Transaction" />
+    <NavigationProperty Name="UserClaims" Relationship="FM_DatastoreModel.FK_UserClaim_User" FromRole="User" ToRole="UserClaim" />
+    <NavigationProperty Name="UserLogins" Relationship="FM_DatastoreModel.FK_UserLogin_User" FromRole="User" ToRole="UserLogin" />
+    <NavigationProperty Name="Roles" Relationship="FM_DatastoreModel.UserRole" FromRole="User" ToRole="Role" />
   </EntityType>
   <EntityType Name="UserClaim">
     <Key>
@@ -42,7 +231,7 @@
     <Property Name="UserId" Type="Int64" Nullable="false" />
     <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="User" Relationship="Self.FK_UserClaim_User" FromRole="UserClaim" ToRole="User" />
+    <NavigationProperty Name="User" Relationship="FM_DatastoreModel.FK_UserClaim_User" FromRole="UserClaim" ToRole="User" />
   </EntityType>
   <EntityType Name="UserLogin">
     <Key>
@@ -51,15 +240,159 @@
       <PropertyRef Name="ProviderKey" />
     </Key>
     <Property Name="UserId" Type="Int64" Nullable="false" />
-    <Property Name="LoginProvider" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="ProviderKey" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-    <NavigationProperty Name="User" Relationship="Self.FK_UserLogin_User" FromRole="UserLogin" ToRole="User" />
+    <Property Name="LoginProvider" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="ProviderKey" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="User" Relationship="FM_DatastoreModel.FK_UserLogin_User" FromRole="UserLogin" ToRole="User" />
   </EntityType>
+  <Association Name="FK_Address">
+    <End Type="FM_DatastoreModel.Address" Role="Address" Multiplicity="1" />
+    <End Type="FM_DatastoreModel.User" Role="User" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Address">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="User">
+        <PropertyRef Name="Address" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Notifications_AddressId">
+    <End Type="FM_DatastoreModel.Address" Role="Address" Multiplicity="1" />
+    <End Type="FM_DatastoreModel.Notification" Role="Notification" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Address">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Notification">
+        <PropertyRef Name="AddressId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_categoryId">
+    <End Type="FM_DatastoreModel.Category" Role="Category" Multiplicity="1" />
+    <End Type="FM_DatastoreModel.Product" Role="Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Category">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Product">
+        <PropertyRef Name="categoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Division">
+    <End Type="FM_DatastoreModel.Division" Role="Division" Multiplicity="1" />
+    <End Type="FM_DatastoreModel.User" Role="User" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Division">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="User">
+        <PropertyRef Name="Division" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Notifications_DivisionId">
+    <End Type="FM_DatastoreModel.Division" Role="Division" Multiplicity="1" />
+    <End Type="FM_DatastoreModel.Notification" Role="Notification" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Division">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Notification">
+        <PropertyRef Name="DivisionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FKLink_Division">
+    <End Type="FM_DatastoreModel.Division" Role="Division" Multiplicity="1" />
+    <End Type="FM_DatastoreModel.NotRestricted" Role="NotRestricted" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Division">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="NotRestricted">
+        <PropertyRef Name="Division" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FKLink_Role">
+    <End Type="FM_DatastoreModel.Role" Role="Role" Multiplicity="1" />
+    <End Type="FM_DatastoreModel.NotRestricted" Role="NotRestricted" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Role">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="NotRestricted">
+        <PropertyRef Name="Role" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_productId">
+    <End Type="FM_DatastoreModel.Product" Role="Product" Multiplicity="1" />
+    <End Type="FM_DatastoreModel.Transaction" Role="Transaction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Transaction">
+        <PropertyRef Name="productId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_returnStateId">
+    <End Type="FM_DatastoreModel.ReturnState" Role="ReturnState" Multiplicity="1" />
+    <End Type="FM_DatastoreModel.ReturnLink" Role="ReturnLink" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ReturnState">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ReturnLink">
+        <PropertyRef Name="returnStateId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_transactionId">
+    <End Type="FM_DatastoreModel.Transaction" Role="Transaction" Multiplicity="1" />
+    <End Type="FM_DatastoreModel.ReturnLink" Role="ReturnLink" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Transaction">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ReturnLink">
+        <PropertyRef Name="transactionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_purchaserId">
+    <End Type="FM_DatastoreModel.User" Role="User" Multiplicity="1" />
+    <End Type="FM_DatastoreModel.Transaction" Role="Transaction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Transaction">
+        <PropertyRef Name="purchaserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_requestedForUserId">
+    <End Type="FM_DatastoreModel.User" Role="User" Multiplicity="0..1" />
+    <End Type="FM_DatastoreModel.Transaction" Role="Transaction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Transaction">
+        <PropertyRef Name="requestedForUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_UserClaim_User">
-    <End Role="User" Type="Self.User" Multiplicity="1">
+    <End Type="FM_DatastoreModel.User" Role="User" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
-    <End Role="UserClaim" Type="Self.UserClaim" Multiplicity="*" />
+    <End Type="FM_DatastoreModel.UserClaim" Role="UserClaim" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="User">
         <PropertyRef Name="Id" />
@@ -70,10 +403,10 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_UserLogin_User">
-    <End Role="User" Type="Self.User" Multiplicity="1">
+    <End Type="FM_DatastoreModel.User" Role="User" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
-    <End Role="UserLogin" Type="Self.UserLogin" Multiplicity="*" />
+    <End Type="FM_DatastoreModel.UserLogin" Role="UserLogin" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="User">
         <PropertyRef Name="Id" />
@@ -84,25 +417,7 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="UserRole">
-    <End Role="Role" Type="Self.Role" Multiplicity="*" />
-    <End Role="User" Type="Self.User" Multiplicity="*" />
+    <End Type="FM_DatastoreModel.Role" Role="Role" Multiplicity="*" />
+    <End Type="FM_DatastoreModel.User" Role="User" Multiplicity="*" />
   </Association>
-  <EntityContainer Name="FM_Datastore_Entities_EF" annotation:LazyLoadingEnabled="true">
-    <EntitySet Name="Roles" EntityType="Self.Role" />
-    <EntitySet Name="Users" EntityType="Self.User" />
-    <EntitySet Name="UserClaims" EntityType="Self.UserClaim" />
-    <EntitySet Name="UserLogins" EntityType="Self.UserLogin" />
-    <AssociationSet Name="FK_UserClaim_User" Association="Self.FK_UserClaim_User">
-      <End Role="User" EntitySet="Users" />
-      <End Role="UserClaim" EntitySet="UserClaims" />
-    </AssociationSet>
-    <AssociationSet Name="FK_UserLogin_User" Association="Self.FK_UserLogin_User">
-      <End Role="User" EntitySet="Users" />
-      <End Role="UserLogin" EntitySet="UserLogins" />
-    </AssociationSet>
-    <AssociationSet Name="UserRole" Association="Self.UserRole">
-      <End Role="Role" EntitySet="Roles" />
-      <End Role="User" EntitySet="Users" />
-    </AssociationSet>
-  </EntityContainer>
 </Schema>
