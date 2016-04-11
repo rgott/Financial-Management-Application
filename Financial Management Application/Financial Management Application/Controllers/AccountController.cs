@@ -15,6 +15,7 @@ using System.Net;
 using System.Collections.Generic;
 using System.Net.Mail;
 using System.Collections.Specialized;
+using System.Text;
 
 namespace Financial_Management_Application.Controllers
 {
@@ -31,8 +32,6 @@ namespace Financial_Management_Application.Controllers
             UserManager = userManager;
         }
 
-        
-        
         //
         // GET: /Account/Login
         [AllowAnonymous]
@@ -106,30 +105,122 @@ namespace Financial_Management_Application.Controllers
         //            return View(model);
         //    }
         //}
-        
+
+        // TODO: Move to own controller
+        #region Registration
         //
         // GET: /Account/Register
         [AllowAnonymous]
         public ActionResult RegisterRequest()
         {
-            return View();
+            FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF();
+
+            // get division list
+            List<SelectListItem> divisionList = new List<SelectListItem>();
+            new SelectList(db_manager.Addresses, "Id", "addressLine1");
+            foreach (var item in db_manager.Divisions.ToList())
+            {
+                divisionList.Add(new SelectListItem()
+                {
+                    Text = item.name,
+                    Value = item.Id.ToString() //  will be used to get id later
+                });
+            }
+
+            // get address list
+            List<SelectListItem> addressList = new List<SelectListItem>();
+            foreach (var item in db_manager.Addresses.ToList())
+            {
+                addressList.Add(new SelectListItem()
+                {
+                    Text = item.city + ", " + item.state,
+                    Value = item.Id.ToString() //  will be used to get id later
+                });
+            }
+            db_manager.Dispose(); // no need to save changes
+            return View(new RegisterRequestViewModel()
+            {
+                addresses = addressList,
+                divisions = divisionList
+            });
         }
 
         //
-        // GET: /Account/Register
+        // POST: /Account/Register
         [AllowAnonymous]
         [HttpPost]
         public ActionResult RegisterRequest(RegisterRequestViewModel model)
         {
-            // TODO:send notificiation to admins
+            // TODO:deny multiple requests from the same ip address
+
+            
+            FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF();
+
+            // TODO: make temporary encrypted url that holds => timeCreated,email,role,address,division
+            char separator = (char)31; // ASCII char 31 is the separator character
+            string urlParamStr = DateTime.UtcNow.Ticks.ToString() + separator 
+                + model.Email + separator 
+                + model.address.ToString() + separator 
+                + model.division.ToString();
+            string urlParamStrB64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(urlParamStr));
+            
+            // posts notification
+            db_manager.Notifications.Add(new Notification()
+            {
+                notifyType = "newUser",
+                notifyText = model.Email,
+                Email = model.Email,
+                Address = db_manager.Addresses.FirstOrDefault(m => m.Id == model.address),
+                Division = db_manager.Divisions.FirstOrDefault(m => m.Id == model.division),
+                timeStamp = DateTime.UtcNow
+            });
+            db_manager.SaveChanges();
+
+            GmailMail.send(model.Email, "Request Recieved", "Dear user your request has been recieved and an administrator will be looking at your request soon, so please be patient.");
+            return Redirect(Url.Action("RegisterRequestCompletion"));
+        }
+
+        [AllowAnonymous]
+        public ActionResult RegisterRequestCompletion()
+        {
+            // if not redirected here from another ActionResult then this page doesnt exist
+            if (Request.UrlReferrer == null) 
+                return new HttpNotFoundResult();
             return View();
         }
+        
         //
         // GET: /Account/Register
         [AllowAnonymous]
         public ActionResult Register()
         {
-            return View();
+            //Only allow people to view register page if they have a valid link
+            NameValueCollection query = Request.QueryString;
+            string[] qresult = query.GetValues("rqst");
+            if (qresult == null || qresult.Length < 1)
+                return new HttpNotFoundResult();
+
+            UrlEncryption EncryptionResult = UrlEncryption.Decrypt(qresult[0]);
+            if (EncryptionResult == null || EncryptionResult.timeStamp > DateTime.UtcNow.AddHours(3)) // if null or url was created more than 3 hours ago dont accept
+                return new HttpNotFoundResult();
+
+            FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF();
+            Role RoleResult = db_manager.Roles.FirstOrDefault(m => m.Id == EncryptionResult.role);
+            Address AddressResult = db_manager.Addresses.FirstOrDefault(m => m.Id == EncryptionResult.address);
+            Division DivisionResult = db_manager.Divisions.FirstOrDefault(m => m.Id == EncryptionResult.division);
+            db_manager.Dispose();
+
+            // store ids in session
+            Session.Add("RoleResult", RoleResult.Id);
+            Session.Add("AddressResult", AddressResult.Id);
+            Session.Add("DivisionResult", DivisionResult.Id);
+            return View(new RegisterViewModel()
+            {
+                Email = EncryptionResult.email,
+                Role = RoleResult.Name,
+                Address = AddressResult.addressLine1,
+                Division = DivisionResult.name
+            });
         }
 
         //
@@ -137,34 +228,36 @@ namespace Financial_Management_Application.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
+        
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var user = new AccountUser
+                AccountUser user = new AccountUser
                 {
                     UserName = model.Email,
-                    Email = model.Email
+                    Email = model.Email,
+                    Address = (long)Session["AddressResult"],
+                    Division = (long)Session["DivisionResult"],
+                    TimeZoneOffset = DateTime.UtcNow,// TODO: change to hours of offset
+                    CreationDate = DateTime.UtcNow
                 };
-                
+
                 var result = await UserManager.CreateAsync(user, model.Password);
-
-                // TODO: make temporary encrypted url that holds => timeCreated,email,role
-                //display email as text not textbox
-
-                if (!RoleManager.RoleExists("Role"))
-                {
-                    var res = await RoleManager.CreateAsync(new AccountRole() { Name = "Role" });
-                    if(!res.Succeeded)
-                    {
-                        AddErrors(res);
-                        return View(model);
-                    }
-                }
-                UserManager.AddToRole(UserManager.FindByEmail(model.Email).Id, "Role");
-
                 if (result.Succeeded)
                 {
+                    // create or add role
+                    if (!RoleManager.RoleExists(model.Role))
+                    {
+                        var roleResult = await RoleManager.CreateAsync(new AccountRole() { Name = model.Role });
+                        if (!roleResult.Succeeded)
+                        {
+                            ModelState.AddModelError("", "Error in creating account please contact administrator");
+                            return View(model);
+                        }
+                    }
+                    UserManager.AddToRole(UserManager.FindByEmail(model.Email).Id, model.Role);
+
                     await SignInAsync(user, false);
 
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
@@ -178,9 +271,11 @@ namespace Financial_Management_Application.Controllers
                 AddErrors(result);
             }
 
+
             // If we got this far, something failed, redisplay form
             return View(model);
         }
+        #endregion
 
         ////
         //// GET: /Account/ConfirmEmail

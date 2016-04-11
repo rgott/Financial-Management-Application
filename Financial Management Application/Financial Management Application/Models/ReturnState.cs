@@ -12,21 +12,18 @@ namespace Financial_Management_Application.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Role
+    public partial class ReturnState
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Role()
+        public ReturnState()
         {
-            this.NotRestricteds = new HashSet<NotRestricted>();
-            this.Users = new HashSet<User>();
+            this.ReturnLinks = new HashSet<ReturnLink>();
         }
     
         public long Id { get; set; }
-        public string Name { get; set; }
+        public string state { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<NotRestricted> NotRestricteds { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<User> Users { get; set; }
+        public virtual ICollection<ReturnLink> ReturnLinks { get; set; }
     }
 }

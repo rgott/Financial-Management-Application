@@ -12,6 +12,7 @@ namespace Financial_Management_Application.Models
         public string PhoneNumber { get; set; }
         public bool TwoFactor { get; set; }
         public bool BrowserRemembered { get; set; }
+        public long Notifications { get; set; }
     }
 
     public class ManageLoginsViewModel
@@ -57,7 +58,16 @@ namespace Financial_Management_Application.Models
         [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }
+    public class NotifyViewModel
+    {
+        [Display(Name = "Notification List")]
+        public List<Notification> notifyList { get; set; }
 
+        [Display(Name = "Role")]
+        public long? Role { get; set; }
+
+        public List<System.Web.Mvc.SelectListItem> Roles { get; set; }
+    }
     public class AddPhoneNumberViewModel
     {
         [Required]

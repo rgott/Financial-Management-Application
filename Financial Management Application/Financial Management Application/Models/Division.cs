@@ -12,21 +12,24 @@ namespace Financial_Management_Application.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Role
+    public partial class Division
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Role()
+        public Division()
         {
-            this.NotRestricteds = new HashSet<NotRestricted>();
             this.Users = new HashSet<User>();
+            this.Notifications = new HashSet<Notification>();
+            this.NotRestricteds = new HashSet<NotRestricted>();
         }
     
         public long Id { get; set; }
-        public string Name { get; set; }
+        public string name { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<NotRestricted> NotRestricteds { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<User> Users { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Notification> Notifications { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<NotRestricted> NotRestricteds { get; set; }
     }
 }

@@ -71,27 +71,37 @@ namespace Financial_Management_Application.Models
         [Display(Name = "Email")]
         public string Email { get; set; }
 
-        [Display(Name = "Existing Roles")]
-        public List<SelectListItem> ExistingRoles = ApplicationSettings.Roles;
-
         [Required]
-        [Display(Name = "Role")]
-        public string Role { get; set; }
+        public long division { get; set; }
+        [Required]
+        public long address { get; set; }
+
+        [Display(Name = "Division")]
+        public List<SelectListItem> divisions { get; set; }
+        [Display(Name = "Address")]
+        public List<SelectListItem> addresses { get; set; }
+
     }
+
     public class RegisterViewModel
     {
-        [Required]
-        [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
+
+        [Display(Name = "Role")]
+        public string Role { get; set; }
+
+        [Display(Name = "division")]
+        public string Division { get; set; }
+
+        [Display(Name = "address")]
+        public string Address { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
-
-        public string Role { get; set; }
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]

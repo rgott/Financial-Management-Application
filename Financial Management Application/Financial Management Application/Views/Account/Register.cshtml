@@ -2,7 +2,6 @@
 @{
     ViewBag.Title = "Register";
 }
-
 <h2>@ViewBag.Title.</h2>
 
 @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
@@ -10,11 +9,33 @@
     @Html.AntiForgeryToken()
     <h4>Create a new account.</h4>
     <hr />
+    @Html.HiddenFor(m => m.Email);
+    @Html.HiddenFor(m => m.Role);
+    @Html.HiddenFor(m => m.Address);
+    @Html.HiddenFor(m => m.Division);
     @Html.ValidationSummary("", new { @class = "text-danger" })
     <div class="form-group">
         @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+            @Model.Email
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Role, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Model.Role
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Division, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Model.Division
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Address, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Model.Address
         </div>
     </div>
     <div class="form-group">
