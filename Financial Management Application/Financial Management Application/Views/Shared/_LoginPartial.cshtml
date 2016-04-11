@@ -1,5 +1,4 @@
 ﻿@using Microsoft.AspNet.Identity
-
 @if (Request.IsAuthenticated)
 {
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
@@ -8,25 +7,9 @@
 
     <ul class="nav navbar-nav navbar-right">
         <li>
-            <div class="dropdown">
-                <button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown">
-                    @User.Identity.GetUserName()
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                    <li>@Html.ActionLink("Request products","Request","Transaction")</li>
-                    <li><a href="#">Option 2</a></li>
-                    <li><a href="#">Option 3</a></li>
-                    <li role="seperator" class="divider"></li>
-                    <div>
-                        
-                        <button class="btn btn-primary" onclick="location.href='@Url.Action("Index", "Manage")';return false;">Manage</button>
-                        <button class="btn btn-primary" href="javascript:document.getElementById('logoutForm').submit()">
-                            Log off</button></div>
-                </ul>
-                
-            </div>
+            @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
         </li>
+        <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
     </ul>
     }
 }
