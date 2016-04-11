@@ -17,17 +17,23 @@ namespace Financial_Management_Application.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
+            this.Transactions = new HashSet<Transaction>();
+            this.Transactions1 = new HashSet<Transaction>();
             this.UserClaims = new HashSet<UserClaim>();
             this.UserLogins = new HashSet<UserLogin>();
             this.Roles = new HashSet<Role>();
         }
     
         public long Id { get; set; }
+        public long Address { get; set; }
+        public long Division { get; set; }
+        public System.DateTime TimeZoneOffset { get; set; }
         public string Login { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
         public Nullable<System.DateTime> CreationDate { get; set; }
         public Nullable<System.DateTime> ApprovalDate { get; set; }
+        public Nullable<System.DateTime> ExpireDate { get; set; }
         public Nullable<System.DateTime> LastLoginDate { get; set; }
         public bool IsLocked { get; set; }
         public string PasswordQuestion { get; set; }
@@ -41,6 +47,12 @@ namespace Financial_Management_Application.Models
         public bool LockoutEnabled { get; set; }
         public int AccessFailedCount { get; set; }
     
+        public virtual Address Address1 { get; set; }
+        public virtual Division Division1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Transaction> Transactions { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Transaction> Transactions1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserClaim> UserClaims { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

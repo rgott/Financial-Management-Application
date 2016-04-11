@@ -25,7 +25,16 @@ namespace Financial_Management_Application.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Address> Addresses { get; set; }
+        public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<Division> Divisions { get; set; }
+        public virtual DbSet<Notification> Notifications { get; set; }
+        public virtual DbSet<NotRestricted> NotRestricteds { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<ReturnLink> ReturnLinks { get; set; }
+        public virtual DbSet<ReturnState> ReturnStates { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<Transaction> Transactions { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserClaim> UserClaims { get; set; }
         public virtual DbSet<UserLogin> UserLogins { get; set; }

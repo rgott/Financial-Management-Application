@@ -8,6 +8,35 @@ namespace Financial_Management_Application
 {
     public static class ApplicationSettings
     {
+        public enum RoleTypes
+        {
+            Auditors,
+            Administrators,
+            Manager,
+            Supervisors,
+            PurchasingAgent,
+            ApprovedUser
+        }
+
+        public static string getString(RoleTypes roles)
+        {
+            switch (roles)
+            {
+                case RoleTypes.Auditors:
+                    return "Auditors";
+                case RoleTypes.Administrators:
+                    return "Administrators";
+                case RoleTypes.Manager:
+                    return "Manager";
+                case RoleTypes.Supervisors:
+                    return "Supervisors";
+                case RoleTypes.PurchasingAgent:
+                    return "Purchasing Agent";
+                case RoleTypes.ApprovedUser:
+                default:
+                    return "Approved User";
+            }
+        }
         public static readonly List<SelectListItem> Roles = new List<SelectListItem>()
         {
             new SelectListItem()

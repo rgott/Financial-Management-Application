@@ -12,21 +12,28 @@ namespace Financial_Management_Application.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Role
+    public partial class Transaction
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Role()
+        public Transaction()
         {
-            this.NotRestricteds = new HashSet<NotRestricted>();
-            this.Users = new HashSet<User>();
+            this.ReturnLinks = new HashSet<ReturnLink>();
         }
     
         public long Id { get; set; }
-        public string Name { get; set; }
+        public long purchaserId { get; set; }
+        public Nullable<long> requestedForUserId { get; set; }
+        public long productId { get; set; }
+        public int quantity { get; set; }
+        public decimal unitPrice { get; set; }
+        public System.DateTime purchaseDate { get; set; }
+        public long cartId { get; set; }
+        public bool isDeleted { get; set; }
     
+        public virtual Product Product { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<NotRestricted> NotRestricteds { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<User> Users { get; set; }
+        public virtual ICollection<ReturnLink> ReturnLinks { get; set; }
+        public virtual User User { get; set; }
+        public virtual User User1 { get; set; }
     }
 }

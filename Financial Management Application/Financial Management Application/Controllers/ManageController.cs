@@ -6,6 +6,9 @@ using Microsoft.Owin.Security;
 using Financial_Management_Application.Models;
 using Financial_Management_Application.Identity;
 using Financial_Management_Application.App_Start;
+using System;
+using System.Collections.Specialized;
+using System.Collections.Generic;
 
 namespace Financial_Management_Application.Controllers
 {
@@ -32,7 +35,6 @@ namespace Financial_Management_Application.Controllers
             RemovePhoneSuccess,
             Error
         }
-
         //
         // GET: /Manage/Index
         public async Task<ActionResult> Index(ManageMessageId? message)
@@ -44,17 +46,26 @@ namespace Financial_Management_Application.Controllers
                 : message == ManageMessageId.Error ? "An error has occurred."
                 : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
                 : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
-                : ""; 
+                : "";
 
-             var userId = long.Parse(User.Identity.GetUserId());
+            FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF();
+            long notification = db_manager.Notifications.LongCount();
+            db_manager.Dispose();
+
+            var userId = long.Parse(User.Identity.GetUserId());
+
             var model = new IndexViewModel
             {
                 HasPassword = HasPassword(),
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
                 Logins = await UserManager.GetLoginsAsync(userId),
-                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId.ToString())
+                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId.ToString()),
+                Notifications = notification
             };
+
+
+
             return View(model);
         }
 
@@ -257,6 +268,92 @@ namespace Financial_Management_Application.Controllers
             return View(model);
         }
 
+        public ActionResult Notify()
+        {
+            FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF();
+            var notifyListDB = db_manager.Notifications.ToList();
+
+            // get division list
+            List<SelectListItem> RolesList = new List<SelectListItem>();
+            new SelectList(db_manager.Addresses, "Id", "addressLine1");
+            foreach (var item in db_manager.Roles.ToList())
+            {
+                RolesList.Add(new SelectListItem()
+                {
+                    Text = item.Name,
+                    Value = item.Id.ToString() //  will be used to get id later
+                });
+            }
+            string userType = ApplicationSettings.getString(ApplicationSettings.RoleTypes.ApprovedUser);
+            long? roleResult = db_manager.Roles.FirstOrDefault(m => m.Name == userType).Id;
+            db_manager.Dispose();
+            Session.Add("notifyListDB", notifyListDB);
+            Session.Add("roleResult", roleResult);
+            Session.Add("RolesList", RolesList);
+            return View(new NotifyViewModel()
+            {
+                Role = roleResult,
+                Roles = RolesList,
+                notifyList = notifyListDB
+            });
+        }
+
+        [HttpPost]
+        public ActionResult Notify(NotifyViewModel model, string submitButton, string id)
+        {
+            if(model.Role == null)
+            {
+                return View(model); // redisplay the view if error
+            }
+            long role = (long)model.Role;
+            model.notifyList = (List<Notification>)Session["notifyListDB"];
+            model.Role = (long)Session["roleResult"];
+            model.Roles = (List<SelectListItem>)Session["RolesList"];
+            bool continueRemove = true;
+            long result;
+            if(!long.TryParse(id, out result))
+                return View(model);
+
+            FM_Datastore_Entities_EF db_model = new FM_Datastore_Entities_EF();
+
+            // get notification
+            Notification oldNotify = db_model.Notifications.FirstOrDefault(m => m.Id == result);
+            switch (submitButton)
+            {
+                case "Accept":
+                    //send email to new user
+                    GmailMail.send(
+                        oldNotify.Email,
+                        "Access Approved",
+                        "here is the link to sign up this link will only be available for so long - "
+                            + Request.Url.GetLeftPart(UriPartial.Authority)
+                            + Url.Action("Register", "Account")
+                            + "?rqst="
+                            + UrlEncryption.Encrypt(
+                                DateTime.UtcNow,
+                                oldNotify.Email,
+                                oldNotify.AddressId,
+                                oldNotify.DivisionId,
+                                role));
+                    break;
+                case "Deny":
+                    // send denial email to user
+                    GmailMail.send(oldNotify.Email,"Denied Access", "Appologies user you have been denied access by administration to the application.");
+                    break;
+                default:
+                    break;
+            }
+
+            if (continueRemove)
+            {
+                model.notifyList.Remove(model.notifyList.First(m => m.Id == result)); // remove from current model
+                db_model.Notifications.Remove(oldNotify);
+            }
+            db_model.SaveChanges();
+            db_model.Dispose();
+            return View(model);
+        }
+
         //
         // GET: /Manage/ManageLogins
         public async Task<ActionResult> ManageLogins(ManageMessageId? message)
@@ -288,6 +385,65 @@ namespace Financial_Management_Application.Controllers
         {
             // Request a redirect to the external login provider to link a login for the current user
             return new AccountController.ChallengeResult(provider, Url.Action("LinkLoginCallback", "Manage"), User.Identity.GetUserId());
+        }
+
+
+        /// <summary>
+        /// This method can only be run once to initialize the applications database with an admin to login
+        /// </summary>
+        /// <returns>not found if more then 0 records are in the database otherwise returns to login page on successful completion</returns>
+        [AllowAnonymous]
+        public async Task<ActionResult> Setup()
+        {
+            FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF();
+            if(db_manager.Users.Count<User>() > 0)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            // add administrator
+            foreach (var item in ApplicationSettings.Roles)
+            {
+                RoleManager.Create(new AccountRole() { Name = item.Value });
+            }
+
+            var newAddress = db_manager.Addresses.Add(new Address()
+            {
+                addressLine1 = "209 addresss here",
+                city = "Baltimore",
+                country = "Bel Air",
+                state = "MD",
+                postalCode = "21015"
+            });
+
+
+            var newDivision = db_manager.Divisions.Add(new Division()
+            {
+                name = "Alpha"
+            });
+            db_manager.SaveChanges();
+
+            // Manager
+            AccountUser user = new AccountUser
+            {
+                UserName = "Email@Domain.TDL",
+                Email = "Email@Domain.TDL",
+                Address = newAddress.Id,
+                Division = newDivision.Id,
+                ExpireDate = DateTime.Now,
+                TimeZoneOffset = DateTime.Now
+            };
+            var result = UserManager.Create(user, "FMAdb#61");
+
+            var user2 = UserManager.FindAsync("Email@Domain.TDL", "FMAdb#61");
+            if (user2 != null)
+            {
+                await SignInAsync(user, true);
+                return RedirectToLocal(Url.Action("Index","Home"));
+            }
+
+
+            return Redirect(Url.Action("Login", "Account"));
         }
 
         //
