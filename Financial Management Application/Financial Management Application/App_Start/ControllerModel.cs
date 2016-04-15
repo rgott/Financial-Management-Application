@@ -1,16 +1,18 @@
 ﻿using Financial_Management_Application.Identity;
+using Financial_Management_Application.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using System;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Financial_Management_Application.App_Start
+namespace Financial_Management_Application
 {
     
 
-    public class ControllerModel : Controller
+    public abstract class ControllerModel : Controller
     {
         private AccountUserManager _userManager;
         protected AccountUserManager UserManager
@@ -46,7 +48,33 @@ namespace Financial_Management_Application.App_Start
             }
             base.Dispose(disposing);
         }
+        public class SessionSaver<T>
+        {
+            public delegate void useSessionFunc(out T savedObject);
 
+            /// <summary>
+            /// Ensures the right type is set and returned from session
+            /// </summary>
+            /// <param name="Session"></param>
+            /// <param name="sessionVarName"></param>
+            /// <param name="methodsetObject"></param>
+            /// <returns></returns>
+            public T use(HttpSessionStateBase Session, string sessionVarName, useSessionFunc methodsetObject)
+            {
+                T savedObject;
+                object sessionVar = Session[sessionVarName];
+                if (sessionVar == null || !(sessionVar.GetType() == typeof(T)))
+                {
+                    methodsetObject(out savedObject);
+                    Session.Add(sessionVarName, savedObject);
+                }
+                else
+                {
+                    savedObject = (T)Session[sessionVarName];
+                }
+                return savedObject;
+            }
+        }
         
 
         #region Helpers

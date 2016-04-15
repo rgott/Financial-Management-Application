@@ -6,44 +6,49 @@
 <h2>Notify</h2>
 
 <p> this is the location where you can check notifications</p>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Notify Type</th>
-            <th>Notify Text</th>
-            <td>User Role</td>
-            <td>Approval</td>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.notifyList)
-        {
-            using (Html.BeginForm("Notify", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+@if(Model.notifyList.Count == 0)
+{
+    <h2>No Notifications check back later</h2>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Notify Type</th>
+                <th>Notify Text</th>
+                <th>User Role</th>
+                <th>Approval</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.notifyList)
             {
-                <tr>
-                    <td>@item.Id</td>
-                    <td>@item.notifyType</td>
-                    <td>@item.notifyText</td>
-                    <td class="form-group">
-                        @Html.LabelFor(m => m.Role, new { @class = "col-md-2 control-label" })
-                        <div class="col-md-10">
-                            @Html.DropDownListFor(m => m.Role, Model.Roles, new { @class = "form-control" })
-                        </div>
-                    </td>
-                    <td class="form-group row">
-                        <input type="hidden" name="id" value="@item.Id"/>
-                        <div class="col-md-3">
-                            <input type="submit" name="submitButton" class="btn btn-default" value="Accept" />
-                        </div>
-                        <div class="col-md-3">
-                            <input type="submit" name="submitButton" class="btn btn-default" value="Deny" />
-                        </div>
-                    </td>
-                </tr>
-
+                using (Html.BeginForm("Notify", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.notifyType</td>
+                        <td>@item.notifyText</td>
+                        <td class="form-group">
+                            @Html.LabelFor(m => m.Role, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.DropDownListFor(m => m.Role, Model.Roles, new { @class = "form-control" })
+                            </div>
+                        </td>
+                        <td class="form-group row">
+                            <input type="hidden" name="id" value="@item.Id"/>
+                            <div class="col-md-3">
+                                <input type="submit" name="submitButton" class="btn btn-default" value="Accept" />
+                            </div>
+                            <div class="col-md-3">
+                                <input type="submit" name="submitButton" class="btn btn-default" value="Deny" />
+                            </div>
+                        </td>
+                    </tr>
+                }
             }
-        }
-    </tbody>
-</table>
+        </tbody>
+    </table>
+}

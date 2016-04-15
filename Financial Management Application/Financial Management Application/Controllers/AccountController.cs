@@ -10,7 +10,6 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Financial_Management_Application.Models;
 using Financial_Management_Application.Identity;
-using Financial_Management_Application.App_Start;
 using System.Net;
 using System.Collections.Generic;
 using System.Net.Mail;
@@ -218,7 +217,12 @@ namespace Financial_Management_Application.Controllers
             {
                 Email = EncryptionResult.email,
                 Role = RoleResult.Name,
-                Address = AddressResult.addressLine1,
+                Address = AddressResult.country + ": " 
+                + AddressResult.addressLine1 
+                + AddressResult.addressLine2 
+                + ", " + AddressResult.city 
+                + ", " + AddressResult.state
+                + ", " + AddressResult.postalCode,
                 Division = DivisionResult.name
             });
         }

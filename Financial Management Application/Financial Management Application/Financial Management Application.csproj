@@ -194,10 +194,12 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\TransactionController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ProductViewModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Address.cs">
       <DependentUpon>FM_Datastore_Entities_EF.tt</DependentUpon>
@@ -223,6 +225,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>FM_Datastore_Entities_EF.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\TransactionViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Notification.cs">
       <DependentUpon>FM_Datastore_Entities_EF.tt</DependentUpon>
@@ -293,6 +296,8 @@
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -340,6 +345,14 @@
     <Content Include="Views\Manage\Setup.cshtml" />
     <Content Include="Views\Manage\Notify.cshtml" />
     <Content Include="Views\Account\RegisterRequestCompletion.cshtml" />
+    <Content Include="Views\Transaction\View.cshtml" />
+    <Content Include="Views\Transaction\Edit.cshtml" />
+    <Content Include="Views\Product\EditPartial.cshtml" />
+    <Content Include="Views\Product\CreatePartial.cshtml" />
+    <Content Include="Views\Product\Index.cshtml" />
+    <Content Include="Views\Product\ViewPartial.cshtml" />
+    <Content Include="Views\Product\CategoryPartial.cshtml" />
+    <Content Include="Views\Shared\_LayoutDataPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

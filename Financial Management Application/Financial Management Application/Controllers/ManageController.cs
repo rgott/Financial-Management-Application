@@ -5,10 +5,10 @@ using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using Financial_Management_Application.Models;
 using Financial_Management_Application.Identity;
-using Financial_Management_Application.App_Start;
 using System;
 using System.Collections.Specialized;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 
 namespace Financial_Management_Application.Controllers
 {
@@ -63,7 +63,6 @@ namespace Financial_Management_Application.Controllers
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId.ToString()),
                 Notifications = notification
             };
-
 
 
             return View(model);
@@ -401,7 +400,7 @@ namespace Financial_Management_Application.Controllers
                 return new HttpNotFoundResult();
             }
 
-            // add administrator
+            // Created all Roles
             foreach (var item in ApplicationSettings.Roles)
             {
                 RoleManager.Create(new AccountRole() { Name = item.Value });
@@ -409,36 +408,38 @@ namespace Financial_Management_Application.Controllers
 
             var newAddress = db_manager.Addresses.Add(new Address()
             {
-                addressLine1 = "209 addresss here",
+                addressLine1 = "7800 York Road",
                 city = "Baltimore",
-                country = "Bel Air",
-                state = "MD",
-                postalCode = "21015"
+                country = "United States",
+                state = "Maryland",
+                postalCode = "21252"
             });
 
 
             var newDivision = db_manager.Divisions.Add(new Division()
             {
-                name = "Alpha"
+                name = "Administration"
             });
             db_manager.SaveChanges();
-
+            db_manager.Dispose();
+            const string setupEmail = "setupUser@Domain.tdl";
+            const string setupPassword = "FMAdb#61";
             // Manager
             AccountUser user = new AccountUser
             {
-                UserName = "Email@Domain.TDL",
-                Email = "Email@Domain.TDL",
+                UserName = setupEmail,
+                Email = setupEmail,
                 Address = newAddress.Id,
                 Division = newDivision.Id,
                 ExpireDate = DateTime.Now,
                 TimeZoneOffset = DateTime.Now
             };
-            var result = UserManager.Create(user, "FMAdb#61");
+            var result = UserManager.Create(user, setupPassword);
 
-            var user2 = UserManager.FindAsync("Email@Domain.TDL", "FMAdb#61");
-            if (user2 != null)
+            var createdUser = await UserManager.FindAsync(setupEmail, setupPassword);
+            if (createdUser != null)
             {
-                await SignInAsync(user, true);
+                await SignInAsync(createdUser, true);
                 return RedirectToLocal(Url.Action("Index","Home"));
             }
 
