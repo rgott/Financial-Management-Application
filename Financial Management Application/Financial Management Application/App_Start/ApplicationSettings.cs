@@ -10,6 +10,7 @@ namespace Financial_Management_Application
     {
         public enum RoleTypes
         {
+            Congress,
             Auditors,
             Administrators,
             Manager,
@@ -22,6 +23,8 @@ namespace Financial_Management_Application
         {
             switch (roles)
             {
+                case RoleTypes.PurchasingAgent:
+                    return "Purchasing Agent";
                 case RoleTypes.Auditors:
                     return "Auditors";
                 case RoleTypes.Administrators:
@@ -30,8 +33,8 @@ namespace Financial_Management_Application
                     return "Manager";
                 case RoleTypes.Supervisors:
                     return "Supervisors";
-                case RoleTypes.PurchasingAgent:
-                    return "Purchasing Agent";
+                case RoleTypes.Congress:
+                    return "Congress";
                 case RoleTypes.ApprovedUser:
                 default:
                     return "Approved User";
@@ -68,6 +71,11 @@ namespace Financial_Management_Application
             {
                 Text = "Approved User",
                 Value = "Approved User"
+            },
+            new SelectListItem()
+            {
+                Text = "Congress",
+                Value = "Congress"
             }
         };
     }

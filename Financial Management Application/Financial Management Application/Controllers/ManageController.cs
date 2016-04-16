@@ -392,60 +392,91 @@ namespace Financial_Management_Application.Controllers
         /// </summary>
         /// <returns>not found if more then 0 records are in the database otherwise returns to login page on successful completion</returns>
         [AllowAnonymous]
-        public async Task<ActionResult> Setup()
+        public ActionResult Setup()
         {
-            FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF();
-            if(db_manager.Users.Count<User>() > 0)
+            
+
+            // dispose of quickly
+            using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
+            {
+                if (db_manager.Users.Count() != 0)
+                {
+                    return new HttpNotFoundResult();
+                }
+
+                //remove after databaseModel.sql
+                if(db_manager.Roles.Count() == 0)
+                {
+                    foreach (var item in ApplicationSettings.Roles)
+                    {
+                        db_manager.Roles.Add(new Role() { Name = item.Value });
+                    }
+                }
+
+            }
+            if (TempData.ContainsKey("Setup") && Session["SetupUser"] == null)
             {
                 return new HttpNotFoundResult();
             }
-
-            // Created all Roles
-            foreach (var item in ApplicationSettings.Roles)
+            if(!TempData.Keys.Contains("Setup"))
             {
-                RoleManager.Create(new AccountRole() { Name = item.Value });
+               TempData.Add("Setup", true);
             }
-
-            var newAddress = db_manager.Addresses.Add(new Address()
+            Session.Add("SetupUser", true);
+            return View(new SetupViewModel()
             {
-                addressLine1 = "7800 York Road",
-                city = "Baltimore",
-                country = "United States",
-                state = "Maryland",
-                postalCode = "21252"
+                Role = ApplicationSettings.getString(ApplicationSettings.RoleTypes.Congress)
             });
+        }
 
-
-            var newDivision = db_manager.Divisions.Add(new Division()
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<ActionResult> Setup(SetupViewModel model)
+        {
+            // dispose of quickly
+            using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
             {
-                name = "Administration"
-            });
-            db_manager.SaveChanges();
-            db_manager.Dispose();
-            const string setupEmail = "setupUser@Domain.tdl";
-            const string setupPassword = "FMAdb#61";
-            // Manager
+                if (db_manager.Users.Count() != 0)
+                {
+                    return new HttpNotFoundResult();
+                }
+            }
+            if (TempData.ContainsKey("Setup") && Session["SetupUser"] == null)
+            {
+                return new HttpNotFoundResult();
+            }
+            Address address;
+            Division division;
+            using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
+            {
+                address = db_manager.Addresses.Add(model.Address);
+                division = db_manager.Divisions.Add(model.Division);
+                db_manager.SaveChanges();
+            }
             AccountUser user = new AccountUser
             {
-                UserName = setupEmail,
-                Email = setupEmail,
-                Address = newAddress.Id,
-                Division = newDivision.Id,
-                ExpireDate = DateTime.Now,
-                TimeZoneOffset = DateTime.Now
+                UserName = model.Email,
+                Email = model.Email,
+                Address = address.Id,
+                Division = division.Id,
+                TimeZoneOffset = DateTime.UtcNow,// TODO: change to hours of offset
+                CreationDate = DateTime.UtcNow
             };
-            var result = UserManager.Create(user, setupPassword);
 
-            var createdUser = await UserManager.FindAsync(setupEmail, setupPassword);
-            if (createdUser != null)
+            var result = await UserManager.CreateAsync(user, model.Password);
+            if (result.Succeeded)
             {
-                await SignInAsync(createdUser, true);
-                return RedirectToLocal(Url.Action("Index","Home"));
+                // create or add role
+                UserManager.AddToRole(UserManager.FindByEmail(model.Email).Id, ApplicationSettings.getString(ApplicationSettings.RoleTypes.Congress));
+
+                await SignInAsync(user, false);
+
+                return RedirectToAction("Index", "Home"); // redirect to user creation
             }
-
-
-            return Redirect(Url.Action("Login", "Account"));
+            AddErrors(result);
+            return View(model);
         }
+
 
         //
         // GET: /Manage/LinkLoginCallback
