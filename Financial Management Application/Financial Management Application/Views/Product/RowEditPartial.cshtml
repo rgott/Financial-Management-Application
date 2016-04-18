@@ -1,0 +1,17 @@
+﻿@model Financial_Management_Application.Models.ProductVM.RowViewModel
+
+<tr id="Edit@(@Model.productItem.Id)">
+    
+    <td>@Model.productItem.name</td>
+    <td>@Model.productItem.price</td>
+    <td>@*@Model.productItem.Category.name*@</td>
+    <td class="form-group row">
+        @Ajax.ActionLink("Save", "RowEditPartial", new { rowModel = Model.productItem.Id }, new AjaxOptions { UpdateTargetId = "Edit" + @Model.productItem.Id, InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "POST" })
+        @Ajax.ActionLink("Delete", "RowEditPartial", new { rowModel = Model.productItem.Id }, new AjaxOptions { UpdateTargetId = "Edit" + @Model.productItem.Id, InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "POST" })
+        @Ajax.ActionLink("Cancel", "RowPartial", new { rowModel = Model.productItem.Id }, new AjaxOptions { UpdateTargetId = "Edit" + @Model.productItem.Id, InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "POST" })
+
+    </td>
+</tr>
+@section scripts{
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
+}

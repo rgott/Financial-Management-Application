@@ -1,0 +1,25 @@
+﻿@model Financial_Management_Application.Models.CategoryVM.PeekViewModel
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Edit</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.categories)
+        {
+            using (Html.BeginForm("Peek", "Category", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                <tr>
+                    <td>@item.name</td>
+                    <td class="form-group row">
+                        @Ajax.ActionLink("Edit", "Edit", new { id = item.Id.ToString() }, new AjaxOptions { UpdateTargetId = "categoryContents", InsertionMode = InsertionMode.Replace, HttpMethod = "POST" })
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

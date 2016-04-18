@@ -1,0 +1,26 @@
+﻿@model Financial_Management_Application.Models.ProductVM.PeekViewModel
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Category</th>
+            <th>Category</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.products)
+        {
+            using (Ajax.BeginForm("Peek", "Product", new AjaxOptions { }, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.Action("RowPartial","Product",new { rowModel = item.Id })
+
+            }
+        }
+    </tbody>
+</table>
+@section scripts{
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
+}

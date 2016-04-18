@@ -1,8 +1,8 @@
-﻿@model Financial_Management_Application.Models.ProductVM.CreatePartialViewModel
+﻿@model Financial_Management_Application.Models.ProductVM.CreateViewModel
 
+@Html.ActionLink("View Products","Peek","Product")
 
-
-@using (Ajax.BeginForm("Index", "Product", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "GET" }, new { @class = "form-horizontal", role = "form" }))
+@using (Html.BeginForm("Create", "Product",FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     <div class="form-group">
         <label class="col-md-2 control-label">Name</label>
@@ -21,6 +21,7 @@
         <div class="col-md-10">
             @Html.DropDownListFor(m => m.categoryId, @Model.categories, new { @class = "form-control" })
         </div>
+        @Html.ActionLink("Create new Category","Create","Category")
     </div>
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">

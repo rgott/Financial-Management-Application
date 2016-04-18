@@ -4,6 +4,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System;
+using System.Collections;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -57,21 +58,37 @@ namespace Financial_Management_Application
             /// </summary>
             /// <param name="Session"></param>
             /// <param name="sessionVarName"></param>
-            /// <param name="methodsetObject"></param>
+            /// <param name="methodsetObject">method where the T value is set to the session with key param:sessionVarName. If null then automatically loads value from storage</param>
             /// <returns></returns>
             public T use(HttpSessionStateBase Session, string sessionVarName, useSessionFunc methodsetObject)
             {
-                T savedObject;
+                T savedObject = default(T);
                 object sessionVar = Session[sessionVarName];
-                if (sessionVar == null || !(sessionVar.GetType() == typeof(T)))
+
+                if ((sessionVar == null || !(sessionVar.GetType() == typeof(T))) && methodsetObject != null)
                 {
-                    methodsetObject(out savedObject);
+                    methodsetObject(out savedObject); // set saved to value
                     Session.Add(sessionVarName, savedObject);
                 }
                 else
-                {
                     savedObject = (T)Session[sessionVarName];
+
+                return savedObject;
+            }
+
+            public T use(ViewDataDictionary ViewData, string sessionVarName, useSessionFunc methodsetObject)
+            {
+                T savedObject = default(T);
+                object sessionVar = ViewData[sessionVarName];
+
+                if ((sessionVar == null || !(sessionVar.GetType() == typeof(T))) && methodsetObject != null)
+                {
+                    methodsetObject(out savedObject); // set saved to value
+                    ViewData.Add(sessionVarName, savedObject);
                 }
+                else
+                    savedObject = (T)ViewData[sessionVarName];
+
                 return savedObject;
             }
         }
