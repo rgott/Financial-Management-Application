@@ -267,6 +267,7 @@ namespace Financial_Management_Application.Controllers
             return View(model);
         }
 
+       
         public ActionResult Notify()
         {
             FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF();
@@ -420,6 +421,7 @@ namespace Financial_Management_Application.Controllers
             {
                 name = "Administration"
             });
+            //var check = db_manager.GetValidationErrors();
             db_manager.SaveChanges();
             db_manager.Dispose();
             const string setupEmail = "setupUser@Domain.tdl";

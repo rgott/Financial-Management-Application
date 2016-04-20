@@ -135,10 +135,10 @@ CREATE TABLE [dbo].[Address]
 	[Id] BIGINT NOT NULL PRIMARY KEY IDENTITY (1, 1), 
     [addressLine1] NVARCHAR(MAX) NOT NULL, 
     [addressLine2] NVARCHAR(MAX) NULL, 
-    [city] NCHAR(10) NOT NULL, 
-    [state] NCHAR(10) NOT NULL, 
-    [postalCode] NCHAR(10) NOT NULL, 
-    [country] NCHAR(10) NOT NULL
+    [city] NVARCHAR(MAX) NOT NULL, 
+    [state] NVARCHAR(MAX) NOT NULL, 
+    [postalCode] NVARCHAR(MAX) NOT NULL, 
+    [country] NVARCHAR(MAX) NOT NULL
 )
 GO
 
