@@ -136,7 +136,7 @@ CREATE TABLE [dbo].[Address]
     [addressLine1] NVARCHAR(MAX) NOT NULL, 
     [addressLine2] NVARCHAR(MAX) NULL, 
     [city] NVARCHAR(MAX) NOT NULL, 
-    [state]NVARCHAR(MAX) NOT NULL, 
+    [state] NVARCHAR(MAX) NOT NULL, 
     [postalCode] NVARCHAR(MAX) NOT NULL, 
     [country] NVARCHAR(MAX) NOT NULL
 )
