@@ -1,7 +1,99 @@
-﻿
-@{
-    ViewBag.Title = "Setup";
+﻿@model Financial_Management_Application.Models.SetupViewModel
+
+
+
+@using (Html.BeginForm("Setup", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <h4>Use a local account to log in. Session is now locked this is the only session that can create the Setup account. </h4>
+    <hr />
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+        </div>
+    </div>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(m => m.Role, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Model.Role
+        </div>
+    </div>
+    <hr />
+    <div class="form-group">
+        <label class="col-md-2 control-label">Division</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Division.name, new { @class = "form-control" })
+            <p>Creates new Division with this name</p>
+        </div>
+    </div>
+
+    //address
+    <hr/>
+    <div class="form-group">
+        <label class="col-md-2"></label>
+        <div class="col-md-10">
+            <h3>Address</h3><p>Creates new Address with this name</p>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Address Line 1</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Address.addressLine1, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Address Line 2</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Address.addressLine2, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">City</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Address.city, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">State</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Address.state, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Zip Code</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Address.postalCode, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Country</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Address.country, new { @class = "form-control" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="btn btn-default" value="Register" />
+        </div>
+    </div>
+
+
 }
-
-<h2>Setup</h2>
-
