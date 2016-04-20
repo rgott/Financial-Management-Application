@@ -2,11 +2,14 @@
 
 @using (Ajax.BeginForm("Create", "Category", new AjaxOptions { HttpMethod = "POST" }, new { @class = "form-horizontal", role = "form" }))
 {
+    @Html.ActionLink("View Products", "Index", "Product", null, new { @class = "btn" })
+    @Html.ActionLink("View Categories", "Index", "Category", null, new { @class = "btn" })
+
     <label style="color:greenyellow">@ViewBag.StatusMessage</label>
     <div class="form-group">
         <label class="col-md-2 control-label">Name</label>
         <div class="col-md-10">
-            @Html.TextBoxFor(m => m.category, new { @class = "form-control" })
+            @Html.TextBoxFor(m => m.category.name, new { @class = "form-control" })
         </div>
     </div>
     <div class="form-group">

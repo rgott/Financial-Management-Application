@@ -269,23 +269,29 @@ namespace Financial_Management_Application.Controllers
 
         public ActionResult Notify()
         {
-            FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF();
-            var notifyListDB = db_manager.Notifications.ToList();
-
-            // get division list
-            List<SelectListItem> RolesList = new List<SelectListItem>();
-            new SelectList(db_manager.Addresses, "Id", "addressLine1");
-            foreach (var item in db_manager.Roles.ToList())
+            List<Notification> notifyListDB;
+            List<SelectListItem> RolesList;
+            long? roleResult;
+            using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
             {
-                RolesList.Add(new SelectListItem()
+
+                notifyListDB = db_manager.Notifications.ToList();
+
+                // get division list
+                RolesList = new List<SelectListItem>();
+                new SelectList(db_manager.Addresses, "Id", "addressLine1");
+                foreach (var item in db_manager.Roles.ToList())
                 {
-                    Text = item.Name,
-                    Value = item.Id.ToString() //  will be used to get id later
-                });
+                    RolesList.Add(new SelectListItem()
+                    {
+                        Text = item.Name,
+                        Value = item.Id.ToString() //  will be used to get id later
+                    });
+                }
+                string userType = ApplicationSettings.getString(ApplicationSettings.RoleTypes.ApprovedUser);
+                Role role = db_manager.Roles.FirstOrDefault(m => m.Name == userType); // if null roles are not setup
+                roleResult = role.Id;
             }
-            string userType = ApplicationSettings.getString(ApplicationSettings.RoleTypes.ApprovedUser);
-            long? roleResult = db_manager.Roles.FirstOrDefault(m => m.Name == userType).Id;
-            db_manager.Dispose();
             Session.Add("notifyListDB", notifyListDB);
             Session.Add("roleResult", roleResult);
             Session.Add("RolesList", RolesList);

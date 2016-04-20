@@ -5,15 +5,25 @@ namespace Financial_Management_Application.Models.CategoryVM
 {
     public class CreateViewModel
     {
-        public long categoryId { get; set; }
         public Category category { get; set; }
     }
     public class EditViewModel
     {
-        public List<Category> categories { get; set; }
+        public long categoryId { get; set; }
+        public Category category { get; set; }
     }
-    public class PeekViewModel
+    public class IndexViewModel
     {
         public List<Category> categories { get; set; }
+    }
+
+    public class DeleteViewModel
+    {
+        public long[] productDefCategory { get; set; }
+        public long categoryId { get; set; }
+        public long categoryReplacementId { get; set; }
+        public Product products { get; set; }
+        public long allProducts { get; set; }
+        public List<SelectListItem> categories { get; set; }
     }
 }
