@@ -7,6 +7,7 @@ using System;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Collections.Generic;
 
 namespace Financial_Management_Application
 {
@@ -73,6 +74,11 @@ namespace Financial_Management_Application
                     savedObject = (T)Session[sessionVarName];
                 }
                 return savedObject;
+            }
+
+            internal List<SelectListItem> use(HttpSessionStateBase session, object productSessionVar, object p)
+            {
+                throw new NotImplementedException();
             }
         }
         
