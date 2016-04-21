@@ -1,7 +1,5 @@
-﻿
-@{
-    ViewBag.Title = "Request";
-}
+﻿@model Financial_Management_Application.Models.TransactionVM.RequestTransactionViewModel
+
 @Scripts.Render("~/Scripts/Transaction_Page.js")
 <h2>Request Form</h2>
 
@@ -51,38 +49,31 @@
     </form>
     <br />
     <table class="table" id="datatable">
-        <thread>
+        <thead>
             <tr>
-                <th>Available products:</th>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Category</th>
                 <th>Price</th>
             </tr>
-        </thread>
+        </thead>
         <tbody>
-            <tr>
-                <td>one</td>
-                <td>10.99</td>
-            </tr>
-            <tr>
-                <td>two</td>
-                <td>10.99</td>
-            </tr>
-            <tr>
-                <td>threene</td>
-                <td>10.99</td>
-            </tr>
-            <tr>
-                <td>four</td>
-                <td>10.99</td>
-            </tr>
-            <tr>
-                <td>five</td>
-                <td>10.99</td>
-            </tr>
-            <tr>
-                <td>six</td>
-                <td>10.99</td>
-            </tr>
-
+            @foreach (var item in Model.ProductTable)
+            {
+                using (Html.BeginForm("ViewProduct", "Product", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    <tr>
+                        <td>@Html.Encode(item.Id)</td>
+                        <td>@Html.Encode(item.name)</td>
+                        <td>@Html.Encode(item.categoryId)</td>
+                        <td>@Html.Encode(item.price.ToString("0.00"))</td>
+                        
+                    </tr>
+                }
+            }
         </tbody>
     </table>
 </div>
+@section scripts{
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
+}

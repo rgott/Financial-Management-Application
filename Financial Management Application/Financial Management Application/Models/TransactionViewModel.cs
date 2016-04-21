@@ -5,9 +5,10 @@ using Microsoft.Owin.Security;
 
 namespace Financial_Management_Application.Models.TransactionVM
 {
-    public class TViewViewModel// change all *Trasactions to *
+    public class RequestTransactionViewModel// change all *Trasactions to *
     {
-        public List<Transaction> transactions { get; set; }
+        
+        public List<Product> ProductTable { get; set; }
     }
 
 

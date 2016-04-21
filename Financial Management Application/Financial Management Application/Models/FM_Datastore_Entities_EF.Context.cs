@@ -38,5 +38,6 @@ namespace Financial_Management_Application.Models
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserClaim> UserClaims { get; set; }
         public virtual DbSet<UserLogin> UserLogins { get; set; }
+        public object Product { get; internal set; }
     }
 }

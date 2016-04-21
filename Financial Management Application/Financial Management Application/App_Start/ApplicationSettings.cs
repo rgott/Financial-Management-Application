@@ -8,6 +8,14 @@ namespace Financial_Management_Application
 {
     public static class ApplicationSettings
     {
+        public const string CONGRESS = "Congress"; 
+        public const string AUDITORS = "Auditors"; 
+        public const string ADMIN = "Administrators"; 
+        public const string MANAGER = "Manager"; 
+        public const string SUPERVISOR = "Supervisors"; 
+        public const string PURCHASINGAGENT = "PurchasingAgent"; 
+        public const string APPROVEDUSER = "AprovedUser";
+         
         public enum RoleTypes
         {
             Congress,
