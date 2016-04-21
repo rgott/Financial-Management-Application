@@ -1,4 +1,5 @@
-﻿CREATE TABLE [dbo].[User]
+﻿
+CREATE TABLE [dbo].[User]
 (
 	[Id] [bigint] IDENTITY(1,1) NOT NULL,
     [Address] BIGINT NOT NULL, 

@@ -7,6 +7,7 @@ using Financial_Management_Application.Models.CategoryVM;
 
 namespace Financial_Management_Application.Controllers
 {
+    [Authorize]
     public class CategoryController : ControllerModel
     {
         const string CategorySessionVar = "category";
@@ -56,9 +57,18 @@ namespace Financial_Management_Application.Controllers
             using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
             {
                 newCategory = db_manager.Categories.Add(model.category);
+               
+
                 await db_manager.SaveChangesAsync();
             }
-            List<Category> categories = (List<Category>)Session[CategorySessionVar];
+
+            List<Category> categories = new SessionSaver<List<Category>>().use(Session, CategorySessionVar, (out List<Category> saveobject) =>
+            {
+                using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
+                {
+                    saveobject = db_manager.Categories.ToList();
+                }
+            });
             categories.Add(newCategory);
             Session[CategorySessionVar] = categories;
 
@@ -93,9 +103,12 @@ namespace Financial_Management_Application.Controllers
                 if (Session[CategorySessionVar] != null)
                 { // if session var exists edit product from session var
                     List<Category> categories = (List<Category>)Session[CategorySessionVar];
-                    int index = categories.IndexOf(categories.First(m => m.Id == Id));
+                    if(categories != null)
+                    {
+                        int index = categories.IndexOf(categories.First(m => m.Id == Id));
+                        categories[index].name = model.category.name;
+                    }
 
-                    categories[index].name = model.category.name;
                     Session[CategorySessionVar] = categories;
                 }
 
@@ -111,11 +124,36 @@ namespace Financial_Management_Application.Controllers
 
         public ActionResult Delete(long? Id)
         {
+            if (Id == null)
+                return new HttpNotFoundResult();
+
+            List<Product> products;
             int categoryProductCount = 0;
             using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
             {
-                categoryProductCount = db_manager.Categories.First(m => m.Id == Id).Products.Count;
+                var db_productList = db_manager.Categories.First(m => m.Id == Id).Products;
+                if(db_productList == null)
+                { // if item has already been deleted return the category view and display that the value had previously been deleted
+                    ViewBag.alreadyDeletedMessage = "Category was already deleted";
+                    return Redirect(Url.Action("Index", "Category"));
+                }
+                products = db_productList.ToList();
+
+                if(products.Count == 0)
+                {
+                    // remove from database
+                    db_manager.Categories.Remove(db_manager.Categories.First(m => m.Id == Id));
+                    db_manager.SaveChanges();
+
+                    // remove from session
+                    List<Category> categoriesList = (List<Category>)Session[CategorySessionVar];
+                    if(categoriesList != null)
+                    {
+                        categoriesList.Remove(categoriesList.First(m => m.Id == Id));
+                    }
+                }
             }
+            categoryProductCount = products.Count;
             long[] productDefCategory = new long[categoryProductCount];
 
             List<SelectListItem> categories = new SessionSaver<List<SelectListItem>>().use(Session, ProductSessionVar, (out List<SelectListItem> saveobject) =>
@@ -137,6 +175,7 @@ namespace Financial_Management_Application.Controllers
 
             return View(new DeleteViewModel()
             {
+                products = products,
                 categories = categories,
                 productDefCategory = productDefCategory
             });
@@ -151,24 +190,24 @@ namespace Financial_Management_Application.Controllers
         [HttpPost]
         public ActionResult Delete(DeleteViewModel model)
         {
-            using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
-            {
-                //RId = 6;
-                Category category = db_manager.Categories.First(m => m.Id == Id);
-                Category newCategory = db_manager.Categories.First(m => m.Id == (long)RId);
-                List<Product> prod = category.Products.ToList();
-                foreach (var item in prod)
-                {
-                    item.categoryId = (long)RId;
-                    db_manager.Entry(item).Property(m => m.categoryId).CurrentValue = (long)RId;
-                }
-                Session[ProductSessionVar] = prod;
-                db_manager.Categories.Remove(category);
-                db_manager.SaveChanges();
+            //using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
+            //{
+            //    //RId = 6;
+            //    Category category = db_manager.Categories.First(m => m.Id == Id);
+            //    Category newCategory = db_manager.Categories.First(m => m.Id == (long)RId);
+            //    List<Product> prod = category.Products.ToList();
+            //    foreach (var item in prod)
+            //    {
+            //        item.categoryId = (long)RId;
+            //        db_manager.Entry(item).Property(m => m.categoryId).CurrentValue = (long)RId;
+            //    }
+            //    Session[ProductSessionVar] = prod;
+            //    db_manager.Categories.Remove(category);
+            //    db_manager.SaveChanges();
 
-                List<Category> categories = (List<Category>)Session[CategorySessionVar];
-                categories.RemoveAt(categories.IndexOf(categories.First(m => m.Id == Id)));                   
-            }
+            //    List<Category> categories = (List<Category>)Session[CategorySessionVar];
+            //    categories.RemoveAt(categories.IndexOf(categories.First(m => m.Id == Id)));                   
+            //}
             return View();
         }
 

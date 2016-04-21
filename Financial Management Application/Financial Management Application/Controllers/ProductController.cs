@@ -47,7 +47,7 @@ namespace Financial_Management_Application.Controllers
         }
         public ActionResult Create()
         {
-            List<SelectListItem> categories = new SessionSaver<List<SelectListItem>>().use(Session, ProductSessionVar, (out List<SelectListItem> saveobject) =>
+            List<SelectListItem> categories = new SessionSaver<List<SelectListItem>>().use(Session, CategorySessionVar, (out List<SelectListItem> saveobject) =>
             {
                 List<SelectListItem> CategoriesList = new List<SelectListItem>();
                 using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())

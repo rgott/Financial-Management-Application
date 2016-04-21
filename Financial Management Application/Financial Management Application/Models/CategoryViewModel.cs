@@ -22,7 +22,7 @@ namespace Financial_Management_Application.Models.CategoryVM
         public long[] productDefCategory { get; set; }
         public long categoryId { get; set; }
         public long categoryReplacementId { get; set; }
-        public Product products { get; set; }
+        public List<Product> products { get; set; }
         public long allProducts { get; set; }
         public List<SelectListItem> categories { get; set; }
     }
