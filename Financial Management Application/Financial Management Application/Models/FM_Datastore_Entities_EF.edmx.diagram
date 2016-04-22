@@ -16,8 +16,8 @@
         <EntityTypeShape EntityType="FM_DatastoreModel.Role" Width="1.5" PointX="3.75" PointY="4" />
         <EntityTypeShape EntityType="FM_DatastoreModel.Transaction" Width="1.5" PointX="8.25" PointY="8.125" />
         <EntityTypeShape EntityType="FM_DatastoreModel.User" Width="1.5" PointX="3" PointY="6.5" />
-        <EntityTypeShape EntityType="FM_DatastoreModel.UserClaim" Width="1.5" PointX="5.25" PointY="15.375" />
-        <EntityTypeShape EntityType="FM_DatastoreModel.UserLogin" Width="1.5" PointX="5.25" PointY="12.625" />
+        <EntityTypeShape EntityType="FM_DatastoreModel.UserClaim" Width="1.5" PointX="5.25" PointY="12.625" />
+        <EntityTypeShape EntityType="FM_DatastoreModel.UserLogin" Width="1.5" PointX="5.25" PointY="15.625" />
         <AssociationConnector Association="FM_DatastoreModel.FK_Address" />
         <AssociationConnector Association="FM_DatastoreModel.FK_Notifications_AddressId" />
         <AssociationConnector Association="FM_DatastoreModel.FK_categoryId" />
