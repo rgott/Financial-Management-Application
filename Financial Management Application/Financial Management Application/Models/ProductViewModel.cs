@@ -4,28 +4,23 @@ using System.Web.Mvc;
 
 namespace Financial_Management_Application.Models.ProductVM
 {
-    public class IndexViewModel
+    public class CreateViewModel
     {
-        public List<Product> products { get; set; }
-        
-    }
-
-    public class CreatePartialViewModel
-    {
+        [Display(Name ="Category")]
         public long categoryId { get; set; }
         public List<SelectListItem> categories { get; set; }
-        public Product selected { get; set; }
+        public Product product { get; set; }
     }
-    public class EditPartialViewModel
+    public class EditViewModel
     {
-        public List<Product> products { get; set; }
-    }
-    public class ViewPartialViewModel
-    {
-        public List<Product> products { get; set; }
-    }
-    public class CategoryPartialViewModel
-    {
+        [Display(Name ="Category")]
+        public long categoryId { get; set; }
         public List<SelectListItem> categories { get; set; }
+        public Product product { get; set; }
+    }
+    public class IndexViewModel
+    {
+        public string productUpdateTargetId { get; set; }
+        public List<Product> products { get; set; }
     }
 }

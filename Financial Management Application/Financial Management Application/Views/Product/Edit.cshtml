@@ -1,0 +1,34 @@
+﻿@model Financial_Management_Application.Models.ProductVM.EditViewModel
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+@using (Ajax.BeginForm("Edit", "Product", new AjaxOptions { HttpMethod = "POST" }, new { @class = "form-horizontal", role = "form" }))
+{
+    <div class="form-group">
+        <label class="col-md-2 control-label">Name</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.product.name, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Price</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.product.price, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.categoryId, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.ActionLink("Create new Category", "Create", "Category")
+            @Html.DropDownListFor(m => m.categoryId, @Model.categories, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-10">
+            <input type="submit" class="btn" value="Save" />
+            @Html.ActionLink("Cancel", "Index", "Product", new { @class = "btn btn-default" })
+        </div>
+    </div>
+}

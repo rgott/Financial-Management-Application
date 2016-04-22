@@ -7,15 +7,14 @@ using System.Web;
 
 namespace Financial_Management_Application
 {
-    public class GmailMail
+    public class Mail
     {
         static SmtpClient smtp = new SmtpClient();
 
         public static void send(string toEmail,string subject, string body)
         {
-            var fromAddress = new MailAddress("GoldTeamTechnologies@gmail.com", "Gold Team Technologies");
+            var fromAddress = new MailAddress(AppSettings.Mail.email, AppSettings.Mail.displayName);
             var toAddress = new MailAddress(toEmail, toEmail);
-            const string fromPassword = "GoldTeam1";
 
             var smtp = new SmtpClient
             {
@@ -24,7 +23,7 @@ namespace Financial_Management_Application
                 EnableSsl = true,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+                Credentials = new NetworkCredential(fromAddress.Address, AppSettings.Mail.password)
             };
             using (var message = new MailMessage(fromAddress, toAddress)
             {

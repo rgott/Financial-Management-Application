@@ -14,7 +14,7 @@
                     <li><a href="#">Another action</a></li>
                     <li><a href="#">Something else here</a></li>
                     <li style="margin-top:1px; border-top:3px solid #4CA84C">
-                        <input type="submit" style="border-right:1px solid #333" class="btn btnSqr" onclick="location.href='@Url.Action("Index", "Manage")';return false;" value="Register" />
+                        <input type="submit" style="border-right:1px solid #333" class="btn btnSqr" onclick="location.href='@Url.Action("Index", "Manage")';return false;" value="Manage" />
                         <input class="btn btnSqr" type="submit" name="Logout" value="Log Out" />
                     </li>
                 </ul>
@@ -24,8 +24,8 @@
 }
 else
 {
-    <ul class="nav navbar-nav navbar-right">
-        <li>@Html.ActionLink("Register Request", "RegisterRequest", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+    <ul class="nav navbar-nav navbar-right mobileNav pull-right list-inline">
+        <li>@Html.ActionLink("Register", "RegisterRequest", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
         <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
     </ul>
 }

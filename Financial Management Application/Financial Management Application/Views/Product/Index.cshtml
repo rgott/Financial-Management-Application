@@ -1,32 +1,37 @@
 ﻿@model Financial_Management_Application.Models.ProductVM.IndexViewModel
-@{
-    ViewBag.Title = "EditProduct";
-    Layout = "~/Views/Shared/_LayoutDataPage.cshtml";
+
+@using (Html.BeginForm("Edit", "Product", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+
+    @Html.ActionLink("Add Product","Create", null,new { @class = "btn" })
+    @Html.ActionLink("Add Category", "Create", "Category", null, new { @class = "btn" })
+    @Html.ActionLink("View Categories", "Index", "Category", null, new { @class = "btn" })
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Category</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            @foreach (var item in Model.products)
+            {
+                <tr id="Edit@(item.Id)">
+                    <td>@item.name</td>
+                    <td>@item.price.ToString("0.00")</td>
+                    <td>@item.Category.name</td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { Id = item.Id }, new { @class="btn" })
+                        @Ajax.ActionLink("Delete", "Index", new { Id = item.Id },new AjaxOptions { HttpMethod="POST" }, new { @class = "btn", @onclick= "javascript:document.getElementById('tableBody').removeChild(document.getElementById('Edit" + item.Id + "'))" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
-
-
-
-<h2>Product</h2>
-@Ajax.ActionLink("Create Product", "CreatePartial", new AjaxOptions { UpdateTargetId = "partialProductContents", InsertionMode = InsertionMode.Replace, HttpMethod = "GET" })
-@Html.Action("ViewPartial")
-
-    @*could also add a string to the database and check if user has access to that string*@
-    @*@if (User.IsInRole(ApplicationSettings.getString(ApplicationSettings.RoleTypes.PurchasingAgent)))
-    {*@
-        <ul class="nav nav-tabs" id="myTab">
-            <li class="active"><a data-target="#create" data-toggle="tab">Product</a></li>
-            <li><a data-target="#category" data-toggle="tab">Category</a></li>
-        </ul>
-
-        <div class="tab-content">
-            <div class="tab-pane active" id="create">@Html.Action("CreatePartial")</div>
-            <div class="tab-pane" id="category">@Html.Action("CategoryPartial")</div>
-        </div>
-    @*  }*@
-    <div class="container">
-        <div id="partialProductContents"></div>
-    </div>
-    
-    @section scripts{
-        @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
-    }
+@section scripts{
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
+}
