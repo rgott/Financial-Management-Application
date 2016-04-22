@@ -73,3 +73,78 @@ C:\Users\truit\Source\Repos\COSC412\Financial Management Application\Financial M
 C:\Users\truit\Source\Repos\COSC412\Financial Management Application\Financial Management Application\obj\Debug\Financial Management Application.csprojResolveAssemblyReference.cache
 C:\Users\truit\Source\Repos\COSC412\Financial Management Application\Financial Management Application\obj\Debug\Financial Management Application.dll
 C:\Users\truit\Source\Repos\COSC412\Financial Management Application\Financial Management Application\obj\Debug\Financial Management Application.pdb
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\roslyn\csc.exe
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\roslyn\Microsoft.CodeAnalysis.dll
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\roslyn\Microsoft.CSharp.Core.targets
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\roslyn\Microsoft.VisualBasic.Core.targets
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\roslyn\System.Collections.Immutable.dll
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\roslyn\System.Reflection.Metadata.dll
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\roslyn\vbc.exe
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\roslyn\VBCSCompiler.exe
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\roslyn\VBCSCompiler.exe.config
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\Financial Management Application.dll.config
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\Financial Management Application.dll
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\Financial Management Application.pdb
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\Antlr3.Runtime.dll
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\EntityFramework.dll
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\EntityFramework.SqlServer.dll
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.AspNet.Identity.Core.dll
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.AspNet.Identity.EntityFramework.dll
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.AspNet.Identity.Owin.dll
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.Owin.dll
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.Owin.Host.SystemWeb.dll
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.Owin.Security.Cookies.dll
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.Owin.Security.dll
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.Owin.Security.Facebook.dll
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.Owin.Security.Google.dll
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.Owin.Security.MicrosoftAccount.dll
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.Owin.Security.OAuth.dll
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.Owin.Security.Twitter.dll
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.Web.Infrastructure.dll
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\Newtonsoft.Json.dll
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\Owin.dll
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\System.Net.Http.Formatting.dll
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\System.Web.Helpers.dll
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\System.Web.Http.dll
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\System.Web.Http.WebHost.dll
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\System.Web.Mvc.dll
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\System.Web.Optimization.dll
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\System.Web.Razor.dll
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\System.Web.WebPages.Deployment.dll
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\System.Web.WebPages.dll
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\System.Web.WebPages.Razor.dll
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\WebGrease.dll
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\System.Web.Helpers.xml
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\System.Web.Mvc.xml
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\System.Web.Optimization.xml
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\System.Web.Razor.xml
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\System.Web.WebPages.xml
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\System.Web.WebPages.Deployment.xml
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\System.Web.WebPages.Razor.xml
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\Antlr3.Runtime.pdb
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\Newtonsoft.Json.xml
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\System.Net.Http.Formatting.xml
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\System.Web.Http.xml
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\System.Web.Http.WebHost.xml
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\EntityFramework.xml
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\EntityFramework.SqlServer.xml
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.AspNet.Identity.Core.xml
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.AspNet.Identity.Owin.xml
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.AspNet.Identity.EntityFramework.xml
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.Owin.xml
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.Owin.Host.SystemWeb.xml
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.Owin.Security.xml
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.Owin.Security.Facebook.xml
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.Owin.Security.Cookies.xml
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.Owin.Security.OAuth.xml
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.Owin.Security.Google.xml
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.Owin.Security.Twitter.xml
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\obj\Debug\Financial Management Application.csprojResolveAssemblyReference.cache
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\obj\Debug\Financial Management Application.dll
+C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\obj\Debug\Financial Management Application.pdb
