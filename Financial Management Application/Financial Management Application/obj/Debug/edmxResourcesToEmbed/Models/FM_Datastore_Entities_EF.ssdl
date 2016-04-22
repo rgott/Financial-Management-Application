@@ -7,10 +7,10 @@
     <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="addressLine1" Type="nvarchar(max)" Nullable="false" />
     <Property Name="addressLine2" Type="nvarchar(max)" />
-    <Property Name="city" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="state" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="postalCode" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="country" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="city" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="state" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="postalCode" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="country" Type="nchar" MaxLength="10" Nullable="false" />
   </EntityType>
   <EntityType Name="Category">
     <Key>
