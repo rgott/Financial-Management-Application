@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Financial_Management_Application
 {
@@ -16,6 +17,7 @@ namespace Financial_Management_Application
 
     public abstract class ControllerModel : Controller
     {
+        
         private AccountUserManager _userManager;
         protected AccountUserManager UserManager
         {
@@ -52,6 +54,7 @@ namespace Financial_Management_Application
         }
         public class SessionSaver<T>
         {
+            #region basic methods
             public delegate void useSessionFunc(out T savedObject);
 
             /// <summary>
@@ -97,8 +100,60 @@ namespace Financial_Management_Application
             {
                 throw new NotImplementedException();
             }
+            #endregion
+
+
+            
         }
-        
+        public static class SessionSaver
+        {
+            public static class Load
+            {
+                public static List<Category> categories(HttpSessionStateBase Session)
+                {
+                    return new SessionSaver<List<Category>>().use(Session, AppSettings.SessionVariables.CATEGORY, (out List<Category> saveobject) =>
+                    {
+                        using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
+                        {
+                            saveobject = db_manager.Categories.ToList();
+                        }
+                    });
+                }
+                public static List<SelectListItem> categoriesCombobox(HttpSessionStateBase Session)
+                {
+                    return new SessionSaver<List<SelectListItem>>().use(Session, AppSettings.SessionVariables.CATEGORYCOMBOBOX, (out List<SelectListItem> saveobject) =>
+                    {
+                        List<SelectListItem> CategoriesList = new List<SelectListItem>();
+                        using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
+                        {
+                            foreach (var item in db_manager.Categories.ToList())
+                            {
+                                CategoriesList.Add(new SelectListItem()
+                                {
+                                    Text = item.name,
+                                    Value = item.Id.ToString() //  will be used to get id later
+                                });
+                            }
+                        }
+                        saveobject = CategoriesList;
+                    });
+                }
+
+                public static List<Category> products(HttpSessionStateBase Session)
+                {
+                    return new SessionSaver<List<Category>>().use(Session, AppSettings.SessionVariables.CATEGORY, (out List<Category> saveobject) =>
+                    {
+                        using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
+                        {
+                            saveobject = db_manager.Categories.ToList();
+                        }
+                    });
+                }
+            }
+        }
+
+
+
 
         #region Helpers
 

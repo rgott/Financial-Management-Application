@@ -173,8 +173,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\ApplicationSettings.cs" />
-    <Compile Include="App_Start\GmailMail.cs" />
+    <Compile Include="App_Start\AppSettings.cs" />
+    <Compile Include="App_Start\Mail.cs" />
     <Compile Include="App_Start\Identity\ApplicationRoleManager.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\ControllerModel.cs" />

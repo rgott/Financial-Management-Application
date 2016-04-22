@@ -13,7 +13,7 @@ namespace Financial_Management_Application.Controllers
             return View();
         }
     
-        [Authorize(Roles=ApplicationSettings.CONGRESS)]
+        //[Authorize(Roles=AppSettings.CONGRESS)]
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";

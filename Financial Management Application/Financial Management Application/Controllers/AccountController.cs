@@ -175,7 +175,7 @@ namespace Financial_Management_Application.Controllers
             });
             db_manager.SaveChanges();
 
-            GmailMail.send(model.Email, "Request Recieved", "Dear user your request has been recieved and an administrator will be looking at your request soon, so please be patient.");
+            Mail.send(model.Email, "Request Recieved", "Dear user your request has been recieved and an administrator will be looking at your request soon, so please be patient.");
             return Redirect(Url.Action("RegisterRequestCompletion"));
         }
 
