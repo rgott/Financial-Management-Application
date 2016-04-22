@@ -37,10 +37,10 @@ namespace Financial_Management_Application.Controllers
                 if (Session[ProductSessionVar] != null)
                 { // if session var exists remove product from session var
                     List<Product> products = (List<Product>)Session[ProductSessionVar];
-                    products.Remove(products.First(m => m.Id == Id));
+                    products.Remove(products.FirstOrDefault(m => m.Id == Id));
                     Session[ProductSessionVar] = products;
                 }
-                db_manager.Products.Remove(db_manager.Products.First(m => m.Id == Id));
+                db_manager.Products.Remove(db_manager.Products.FirstOrDefault(m => m.Id == Id));
                 db_manager.SaveChanges();
             }
             return View();
@@ -117,7 +117,7 @@ namespace Financial_Management_Application.Controllers
             Product product;
             using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
             {
-                product = db_manager.Products.Include("Category").First(m => m.Id == Id);
+                product = db_manager.Products.Include("Category").FirstOrDefault(m => m.Id == Id);
             }
 
             // create category list
@@ -149,11 +149,11 @@ namespace Financial_Management_Application.Controllers
         {
             using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
             {
-                Category newCategory = db_manager.Categories.First(m => m.Id == model.categoryId);
+                Category newCategory = db_manager.Categories.FirstOrDefault(m => m.Id == model.categoryId);
                 if (Session[ProductSessionVar] != null)
                 { // if session var exists edit product from session var
                     List<Product> products = (List<Product>)Session[ProductSessionVar];
-                    int index = products.IndexOf(products.First(m => m.Id == Id));
+                    int index = products.IndexOf(products.FirstOrDefault(m => m.Id == Id));
 
                     products[index].name = model.product.name;
                     products[index].price = model.product.price;
@@ -161,7 +161,7 @@ namespace Financial_Management_Application.Controllers
                     Session[ProductSessionVar] = products;
                 }
 
-                Product tmpProd = db_manager.Products.First(m => m.Id == Id);
+                Product tmpProd = db_manager.Products.FirstOrDefault(m => m.Id == Id);
                 tmpProd.name = model.product.name;
                 tmpProd.price = model.product.price;
                 tmpProd.Category = newCategory;
