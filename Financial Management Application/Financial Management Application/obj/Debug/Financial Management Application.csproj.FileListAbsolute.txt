@@ -148,3 +148,78 @@ C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial M
 C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\obj\Debug\Financial Management Application.csprojResolveAssemblyReference.cache
 C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\obj\Debug\Financial Management Application.dll
 C:\Users\angad\Source\Repos\COSC412\Financial Management Application\Financial Management Application\obj\Debug\Financial Management Application.pdb
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\roslyn\csc.exe
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\roslyn\Microsoft.CodeAnalysis.dll
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\roslyn\Microsoft.CSharp.Core.targets
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\roslyn\Microsoft.VisualBasic.Core.targets
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\roslyn\System.Collections.Immutable.dll
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\roslyn\System.Reflection.Metadata.dll
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\roslyn\vbc.exe
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\roslyn\VBCSCompiler.exe
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\roslyn\VBCSCompiler.exe.config
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\Financial Management Application.dll.config
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\Financial Management Application.dll
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\Financial Management Application.pdb
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\Antlr3.Runtime.dll
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\EntityFramework.dll
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\EntityFramework.SqlServer.dll
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.AspNet.Identity.Core.dll
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.AspNet.Identity.EntityFramework.dll
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.AspNet.Identity.Owin.dll
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.Owin.dll
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.Owin.Host.SystemWeb.dll
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.Owin.Security.Cookies.dll
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.Owin.Security.dll
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.Owin.Security.Facebook.dll
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.Owin.Security.Google.dll
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.Owin.Security.MicrosoftAccount.dll
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.Owin.Security.OAuth.dll
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.Owin.Security.Twitter.dll
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.Web.Infrastructure.dll
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\Newtonsoft.Json.dll
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\Owin.dll
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\System.Net.Http.Formatting.dll
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\System.Web.Helpers.dll
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\System.Web.Http.dll
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\System.Web.Http.WebHost.dll
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\System.Web.Mvc.dll
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\System.Web.Optimization.dll
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\System.Web.Razor.dll
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\System.Web.WebPages.Deployment.dll
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\System.Web.WebPages.dll
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\System.Web.WebPages.Razor.dll
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\WebGrease.dll
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\System.Web.Helpers.xml
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\System.Web.Mvc.xml
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\System.Web.Optimization.xml
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\System.Web.Razor.xml
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\System.Web.WebPages.xml
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\System.Web.WebPages.Deployment.xml
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\System.Web.WebPages.Razor.xml
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\Antlr3.Runtime.pdb
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\Newtonsoft.Json.xml
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\System.Net.Http.Formatting.xml
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\System.Web.Http.xml
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\System.Web.Http.WebHost.xml
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\EntityFramework.xml
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\EntityFramework.SqlServer.xml
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.AspNet.Identity.Core.xml
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.AspNet.Identity.Owin.xml
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.AspNet.Identity.EntityFramework.xml
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.Owin.xml
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.Owin.Host.SystemWeb.xml
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.Owin.Security.xml
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.Owin.Security.Facebook.xml
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.Owin.Security.Cookies.xml
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.Owin.Security.OAuth.xml
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.Owin.Security.Google.xml
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.Owin.Security.Twitter.xml
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\obj\Debug\Financial Management Application.csprojResolveAssemblyReference.cache
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\obj\Debug\Financial Management Application.dll
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\obj\Debug\Financial Management Application.pdb

@@ -27,7 +27,7 @@ namespace Financial_Management_Application.Controllers
                 if (Session[AppSettings.SessionVariables.CATEGORY] != null)
                 { // if session var exists remove product from session var
                     List<Category> products = (List<Category>)Session[AppSettings.SessionVariables.CATEGORY];
-                    products.Remove(products.First(m => m.Id == Id));
+                    products.Remove(products.FirstOrDefault(m => m.Id == Id));
                     Session[AppSettings.SessionVariables.CATEGORY] = products;
                 }
                 Category category = db_manager.Categories.Single(m => m.Id == Id);
@@ -68,7 +68,7 @@ namespace Financial_Management_Application.Controllers
             Category category;
             using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
             {
-                category = db_manager.Categories.First(m => m.Id == Id);
+                category = db_manager.Categories.FirstOrDefault(m => m.Id == Id);
             }
 
             return View(new EditViewModel()
@@ -82,20 +82,20 @@ namespace Financial_Management_Application.Controllers
         {
             using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
             {
-                Category newCategory = db_manager.Categories.First(m => m.Id == Id);
+                Category newCategory = db_manager.Categories.FirstOrDefault(m => m.Id == Id);
                 if (Session[AppSettings.SessionVariables.CATEGORY] != null)
                 { // if session var exists edit product from session var
                     List<Category> categories = (List<Category>)Session[AppSettings.SessionVariables.CATEGORY];
                     if(categories != null)
                     {
-                        int index = categories.IndexOf(categories.First(m => m.Id == Id));
+                        int index = categories.IndexOf(categories.FirstOrDefault(m => m.Id == Id));
                         categories[index].name = model.category.name;
                     }
 
                     Session[AppSettings.SessionVariables.CATEGORY] = categories;
                 }
 
-                Category tmpCategory = db_manager.Categories.First(m => m.Id == Id);
+                Category tmpCategory = db_manager.Categories.FirstOrDefault(m => m.Id == Id);
                 tmpCategory.name = model.category.name;
 
                 db_manager.Entry(tmpCategory);
@@ -125,14 +125,14 @@ namespace Financial_Management_Application.Controllers
                 if(products.Count == 0)
                 {
                     // remove from database
-                    db_manager.Categories.Remove(db_manager.Categories.First(m => m.Id == Id));
+                    db_manager.Categories.Remove(db_manager.Categories.FirstOrDefault(m => m.Id == Id));
                     db_manager.SaveChanges();
 
                     // remove from session
                     List<Category> categoriesList = (List<Category>)Session[AppSettings.SessionVariables.CATEGORY];
                     if(categoriesList != null)
                     {
-                        categoriesList.Remove(categoriesList.First(m => m.Id == Id));
+                        categoriesList.Remove(categoriesList.FirstOrDefault(m => m.Id == Id));
                     }
                 }
             }
