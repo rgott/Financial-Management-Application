@@ -12,10 +12,10 @@ namespace Financial_Management_Application.Controllers
 
         public ActionResult RequestTransaction(RequestTransactionViewModel id)
         {
-            List<Product> ProductTable; 
+            List<Product>ProductTable; 
             using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
             {
-                ProductTable = db_manager.Products.ToList(); 
+                ProductTable = db_manager.Products.Include("Category").ToList(); 
 
             }
 

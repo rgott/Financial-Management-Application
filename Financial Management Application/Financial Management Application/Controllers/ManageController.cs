@@ -451,6 +451,10 @@ namespace Financial_Management_Application.Controllers
             {
                 address = db_manager.Addresses.Add(model.Address);
                 division = db_manager.Divisions.Add(model.Division);
+                foreach (var item in ApplicationSettings.Roles)
+                {
+                    db_manager.Roles.Add(new Role() { Name = item.Value });
+                }
                 db_manager.SaveChanges();
             }
             AccountUser user = new AccountUser

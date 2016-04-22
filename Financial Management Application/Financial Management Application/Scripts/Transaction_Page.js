@@ -1,14 +1,19 @@
-﻿function addItem() {
+﻿function addItem(id) {
     var table = document.getElementById("myCart");
-    var item = document.getElementById("ProductNumber");
-    var quantity = document.getElementById("Quantity");
-    var row = table.insertRow(1); 
+    var item = document.getElementsByName("ProductNumber")[id];
+    
+    var quantity = prompt("Enter your quantity");
+    var row = table.insertRow(1);
     var newItem = row.insertCell(0);
-    var newQuantity = row.insertCell(1); 
-    newItem.innerHTML = item.value;
-    newQuantity.innerHTML = quantity.value;
-    item.value = "";
-    quantity.value = ""; 
+    var newQuantity = row.insertCell(1);
+    newItem.innerHTML = item.innerHTML;
+    if (quantity != 0) {
+        newQuantity.innerHTML = quantity;
+    }
+    
+    
+    //item.value = "";
+    //quantity.value = ""; 
 
     //return false;
     
@@ -39,7 +44,7 @@ function doSearch() {
 
         //If search term is not found in row data
         //then hide the row, else show
-        if (rowData.indexOf(searchText) == -1)
+        if (rowData.toLocaleLowerCase().indexOf(searchText.toLocaleLowerCase()) == -1)
             targetTable.rows.item(rowIndex).style.display = 'none';
         else
             targetTable.rows.item(rowIndex).style.display = 'table-row';
