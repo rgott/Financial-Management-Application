@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Web;
 
-namespace Financial_Management_Application.App_Start
+namespace Financial_Management_Application
 {
     public class GmailMail
     {

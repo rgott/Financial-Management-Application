@@ -7,7 +7,6 @@ using Microsoft.Owin.Security.Google;
 using Owin;
 using Financial_Management_Application.Models;
 using Financial_Management_Application.Identity;
-using Financial_Management_Application.App_Start;
 
 namespace Financial_Management_Application
 {

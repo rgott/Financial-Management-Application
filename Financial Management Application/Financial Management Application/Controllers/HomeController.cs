@@ -1,5 +1,4 @@
-﻿using Financial_Management_Application.App_Start;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -13,11 +12,12 @@ namespace Financial_Management_Application.Controllers
         {
             return View();
         }
-
+    
+        [Authorize(Roles=ApplicationSettings.CONGRESS)]
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
-
+            Session.Clear();
             return View();
         }
 

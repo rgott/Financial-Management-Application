@@ -5,10 +5,10 @@ using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using Financial_Management_Application.Models;
 using Financial_Management_Application.Identity;
-using Financial_Management_Application.App_Start;
 using System;
 using System.Collections.Specialized;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 
 namespace Financial_Management_Application.Controllers
 {
@@ -63,7 +63,6 @@ namespace Financial_Management_Application.Controllers
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId.ToString()),
                 Notifications = notification
             };
-
 
 
             return View(model);
@@ -270,23 +269,29 @@ namespace Financial_Management_Application.Controllers
 
         public ActionResult Notify()
         {
-            FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF();
-            var notifyListDB = db_manager.Notifications.ToList();
-
-            // get division list
-            List<SelectListItem> RolesList = new List<SelectListItem>();
-            new SelectList(db_manager.Addresses, "Id", "addressLine1");
-            foreach (var item in db_manager.Roles.ToList())
+            List<Notification> notifyListDB;
+            List<SelectListItem> RolesList;
+            long? roleResult;
+            using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
             {
-                RolesList.Add(new SelectListItem()
+
+                notifyListDB = db_manager.Notifications.ToList();
+
+                // get division list
+                RolesList = new List<SelectListItem>();
+                new SelectList(db_manager.Addresses, "Id", "addressLine1");
+                foreach (var item in db_manager.Roles.ToList())
                 {
-                    Text = item.Name,
-                    Value = item.Id.ToString() //  will be used to get id later
-                });
+                    RolesList.Add(new SelectListItem()
+                    {
+                        Text = item.Name,
+                        Value = item.Id.ToString() //  will be used to get id later
+                    });
+                }
+                string userType = ApplicationSettings.getString(ApplicationSettings.RoleTypes.ApprovedUser);
+                Role role = db_manager.Roles.FirstOrDefault(m => m.Name == userType); // if null roles are not setup
+                roleResult = role.Id;
             }
-            string userType = ApplicationSettings.getString(ApplicationSettings.RoleTypes.ApprovedUser);
-            long? roleResult = db_manager.Roles.FirstOrDefault(m => m.Name == userType).Id;
-            db_manager.Dispose();
             Session.Add("notifyListDB", notifyListDB);
             Session.Add("roleResult", roleResult);
             Session.Add("RolesList", RolesList);
@@ -393,58 +398,100 @@ namespace Financial_Management_Application.Controllers
         /// </summary>
         /// <returns>not found if more then 0 records are in the database otherwise returns to login page on successful completion</returns>
         [AllowAnonymous]
-        public async Task<ActionResult> Setup()
+        public ActionResult Setup()
         {
-            FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF();
-            if(db_manager.Users.Count<User>() > 0)
+            
+
+            // dispose of quickly
+            using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
+            {
+                if (db_manager.Users.Count() != 0)
+                {
+                    return new HttpNotFoundResult();
+                }
+
+                //remove after databaseModel.sql
+                if(db_manager.Roles.Count() == 0)
+                {
+                    foreach (var item in ApplicationSettings.Roles)
+                    {
+                        db_manager.Roles.Add(new Role() { Name = item.Value });
+                    }
+                }
+
+            }
+            if (TempData.ContainsKey("Setup") && Session["SetupUser"] == null)
             {
                 return new HttpNotFoundResult();
             }
-
-            // add administrator
-            foreach (var item in ApplicationSettings.Roles)
+            if(!TempData.Keys.Contains("Setup"))
             {
-                RoleManager.Create(new AccountRole() { Name = item.Value });
+               TempData.Add("Setup", true);
+            }
+            Session.Add("SetupUser", true);
+            return View(new SetupViewModel()
+            {
+                Role = ApplicationSettings.getString(ApplicationSettings.RoleTypes.Congress)
+            });
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<ActionResult> Setup(SetupViewModel model)
+        {
+            // dispose of quickly
+            using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
+            {
+                if (db_manager.Users.Count() != 0)
+                {
+                    return new HttpNotFoundResult();
+                }
+            }
+            if (TempData.ContainsKey("Setup") && Session["SetupUser"] == null)
+            {
+                return new HttpNotFoundResult();
+            }
+            Address address;
+            Division division;
+            using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
+            {
+                address = db_manager.Addresses.Add(model.Address);
+                division = db_manager.Divisions.Add(model.Division);
+
+                //add roles
+                foreach (var item in ApplicationSettings.Roles)
+                {
+                    db_manager.Roles.Add(new Role() { Name = item.Value });
+                }
+
+                db_manager.SaveChanges();
             }
 
-            var newAddress = db_manager.Addresses.Add(new Address()
-            {
-                addressLine1 = "209 addresss here",
-                city = "Baltimore",
-                country = "Bel Air",
-                state = "MD",
-                postalCode = "21015"
-            });
 
-
-            var newDivision = db_manager.Divisions.Add(new Division()
-            {
-                name = "Alpha"
-            });
-            db_manager.SaveChanges();
-
-            // Manager
             AccountUser user = new AccountUser
             {
-                UserName = "Email@Domain.TDL",
-                Email = "Email@Domain.TDL",
-                Address = newAddress.Id,
-                Division = newDivision.Id,
-                ExpireDate = DateTime.Now,
-                TimeZoneOffset = DateTime.Now
+                UserName = model.Email,
+                Email = model.Email,
+                Address = address.Id,
+                Division = division.Id,
+                TimeZoneOffset = DateTime.UtcNow,// TODO: change to hours of offset
+                CreationDate = DateTime.UtcNow
             };
-            var result = UserManager.Create(user, "FMAdb#61");
 
-            var user2 = UserManager.FindAsync("Email@Domain.TDL", "FMAdb#61");
-            if (user2 != null)
+            var result = await UserManager.CreateAsync(user, model.Password);
+            if (result.Succeeded)
             {
-                await SignInAsync(user, true);
-                return RedirectToLocal(Url.Action("Index","Home"));
+                // create or add role
+                UserManager.AddToRole(UserManager.FindByEmail(model.Email).Id, ApplicationSettings.getString(ApplicationSettings.RoleTypes.Congress));
+
+                await SignInAsync(user, false);
+
+                return RedirectToAction("Index", "Home"); // redirect to user creation
             }
-
-
-            return Redirect(Url.Action("Login", "Account"));
+            AddErrors(result);
+            return View(model);
         }
+
 
         //
         // GET: /Manage/LinkLoginCallback

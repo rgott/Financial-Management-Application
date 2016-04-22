@@ -8,8 +8,17 @@ namespace Financial_Management_Application
 {
     public static class ApplicationSettings
     {
+        public const string CONGRESS = "Congress"; 
+        public const string AUDITORS = "Auditors"; 
+        public const string ADMIN = "Administrators"; 
+        public const string MANAGER = "Manager"; 
+        public const string SUPERVISOR = "Supervisors"; 
+        public const string PURCHASINGAGENT = "PurchasingAgent"; 
+        public const string APPROVEDUSER = "AprovedUser";
+         
         public enum RoleTypes
         {
+            Congress,
             Auditors,
             Administrators,
             Manager,
@@ -22,6 +31,8 @@ namespace Financial_Management_Application
         {
             switch (roles)
             {
+                case RoleTypes.PurchasingAgent:
+                    return "Purchasing Agent";
                 case RoleTypes.Auditors:
                     return "Auditors";
                 case RoleTypes.Administrators:
@@ -30,8 +41,8 @@ namespace Financial_Management_Application
                     return "Manager";
                 case RoleTypes.Supervisors:
                     return "Supervisors";
-                case RoleTypes.PurchasingAgent:
-                    return "Purchasing Agent";
+                case RoleTypes.Congress:
+                    return "Congress";
                 case RoleTypes.ApprovedUser:
                 default:
                     return "Approved User";
@@ -68,6 +79,11 @@ namespace Financial_Management_Application
             {
                 Text = "Approved User",
                 Value = "Approved User"
+            },
+            new SelectListItem()
+            {
+                Text = "Congress",
+                Value = "Congress"
             }
         };
     }

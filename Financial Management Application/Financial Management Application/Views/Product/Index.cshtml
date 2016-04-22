@@ -1,0 +1,37 @@
+﻿a@model Financial_Management_Application.Models.ProductVM.IndexViewModel
+
+@using (Html.BeginForm("Edit", "Product", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+
+    @Html.ActionLink("Add Product","Create", null,new { @class = "btn" })
+    @Html.ActionLink("Add Category", "Create", "Category", null, new { @class = "btn" })
+    @Html.ActionLink("View Categories", "Index", "Category", null, new { @class = "btn" })
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Category</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            @foreach (var item in Model.products)
+            {
+                <tr id="Edit@(item.Id)">
+                    <td>@item.name</td>
+                    <td>@item.price.ToString("0.00")</td>
+                    <td>@item.Category.name</td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { Id = item.Id }, new { @class="btn" })
+                        @Ajax.ActionLink("Delete", "Index", new { Id = item.Id },new AjaxOptions { HttpMethod="POST" }, new { @class = "btn", @onclick= "javascript:document.getElementById('tableBody').removeChild(document.getElementById('Edit" + item.Id + "'))" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+@section scripts{
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
+}
