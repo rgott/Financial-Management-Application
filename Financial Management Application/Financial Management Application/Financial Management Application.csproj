@@ -173,8 +173,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\ApplicationSettings.cs" />
-    <Compile Include="App_Start\GmailMail.cs" />
+    <Compile Include="App_Start\AppSettings.cs" />
     <Compile Include="App_Start\Identity\ApplicationRoleManager.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\ControllerModel.cs" />
@@ -188,6 +187,7 @@
     <Compile Include="App_Start\Identity\AccountUserManager.cs" />
     <Compile Include="App_Start\Identity\AccountUserRole.cs" />
     <Compile Include="App_Start\Identity\SmsService.cs" />
+    <Compile Include="App_Start\Mail.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
