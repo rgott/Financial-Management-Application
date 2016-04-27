@@ -21,10 +21,7 @@ namespace Financial_Management_Application.Controllers
     [Authorize]
     public class AccountController : ControllerModel
     {
-
-        public AccountController()
-        {
-        }
+        public AccountController() { }
 
         public AccountController(AccountUserManager userManager)
         {
