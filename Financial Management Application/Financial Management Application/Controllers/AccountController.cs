@@ -170,6 +170,7 @@ namespace Financial_Management_Application.Controllers
                 Division = db_manager.Divisions.FirstOrDefault(m => m.Id == model.division),
                 timeStamp = DateTime.UtcNow
             });
+            //Catch exception on RegisterRequest page when user submits blank form
             db_manager.SaveChanges();
 
             Mail.send(model.Email, "Request Recieved", "Dear user your request has been recieved and an administrator will be looking at your request soon, so please be patient.");
