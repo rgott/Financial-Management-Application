@@ -283,8 +283,7 @@ namespace Financial_Management_Application.Controllers
                     Value = item.Id.ToString() //  will be used to get id later
                 });
             }
-            string userType = AppSettings.Roles.APPROVEDUSER;
-            long? roleResult = db_manager.Roles.FirstOrDefault(m => m.Name == userType).Id;
+            long? roleResult = db_manager.Roles.FirstOrDefault(m => m.Name == AppSettings.Roles.APPROVEDUSER).Id;
             db_manager.Dispose();
             Session.Add("notifyListDB", notifyListDB);
             Session.Add("roleResult", roleResult);

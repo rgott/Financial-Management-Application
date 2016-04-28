@@ -14,6 +14,13 @@ namespace Financial_Management_Application
             public const string CATEGORY = "category";
             public const string PRODUCT = "products";
             public const string CATEGORYCOMBOBOX = "categorycombobox";
+            public const string TRANSACTION = "transaction";
+        }
+
+        // Includes for databases
+        public static class Includes
+        {
+            public const string Category = "Category";
         }
 
         // Roles

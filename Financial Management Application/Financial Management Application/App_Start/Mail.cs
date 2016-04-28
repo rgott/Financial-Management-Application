@@ -10,7 +10,6 @@ namespace Financial_Management_Application
     public class Mail
     {
         static SmtpClient smtp = new SmtpClient();
-
         public static void send(string toEmail,string subject, string body)
         {
             var fromAddress = new MailAddress(AppSettings.Mail.email, AppSettings.Mail.displayName);

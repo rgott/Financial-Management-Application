@@ -9,17 +9,13 @@ namespace Financial_Management_Application.Controllers
 {
     public class ProductController : ControllerModel
     {
-        const string ProductSessionVar = "products";
-        const string CategorySessionVar = "category";
-
-
         public ActionResult Index()
         {
-            List<Product> products = new SessionSaver<List<Product>>().use(Session, ProductSessionVar, (out List<Product> saveobject) =>
+            List<Product> products = new SessionSaver<List<Product>>().use(Session, AppSettings.SessionVariables.PRODUCT, (out List<Product> saveobject) =>
             {
                 using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
                 {
-                    DbQuery<Product> queryProducts = db_manager.Products.Include("Category");
+                    DbQuery<Product> queryProducts = db_manager.Products.Include(AppSettings.Includes.Category);
                     saveobject = queryProducts.ToList();
                 }
             });
@@ -34,11 +30,11 @@ namespace Financial_Management_Application.Controllers
         {
             using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
             {
-                if (Session[ProductSessionVar] != null)
+                if (Session[AppSettings.SessionVariables.PRODUCT] != null)
                 { // if session var exists remove product from session var
-                    List<Product> products = (List<Product>)Session[ProductSessionVar];
+                    List<Product> products = (List<Product>)Session[AppSettings.SessionVariables.PRODUCT];
                     products.Remove(products.FirstOrDefault(m => m.Id == Id));
-                    Session[ProductSessionVar] = products;
+                    Session[AppSettings.SessionVariables.PRODUCT] = products;
                 }
                 db_manager.Products.Remove(db_manager.Products.FirstOrDefault(m => m.Id == Id));
                 db_manager.SaveChanges();
@@ -47,7 +43,7 @@ namespace Financial_Management_Application.Controllers
         }
         public ActionResult Create()
         {
-            List<SelectListItem> categories = new SessionSaver<List<SelectListItem>>().use(Session, CategorySessionVar, (out List<SelectListItem> saveobject) =>
+            List<SelectListItem> categories = new SessionSaver<List<SelectListItem>>().use(Session, AppSettings.SessionVariables.CATEGORYCOMBOBOX, (out List<SelectListItem> saveobject) =>
             {
                 List<SelectListItem> CategoriesList = new List<SelectListItem>();
                 using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
@@ -81,7 +77,7 @@ namespace Financial_Management_Application.Controllers
                 db_manager.SaveChanges();
                 ViewBag.SuccessMessage = "Added product '" + model.product.name + "'";
             }
-            List<SelectListItem> categories = new SessionSaver<List<SelectListItem>>().use(Session, CategorySessionVar, (out List<SelectListItem> saveobject) =>
+            List<SelectListItem> categories = new SessionSaver<List<SelectListItem>>().use(Session, AppSettings.SessionVariables.CATEGORYCOMBOBOX, (out List<SelectListItem> saveobject) =>
             {
                 List<SelectListItem> CategoriesList = new List<SelectListItem>();
                 using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
@@ -117,11 +113,11 @@ namespace Financial_Management_Application.Controllers
             Product product;
             using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
             {
-                product = db_manager.Products.Include("Category").FirstOrDefault(m => m.Id == Id);
+                product = db_manager.Products.Include(AppSettings.Includes.Category).FirstOrDefault(m => m.Id == Id);
             }
 
             // create category list
-            List<SelectListItem> categories = new SessionSaver<List<SelectListItem>>().use(Session, CategorySessionVar, (out List<SelectListItem> saveobject) =>
+            List<SelectListItem> categories = new SessionSaver<List<SelectListItem>>().use(Session, AppSettings.SessionVariables.CATEGORYCOMBOBOX, (out List<SelectListItem> saveobject) =>
             {
                 List<SelectListItem> CategoriesList = new List<SelectListItem>();
                 using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
@@ -150,15 +146,15 @@ namespace Financial_Management_Application.Controllers
             using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
             {
                 Category newCategory = db_manager.Categories.FirstOrDefault(m => m.Id == model.categoryId);
-                if (Session[ProductSessionVar] != null)
+                if (Session[AppSettings.SessionVariables.PRODUCT] != null)
                 { // if session var exists edit product from session var
-                    List<Product> products = (List<Product>)Session[ProductSessionVar];
+                    List<Product> products = (List<Product>)Session[AppSettings.SessionVariables.PRODUCT];
                     int index = products.IndexOf(products.FirstOrDefault(m => m.Id == Id));
 
                     products[index].name = model.product.name;
                     products[index].price = model.product.price;
                     products[index].Category = newCategory;
-                    Session[ProductSessionVar] = products;
+                    Session[AppSettings.SessionVariables.PRODUCT] = products;
                 }
 
                 Product tmpProd = db_manager.Products.FirstOrDefault(m => m.Id == Id);

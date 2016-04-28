@@ -13,11 +13,8 @@ using System.Linq;
 
 namespace Financial_Management_Application
 {
-    
-
     public abstract class ControllerModel : Controller
     {
-        
         private AccountUserManager _userManager;
         protected AccountUserManager UserManager
         {
@@ -101,9 +98,6 @@ namespace Financial_Management_Application
                 throw new NotImplementedException();
             }
             #endregion
-
-
-            
         }
         public static class SessionSaver
         {
@@ -151,9 +145,6 @@ namespace Financial_Management_Application
                 }
             }
         }
-
-
-
 
         #region Helpers
 
