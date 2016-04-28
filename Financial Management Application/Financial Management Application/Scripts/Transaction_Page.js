@@ -11,7 +11,7 @@
         var newQuantity = row.insertCell(1);
         newItem.innerHTML = item.innerHTML;
         newQuantity.innerHTML = quantity;
-
+        return false; 
     }
     else {
         alert("invalid entry");
