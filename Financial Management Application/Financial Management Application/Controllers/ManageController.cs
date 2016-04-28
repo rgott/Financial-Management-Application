@@ -283,7 +283,7 @@ namespace Financial_Management_Application.Controllers
                     Value = item.Id.ToString() //  will be used to get id later
                 });
             }
-            string userType = ApplicationSettings.getString(ApplicationSettings.RoleTypes.ApprovedUser);
+            string userType = AppSettings.Roles.APPROVEDUSER;
             long? roleResult = db_manager.Roles.FirstOrDefault(m => m.Name == userType).Id;
             db_manager.Dispose();
             Session.Add("notifyListDB", notifyListDB);
@@ -321,7 +321,7 @@ namespace Financial_Management_Application.Controllers
             {
                 case "Accept":
                     //send email to new user
-                    GmailMail.send(
+                    Mail.send(
                         oldNotify.Email,
                         "Access Approved",
                         "here is the link to sign up this link will only be available for so long - "
@@ -337,7 +337,7 @@ namespace Financial_Management_Application.Controllers
                     break;
                 case "Deny":
                     // send denial email to user
-                    GmailMail.send(oldNotify.Email,"Denied Access", "Appologies user you have been denied access by administration to the application.");
+                    Mail.send(oldNotify.Email,"Denied Access", "Appologies user you have been denied access by administration to the application.");
                     break;
                 default:
                     break;
@@ -407,7 +407,7 @@ namespace Financial_Management_Application.Controllers
                 //remove after databaseModel.sql
                 if(db_manager.Roles.Count() == 0)
                 {
-                    foreach (var item in ApplicationSettings.Roles)
+                    foreach (var item in AppSettings.Roles.ComboBox)
                     {
                         db_manager.Roles.Add(new Role() { Name = item.Value });
                     }
@@ -425,7 +425,7 @@ namespace Financial_Management_Application.Controllers
             Session.Add("SetupUser", true);
             return View(new SetupViewModel()
             {
-                Role = ApplicationSettings.getString(ApplicationSettings.RoleTypes.Congress)
+                Role = AppSettings.Roles.CONGRESS
             });
         }
 
@@ -451,7 +451,7 @@ namespace Financial_Management_Application.Controllers
             {
                 address = db_manager.Addresses.Add(model.Address);
                 division = db_manager.Divisions.Add(model.Division);
-                foreach (var item in ApplicationSettings.Roles)
+                foreach (var item in AppSettings.Roles.ComboBox)
                 {
                     db_manager.Roles.Add(new Role() { Name = item.Value });
                 }
@@ -471,7 +471,7 @@ namespace Financial_Management_Application.Controllers
             if (result.Succeeded)
             {
                 // create or add role
-                UserManager.AddToRole(UserManager.FindByEmail(model.Email).Id, ApplicationSettings.getString(ApplicationSettings.RoleTypes.Congress));
+                UserManager.AddToRole(UserManager.FindByEmail(model.Email).Id, AppSettings.Roles.CONGRESS);
 
                 await SignInAsync(user, false);
 

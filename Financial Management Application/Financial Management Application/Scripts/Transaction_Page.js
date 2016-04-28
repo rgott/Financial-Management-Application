@@ -3,24 +3,23 @@
     var item = document.getElementsByName("ProductNumber")[id];
     
     var quantity = prompt("Enter your quantity");
-    var row = table.insertRow(1);
-    var newItem = row.insertCell(0);
-    var newQuantity = row.insertCell(1);
-    newItem.innerHTML = item.innerHTML;
-    if (quantity != 0) {
+    
+    if (quantity != "") {
+        //searchForValue(item);
+        var row = table.insertRow(1);
+        var newItem = row.insertCell(0);
+        var newQuantity = row.insertCell(1);
+        newItem.innerHTML = item.innerHTML;
         newQuantity.innerHTML = quantity;
-    }
-    
-    
-    //item.value = "";
-    //quantity.value = ""; 
 
-    //return false;
-    
-     
+    }
+    else {
+        alert("invalid entry");
+    }
 }
 
 
+    
 
 function doSearch() {
    
