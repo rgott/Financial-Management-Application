@@ -45,15 +45,9 @@ namespace Financial_Management_Application.Controllers
         public async Task<ActionResult> Create(CreateViewModel model)
         {
             Category newCategory;
-            using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
-            {
-                newCategory = db_manager.Categories.Add(model.category);
-                await db_manager.SaveChangesAsync();
-            }
+            newCategory = await SessionSaver.Add.category(Session, model.category);
 
             List<Category> categories = SessionSaver.Load.categories(Session);
-            categories.Add(newCategory);
-            Session[AppSettings.SessionVariables.CATEGORY] = categories;
 
             ViewBag.StatusMessage = "Category '" + model.category.name + "' Created Successfully";
             return View();
@@ -105,7 +99,7 @@ namespace Financial_Management_Application.Controllers
         }
 
 
-        public ActionResult Delete(long? Id)
+        public async Task<ActionResult> Delete(long? Id)
         {
             if (Id == null)
                 return new HttpNotFoundResult();
@@ -124,16 +118,7 @@ namespace Financial_Management_Application.Controllers
 
                 if(products.Count == 0)
                 {
-                    // remove from database
-                    db_manager.Categories.Remove(db_manager.Categories.FirstOrDefault(m => m.Id == Id));
-                    db_manager.SaveChanges();
-
-                    // remove from session
-                    List<Category> categoriesList = (List<Category>)Session[AppSettings.SessionVariables.CATEGORY];
-                    if(categoriesList != null)
-                    {
-                        categoriesList.Remove(categoriesList.FirstOrDefault(m => m.Id == Id));
-                    }
+                    await SessionSaver.Remove.category(Session, (long)Id);
                 }
             }
             categoryProductCount = products.Count;
@@ -147,6 +132,17 @@ namespace Financial_Management_Application.Controllers
                 categories = categories,
                 productDefCategory = productDefCategory
             });
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Delete(long? Id, DeleteViewModel model)
+        {
+            if (Id == null)
+                return new HttpNotFoundResult();
+
+            await SessionSaver.Remove.category(Session, (long) Id, model.productDefCategory);
+
+            return Redirect(Url.Action("Index", "Category"));
         }
     }
 }

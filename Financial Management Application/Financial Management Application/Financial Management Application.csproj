@@ -189,6 +189,7 @@
     <Compile Include="App_Start\Identity\SmsService.cs" />
     <Compile Include="App_Start\Mail.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\SessionSaver.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
@@ -266,6 +267,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\databaseModel.sql" />
+    <Content Include="App_Data\FM_Datastore.mdf" />
+    <Content Include="App_Data\FM_Datastore_log.ldf">
+      <DependentUpon>FM_Datastore.mdf</DependentUpon>
+    </Content>
     <Content Include="App_Data\insert_into_tables.sql" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
@@ -293,6 +298,7 @@
       <DependentUpon>FM_Datastore_Entities_EF.edmx</DependentUpon>
     </Content>
     <Content Include="Areas\Admin\Views\web.config" />
+    <None Include="Properties\PublishProfiles\RemoteProfile.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -301,7 +307,6 @@
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
@@ -349,11 +354,13 @@
     <Content Include="Views\Account\RegisterRequestCompletion.cshtml" />
     <Content Include="Views\Transaction\View.cshtml" />
     <Content Include="Views\Transaction\Edit.cshtml" />
-    <Content Include="Views\Product\EditPartial.cshtml" />
-    <Content Include="Views\Product\CreatePartial.cshtml" />
     <Content Include="Views\Product\Index.cshtml" />
-    <Content Include="Views\Product\ViewPartial.cshtml" />
-    <Content Include="Views\Product\CategoryPartial.cshtml" />
+    <Content Include="Views\Category\Create.cshtml" />
+    <Content Include="Views\Category\Delete.cshtml" />
+    <Content Include="Views\Category\Edit.cshtml" />
+    <Content Include="Views\Category\Index.cshtml" />
+    <Content Include="Views\Product\Edit.cshtml" />
+    <Content Include="Views\Product\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

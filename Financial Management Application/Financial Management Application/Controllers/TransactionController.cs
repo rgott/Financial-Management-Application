@@ -21,7 +21,7 @@ namespace Financial_Management_Application.Controllers
                 ProductTable = ProductTable
             });
         }
-
+        
         ///// <summary>
         ///// Querys database for transactions and 
         ///// </summary>

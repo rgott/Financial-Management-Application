@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using System.Data.Entity.Infrastructure;
+using System.Threading.Tasks;
 
 namespace Financial_Management_Application.Controllers
 {
@@ -11,21 +12,13 @@ namespace Financial_Management_Application.Controllers
     {
         public ActionResult Index()
         {
-            List<Product> products = new SessionSaver<List<Product>>().use(Session, AppSettings.SessionVariables.PRODUCT, (out List<Product> saveobject) =>
-            {
-                using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
-                {
-                    DbQuery<Product> queryProducts = db_manager.Products.Include(AppSettings.Includes.Category);
-                    saveobject = queryProducts.ToList();
-                }
-            });
+            List<Product> products = SessionSaver.Load.products(Session, true);
 
             return View(new Models.ProductVM.IndexViewModel()
             {
                 products = products
             });
         }
-
         
         //[HttpPost]
         
@@ -46,22 +39,7 @@ namespace Financial_Management_Application.Controllers
         //}
         public ActionResult Create()
         {
-            List<SelectListItem> categories = new SessionSaver<List<SelectListItem>>().use(Session, AppSettings.SessionVariables.CATEGORYCOMBOBOX, (out List<SelectListItem> saveobject) =>
-            {
-                List<SelectListItem> CategoriesList = new List<SelectListItem>();
-                using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
-                {
-                    foreach (var item in db_manager.Categories.ToList())
-                    {
-                        CategoriesList.Add(new SelectListItem()
-                        {
-                            Text = item.name,
-                            Value = item.Id.ToString() //  will be used to get id later
-                        });
-                    }
-                }
-                saveobject = CategoriesList;
-            });
+            List<SelectListItem> categories = SessionSaver.Load.categoriesCombobox(Session);
 
             return View(new CreateViewModel()
             {
@@ -70,41 +48,17 @@ namespace Financial_Management_Application.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(CreateViewModel model)
+        public async Task<ActionResult> Create(CreateViewModel model)
         {
-
             model.product.categoryId = model.categoryId;
-            using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
-            {
-                db_manager.Products.Add(model.product);
-                db_manager.SaveChanges();
-                ViewBag.SuccessMessage = "Added product '" + model.product.name + "'";
-            }
-            List<SelectListItem> categories = new SessionSaver<List<SelectListItem>>().use(Session, AppSettings.SessionVariables.CATEGORYCOMBOBOX, (out List<SelectListItem> saveobject) =>
-            {
-                List<SelectListItem> CategoriesList = new List<SelectListItem>();
-                using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
-                {
-                    foreach (var item in db_manager.Categories.ToList())
-                    {
-                        CategoriesList.Add(new SelectListItem()
-                        {
-                            Text = item.name,
-                            Value = item.Id.ToString() //  will be used to get id later
-                        });
-                    }
-                }
-                saveobject = CategoriesList;
-            });
+            await SessionSaver.Add.product(Session, model.product);
 
-
+            ViewBag.SuccessMessage = "Added product '" + model.product.name + "'";
+            List<SelectListItem> categories = SessionSaver.Load.categoriesCombobox(Session);
             model.categories = categories;
-            model.product.name = "";
-            model.product.price = 0;
 
             return View(model);
         }
-
 
         public ActionResult Edit(long? Id)
         {
@@ -119,24 +73,7 @@ namespace Financial_Management_Application.Controllers
                 product = db_manager.Products.Include(AppSettings.Includes.Category).FirstOrDefault(m => m.Id == Id);
             }
 
-            // create category list
-            List<SelectListItem> categories = new SessionSaver<List<SelectListItem>>().use(Session, AppSettings.SessionVariables.CATEGORYCOMBOBOX, (out List<SelectListItem> saveobject) =>
-            {
-                List<SelectListItem> CategoriesList = new List<SelectListItem>();
-                using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
-                {
-                    foreach (var item in db_manager.Categories.ToList())
-                    {
-                        CategoriesList.Add(new SelectListItem()
-                        {
-                            Text = item.name,
-                            Value = item.Id.ToString() //  will be used to get id later
-                        });
-                    }
-                }
-                saveobject = CategoriesList;
-            });
-
+            List<SelectListItem> categories = SessionSaver.Load.categoriesCombobox(Session);
             return View(new EditViewModel()
             {
                 product = product,
@@ -146,36 +83,30 @@ namespace Financial_Management_Application.Controllers
         [HttpPost]
         public ActionResult Edit(long? Id, EditViewModel model)
         {
+            if(Id == null)
+            {
+                return new HttpNotFoundResult();
+            }
             using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
             {
+                model.product.categoryId = model.categoryId;
+                model.product.Category = db_manager.Categories.FirstOrDefault(m => m.Id == model.categoryId);
+                model.product.Id = (long)Id;
                 Category newCategory = db_manager.Categories.FirstOrDefault(m => m.Id == model.categoryId);
-                if (Session[AppSettings.SessionVariables.PRODUCT] != null)
-                { // if session var exists edit product from session var
-                    List<Product> products = (List<Product>)Session[AppSettings.SessionVariables.PRODUCT];
-                    int index = products.IndexOf(products.FirstOrDefault(m => m.Id == Id));
-
-                    products[index].name = model.product.name;
-                    products[index].price = model.product.price;
-                    products[index].Category = newCategory;
-                    Session[AppSettings.SessionVariables.PRODUCT] = products;
-                }
-
-                Product tmpProd = db_manager.Products.FirstOrDefault(m => m.Id == Id);
-                tmpProd.name = model.product.name;
-                tmpProd.price = model.product.price;
-                tmpProd.Category = newCategory;
-
-                db_manager.Entry(tmpProd);
-                db_manager.SaveChanges();
+                model.product.Category = newCategory;
+                SessionSaver.Update.product(Session, model.product);
             }
+            
             return Redirect(Url.Action("Index"));
         }
 
-
+        //TODO: change to Sessionsaver.remove
         public ActionResult Delete(long? Id)
         {
             if (Id == null)
                 return new HttpNotFoundResult();
+
+            //bool s = SessionSaver.Remove.product(Session, Id);
 
             List<Transaction> transactions;
             int productTransactionCount = 0;

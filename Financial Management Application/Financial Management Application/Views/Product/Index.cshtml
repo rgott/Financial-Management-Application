@@ -25,7 +25,7 @@
                     <td>@item.Category.name</td>
                     <td>
                         @Html.ActionLink("Edit", "Edit", new { Id = item.Id }, new { @class="btn" })
-                        @Ajax.ActionLink("Delete", "Index", new { Id = item.Id },new AjaxOptions { HttpMethod="POST" }, new { @class = "btn", @onclick= "javascript:document.getElementById('tableBody').removeChild(document.getElementById('Edit" + item.Id + "'))" })
+                        @Ajax.ActionLink("Delete", "Delete", new { Id = item.Id },new AjaxOptions { HttpMethod="POST" }, new { @class = "btn", @onclick= "javascript:document.getElementById('tableBody').removeChild(document.getElementById('Edit" + item.Id + "'))" })
                     </td>
                 </tr>
             }
