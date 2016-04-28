@@ -12,7 +12,7 @@ namespace Financial_Management_Application.Controllers
     {
         public ActionResult Index()
         {
-            List<Product> products = SessionSaver.Load.products(Session, true);
+            List<Product> products = SessionSaver.Load.products(TempData, true);
 
             return View(new Models.ProductVM.IndexViewModel()
             {
@@ -39,7 +39,7 @@ namespace Financial_Management_Application.Controllers
         //}
         public ActionResult Create()
         {
-            List<SelectListItem> categories = SessionSaver.Load.categoriesCombobox(Session);
+            List<SelectListItem> categories = SessionSaver.Load.categoriesCombobox(TempData);
 
             return View(new CreateViewModel()
             {
@@ -51,10 +51,10 @@ namespace Financial_Management_Application.Controllers
         public async Task<ActionResult> Create(CreateViewModel model)
         {
             model.product.categoryId = model.categoryId;
-            await SessionSaver.Add.product(Session, model.product);
+            await SessionSaver.Add.product(TempData, model.product);
 
             ViewBag.SuccessMessage = "Added product '" + model.product.name + "'";
-            List<SelectListItem> categories = SessionSaver.Load.categoriesCombobox(Session);
+            List<SelectListItem> categories = SessionSaver.Load.categoriesCombobox(TempData);
             model.categories = categories;
 
             return View(model);
@@ -73,7 +73,7 @@ namespace Financial_Management_Application.Controllers
                 product = db_manager.Products.Include(AppSettings.Includes.Category).FirstOrDefault(m => m.Id == Id);
             }
 
-            List<SelectListItem> categories = SessionSaver.Load.categoriesCombobox(Session);
+            List<SelectListItem> categories = SessionSaver.Load.categoriesCombobox(TempData);
             return View(new EditViewModel()
             {
                 product = product,
@@ -94,7 +94,7 @@ namespace Financial_Management_Application.Controllers
                 model.product.Id = (long)Id;
                 Category newCategory = db_manager.Categories.FirstOrDefault(m => m.Id == model.categoryId);
                 model.product.Category = newCategory;
-                SessionSaver.Update.product(Session, model.product);
+                SessionSaver.Update.product(TempData, model.product);
             }
             
             return Redirect(Url.Action("Index"));
@@ -138,7 +138,7 @@ namespace Financial_Management_Application.Controllers
             productTransactionCount = transactions.Count;
             long[] transactionDefProduct = new long[productTransactionCount];
 
-            List<SelectListItem> products = SessionSaver.Load.productsCombobox(Session);
+            List<SelectListItem> products = SessionSaver.Load.productsCombobox(TempData);
 
             return View(new DeleteViewModel()
             {

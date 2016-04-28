@@ -12,7 +12,7 @@ namespace Financial_Management_Application.Controllers
     {
         public ActionResult Index()
         {
-            List<Category> categories = SessionSaver.Load.categories(Session);
+            List<Category> categories = SessionSaver.Load.categories(TempData);
 
             return View(new Models.CategoryVM.IndexViewModel()
             {
@@ -45,9 +45,9 @@ namespace Financial_Management_Application.Controllers
         public async Task<ActionResult> Create(CreateViewModel model)
         {
             Category newCategory;
-            newCategory = await SessionSaver.Add.category(Session, model.category);
+            newCategory = await SessionSaver.Add.category(TempData, model.category);
 
-            List<Category> categories = SessionSaver.Load.categories(Session);
+            List<Category> categories = SessionSaver.Load.categories(TempData);
 
             ViewBag.StatusMessage = "Category '" + model.category.name + "' Created Successfully";
             return View();
@@ -118,13 +118,13 @@ namespace Financial_Management_Application.Controllers
 
                 if(products.Count == 0)
                 {
-                    await SessionSaver.Remove.category(Session, (long)Id);
+                    await SessionSaver.Remove.category(TempData, (long)Id);
                 }
             }
             categoryProductCount = products.Count;
             long[] productDefCategory = new long[categoryProductCount];
 
-            List<SelectListItem> categories = SessionSaver.Load.categoriesCombobox(Session);
+            List<SelectListItem> categories = SessionSaver.Load.categoriesCombobox(TempData);
 
             return View(new DeleteViewModel()
             {
@@ -140,7 +140,7 @@ namespace Financial_Management_Application.Controllers
             if (Id == null)
                 return new HttpNotFoundResult();
 
-            await SessionSaver.Remove.category(Session, (long) Id, model.productDefCategory);
+            await SessionSaver.Remove.category(TempData, (long) Id, model.productDefCategory);
 
             return Redirect(Url.Action("Index", "Category"));
         }

@@ -1,5 +1,6 @@
 ﻿using Financial_Management_Application.Models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -36,7 +37,7 @@ namespace Financial_Management_Application
             return savedObject;
         }
 
-        public T use(ViewDataDictionary ViewData, string sessionVarName, useSessionFunc methodsetObject)
+        public T use(TempDataDictionary ViewData, string sessionVarName, useSessionFunc methodsetObject)
         {
             T savedObject = default(T);
             object sessionVar = ViewData[sessionVarName];
@@ -52,17 +53,13 @@ namespace Financial_Management_Application
             return savedObject;
         }
 
-        internal List<SelectListItem> use(HttpSessionStateBase session, object productSessionVar, object p)
-        {
-            throw new NotImplementedException();
-        }
         #endregion
     }
     public static class SessionSaver
     {
         public static class Load
         {
-            public static List<Category> categories(HttpSessionStateBase Session)
+            public static List<Category> categories(TempDataDictionary Session)
             {
                 return new SessionSaver<List<Category>>().use(Session, AppSettings.SessionVariables.CATEGORY, (out List<Category> saveobject) =>
                 {
@@ -72,7 +69,7 @@ namespace Financial_Management_Application
                     }
                 });
             }
-            public static List<SelectListItem> categoriesCombobox(HttpSessionStateBase Session)
+            public static List<SelectListItem> categoriesCombobox(TempDataDictionary Session)
             {
                 return new SessionSaver<List<SelectListItem>>().use(Session, AppSettings.SessionVariables.CATEGORYCOMBOBOX, (out List<SelectListItem> saveobject) =>
                 {
@@ -92,7 +89,7 @@ namespace Financial_Management_Application
                 });
             }
 
-            public static List<Product> products(HttpSessionStateBase Session, bool includeCategories = false)
+            public static List<Product> products(TempDataDictionary Session, bool includeCategories = false)
             {
                 return new SessionSaver<List<Product>>().use(Session, AppSettings.SessionVariables.PRODUCT, (out List<Product> saveobject) =>
                 {
@@ -110,7 +107,7 @@ namespace Financial_Management_Application
                 });
             }
 
-            public static List<Transaction> transactions(HttpSessionStateBase Session)
+            public static List<Transaction> transactions(TempDataDictionary Session)
             {
                 return new SessionSaver<List<Transaction>>().use(Session, AppSettings.SessionVariables.TRANSACTION, (out List<Transaction> saveobject) =>
                 {
@@ -121,7 +118,7 @@ namespace Financial_Management_Application
                 });
             }
 
-            public static List<SelectListItem> productsCombobox(HttpSessionStateBase Session)
+            public static List<SelectListItem> productsCombobox(TempDataDictionary Session)
             {
                 return new SessionSaver<List<SelectListItem>>().use(Session, AppSettings.SessionVariables.PRODUCTCOMBOBOX, (out List<SelectListItem> saveobject) =>
                 {
@@ -144,7 +141,7 @@ namespace Financial_Management_Application
 
         public static class Add
         {
-            public async static Task<Product> product(HttpSessionStateBase Session, Product product)
+            public async static Task<Product> product(TempDataDictionary Session, Product product)
             {
                 // add to database
                 using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
@@ -167,7 +164,7 @@ namespace Financial_Management_Application
                 return product;
             }
 
-            public async static Task<Category> category(HttpSessionStateBase Session, Category category)
+            public async static Task<Category> category(TempDataDictionary Session, Category category)
             {
                 // add to database
                 using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
@@ -198,7 +195,7 @@ namespace Financial_Management_Application
             /// </summary>
             /// <param name="Session"></param>
             /// <param name="product">.Id must be valid</param>
-            public static void product(HttpSessionStateBase Session, Product product)
+            public static void product(TempDataDictionary Session, Product product)
             {
                 // Update Database
                 using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
@@ -232,7 +229,7 @@ namespace Financial_Management_Application
             /// </summary>
             /// <param name="Session"></param>
             /// <param name="category">.Id must be valid</param>
-            public static void category(HttpSessionStateBase Session, Category category)
+            public static void category(TempDataDictionary Session, Category category)
             {
                 // Update Database
                 using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
@@ -260,7 +257,7 @@ namespace Financial_Management_Application
                 }
             }
 
-            public static void transaction(HttpSessionStateBase Session, Transaction transaction)
+            public static void transaction(TempDataDictionary Session, Transaction transaction)
             {
                 // Update Database
                 using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
@@ -284,7 +281,7 @@ namespace Financial_Management_Application
 
         public static class Remove
         {
-            public async static Task product(HttpSessionStateBase Session, long productId, long[] transactionLinkProdId)
+            public async static Task product(TempDataDictionary Session, long productId, long[] transactionLinkProdId)
             {
                 // remove from database
                 using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
@@ -326,7 +323,7 @@ namespace Financial_Management_Application
                     products.Remove(tmpProd);
                 }
             }
-            public async static Task category(HttpSessionStateBase Session, long categoryId)
+            public async static Task category(TempDataDictionary Session, long categoryId)
             {
                 // remove from database
                 using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
@@ -339,7 +336,7 @@ namespace Financial_Management_Application
                     }
                 }
             }
-            public async static Task<bool> category(HttpSessionStateBase Session, long categoryId, long[] productLinkCatId)
+            public async static Task<bool> category(TempDataDictionary Session, long categoryId, long[] productLinkCatId)
             {
                 // remove from database
                 using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
