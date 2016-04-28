@@ -143,6 +143,25 @@ namespace Financial_Management_Application
                         }
                     });
                 }
+                public static List<SelectListItem> productsCombobox(HttpSessionStateBase Session)
+                {
+                    return new SessionSaver<List<SelectListItem>>().use(Session, AppSettings.SessionVariables.PRODUCTCOMBOBOX, (out List<SelectListItem> saveobject) =>
+                    {
+                        List<SelectListItem> ProductsList = new List<SelectListItem>();
+                        using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
+                        {
+                            foreach (var item in db_manager.Products.ToList())
+                            {
+                                ProductsList.Add(new SelectListItem()
+                                {
+                                    Text = item.name,
+                                    Value = item.Id.ToString() //  will be used to get id later
+                                });
+                            }
+                        }
+                        saveobject = ProductsList;
+                    });
+                }
             }
         }
 

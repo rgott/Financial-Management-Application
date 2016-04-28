@@ -14,6 +14,7 @@ namespace Financial_Management_Application
             public const string CATEGORY = "category";
             public const string PRODUCT = "products";
             public const string CATEGORYCOMBOBOX = "categorycombobox";
+            public const string PRODUCTCOMBOBOX = "productcombobox";
             public const string TRANSACTION = "transaction";
         }
 

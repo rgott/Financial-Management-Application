@@ -191,7 +191,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
@@ -199,6 +201,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\CategoryViewModel.cs" />
     <Compile Include="Models\ProductViewModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Address.cs">
@@ -263,6 +266,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\databaseModel.sql" />
+    <Content Include="App_Data\insert_into_tables.sql" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
@@ -288,6 +292,7 @@
     <Content Include="Models\FM_Datastore_Entities_EF.edmx.diagram">
       <DependentUpon>FM_Datastore_Entities_EF.edmx</DependentUpon>
     </Content>
+    <Content Include="Areas\Admin\Views\web.config" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -349,7 +354,6 @@
     <Content Include="Views\Product\Index.cshtml" />
     <Content Include="Views\Product\ViewPartial.cshtml" />
     <Content Include="Views\Product\CategoryPartial.cshtml" />
-    <Content Include="Views\Shared\_LayoutDataPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -363,6 +367,9 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Areas\Admin\Controllers\" />
+    <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Areas\Admin\Views\Shared\" />
     <Folder Include="Views\AuthorizeRolesAttribute\" />
   </ItemGroup>
   <PropertyGroup>
