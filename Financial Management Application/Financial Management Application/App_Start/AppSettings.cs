@@ -32,8 +32,8 @@ namespace Financial_Management_Application
             public const string ADMIN = "Administrators";
             public const string MANAGER = "Manager";
             public const string SUPERVISOR = "Supervisors";
-            public const string PURCHASINGAGENT = "PurchasingAgent";
-            public const string APPROVEDUSER = "AprovedUser";
+            public const string PURCHASINGAGENT = "Purchasing Agent";
+            public const string APPROVEDUSER = "Approved User";
 
             public static readonly List<SelectListItem> ComboBox = new List<SelectListItem>()
             {
