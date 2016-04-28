@@ -1,19 +1,20 @@
 ﻿@model Financial_Management_Application.Models.RegisterRequestViewModel
 @{
-    
+
 }
 
-<h2>RegisterRequest</h2>
+<h2>Register Request.</h2>
 @using (Html.BeginForm("RegisterRequest", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
-    <h4>Request Access to the system. This will notify administration. You will recieve an email when registration is complete</h4>
+    <h4>Request Access to the system. This will notify administration. You will recieve an email when registration is complete.</h4>
     <hr />
-    @Html.ValidationSummary("", new { @class = "text-danger" })
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="form-group">
         @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
             @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="form-group">
@@ -33,4 +34,8 @@
             <input type="submit" class="btn btn-default" value="Send Request" />
         </div>
     </div>
+    <p>
+        Already registered? -
+        @Html.ActionLink("Log in to your account", "Login")
+    </p>
 }
