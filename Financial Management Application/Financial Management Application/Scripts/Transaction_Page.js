@@ -1,25 +1,26 @@
 ﻿function addItem(id) {
+    
     var table = document.getElementById("myCart");
     var item = document.getElementsByName("ProductNumber")[id];
-    
-    var quantity = prompt("Enter your quantity");
+    var quantity = document.getElementById("quantity"+id);
+   
     
     if (quantity != "") {
-        //searchForValue(item);
         var row = table.insertRow(1);
         var newItem = row.insertCell(0);
         var newQuantity = row.insertCell(1);
         newItem.innerHTML = item.innerHTML;
-        newQuantity.innerHTML = quantity;
+        newQuantity.innerHTML = quantity.value;
+        document.getElementById("quantity"+id).value = ""; 
 
     }
+
     else {
         alert("invalid entry");
     }
 }
 
-
-    
+ 
 
 function doSearch() {
    
