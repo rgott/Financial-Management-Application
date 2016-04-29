@@ -373,3 +373,7 @@ C:\Users\PacoBeanZ\Source\Repos\COSC412\Financial Management Application\Financi
 C:\Users\PacoBeanZ\Source\Repos\COSC412\Financial Management Application\Financial Management Application\obj\Debug\Financial Management Application.csprojResolveAssemblyReference.cache
 C:\Users\PacoBeanZ\Source\Repos\COSC412\Financial Management Application\Financial Management Application\obj\Debug\Financial Management Application.dll
 C:\Users\PacoBeanZ\Source\Repos\COSC412\Financial Management Application\Financial Management Application\obj\Debug\Financial Management Application.pdb
+C:\Users\Richy Truitt\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\log4net.dll
+C:\Users\Richy Truitt\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\PayPal.dll
+C:\Users\Richy Truitt\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\log4net.xml
+C:\Users\Richy Truitt\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\PayPal.xml

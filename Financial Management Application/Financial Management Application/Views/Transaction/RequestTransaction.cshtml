@@ -77,6 +77,7 @@
                         <td name="ProductNumber">@Model.ProductTable[i].name</td>
                         <td>@Model.ProductTable[i].Category.name</td>
                         <td>@Model.ProductTable[i].price.ToString("0.00")</td>
+                        <td><input type="text" id="quantity@(i)"/></td>
                         <td name="productId"><a onclick="addItem(@i)">Add</a></td>
 
                     </tr>
