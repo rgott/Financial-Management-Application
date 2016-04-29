@@ -394,8 +394,6 @@ namespace Financial_Management_Application.Controllers
         [AllowAnonymous]
         public ActionResult Setup()
         {
-            
-
             // dispose of quickly
             using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
             {
