@@ -24,8 +24,8 @@
 }
 else
 {
-    <ul class="nav navbar-nav navbar-right mobileNav pull-right list-inline">
-        <li>@Html.ActionLink("Register", "RegisterRequest", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+    <ul class="nav navbar-nav navbar-right mobileNav pull-right list-inline" style="display:flex;">
+        <li >@Html.ActionLink("Register", "RegisterRequest", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
         <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
     </ul>
 }

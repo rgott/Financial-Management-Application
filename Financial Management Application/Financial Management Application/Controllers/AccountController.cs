@@ -21,10 +21,7 @@ namespace Financial_Management_Application.Controllers
     [Authorize]
     public class AccountController : ControllerModel
     {
-
-        public AccountController()
-        {
-        }
+        public AccountController() { }
 
         public AccountController(AccountUserManager userManager)
         {
@@ -150,33 +147,35 @@ namespace Financial_Management_Application.Controllers
         [HttpPost]
         public ActionResult RegisterRequest(RegisterRequestViewModel model)
         {
-            // TODO:deny multiple requests from the same ip address
-
-            
-            FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF();
-
-            // TODO: make temporary encrypted url that holds => timeCreated,email,role,address,division
-            char separator = (char)31; // ASCII char 31 is the separator character
-            string urlParamStr = DateTime.UtcNow.Ticks.ToString() + separator 
-                + model.Email + separator 
-                + model.address.ToString() + separator 
-                + model.division.ToString();
-            string urlParamStrB64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(urlParamStr));
-            
-            // posts notification
-            db_manager.Notifications.Add(new Notification()
+            if (ModelState.IsValid)
             {
-                notifyType = "newUser",
-                notifyText = model.Email,
-                Email = model.Email,
-                Address = db_manager.Addresses.FirstOrDefault(m => m.Id == model.address),
-                Division = db_manager.Divisions.FirstOrDefault(m => m.Id == model.division),
-                timeStamp = DateTime.UtcNow
-            });
-            db_manager.SaveChanges();
+                FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF();
+                // TODO:deny multiple requests from the same ip address
 
-            Mail.send(model.Email, "Request Recieved", "Dear user your request has been recieved and an administrator will be looking at your request soon, so please be patient.");
-            return Redirect(Url.Action("RegisterRequestCompletion"));
+                // TODO: make temporary encrypted url that holds => timeCreated,email,role,address,division
+                char separator = (char)31; // ASCII char 31 is the separator character
+                string urlParamStr = DateTime.UtcNow.Ticks.ToString() + separator
+                    + model.Email + separator
+                    + model.address.ToString() + separator
+                    + model.division.ToString();
+                string urlParamStrB64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(urlParamStr));
+
+                // posts notification
+                db_manager.Notifications.Add(new Notification()
+                {
+                    notifyType = "newUser",
+                    notifyText = model.Email,
+                    Email = model.Email,
+                    Address = db_manager.Addresses.FirstOrDefault(m => m.Id == model.address),
+                    Division = db_manager.Divisions.FirstOrDefault(m => m.Id == model.division),
+                    timeStamp = DateTime.UtcNow
+                });
+                db_manager.SaveChanges();
+
+                Mail.send(model.Email, "Request Recieved", "Dear user your request has been recieved and an administrator will be looking at your request soon, so please be patient.");
+                return Redirect(Url.Action("RegisterRequestCompletion"));
+            }
+            return RegisterRequest();
         }
 
         [AllowAnonymous]

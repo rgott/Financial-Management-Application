@@ -9,6 +9,7 @@ using System;
 using System.Collections.Specialized;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
+using System.Diagnostics;
 
 namespace Financial_Management_Application.Controllers
 {
@@ -269,29 +270,22 @@ namespace Financial_Management_Application.Controllers
 
         public ActionResult Notify()
         {
-            List<Notification> notifyListDB;
-            List<SelectListItem> RolesList;
-            long? roleResult;
-            using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
+            FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF();
+            var notifyListDB = db_manager.Notifications.ToList();
+
+            // get division list
+            List<SelectListItem> RolesList = new List<SelectListItem>();
+            new SelectList(db_manager.Addresses, "Id", "addressLine1");
+            foreach (var item in db_manager.Roles.ToList())
             {
-
-                notifyListDB = db_manager.Notifications.ToList();
-
-                // get division list
-                RolesList = new List<SelectListItem>();
-                new SelectList(db_manager.Addresses, "Id", "addressLine1");
-                foreach (var item in db_manager.Roles.ToList())
+                RolesList.Add(new SelectListItem()
                 {
-                    RolesList.Add(new SelectListItem()
-                    {
-                        Text = item.Name,
-                        Value = item.Id.ToString() //  will be used to get id later
-                    });
-                }
-                string userType = AppSettings.Roles.APPROVEDUSER;
-                Role role = db_manager.Roles.FirstOrDefault(m => m.Name == userType); // if null roles are not setup
-                roleResult = role.Id;
+                    Text = item.Name,
+                    Value = item.Id.ToString() //  will be used to get id later
+                });
             }
+            long? roleResult = db_manager.Roles.FirstOrDefault(m => m.Name == AppSettings.Roles.APPROVEDUSER).Id;
+            db_manager.Dispose();
             Session.Add("notifyListDB", notifyListDB);
             Session.Add("roleResult", roleResult);
             Session.Add("RolesList", RolesList);
@@ -439,57 +433,71 @@ namespace Financial_Management_Application.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> Setup(SetupViewModel model)
         {
-            // dispose of quickly
-            using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
+            if (ModelState.IsValid)
             {
-                if (db_manager.Users.Count() != 0)
+                // dispose of quickly
+                using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
+                {
+                    if (db_manager.Users.Count() != 0)
+                    {
+                        return new HttpNotFoundResult();
+                    }
+                }
+                if (TempData.ContainsKey("Setup") && Session["SetupUser"] == null)
                 {
                     return new HttpNotFoundResult();
                 }
-            }
-            if (TempData.ContainsKey("Setup") && Session["SetupUser"] == null)
-            {
-                return new HttpNotFoundResult();
-            }
-            Address address;
-            Division division;
-            using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
-            {
-                address = db_manager.Addresses.Add(model.Address);
-                division = db_manager.Divisions.Add(model.Division);
-
-                //add roles
-                foreach (var item in AppSettings.Roles.ComboBox)
+                Address address;
+                Division division;
+                using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
                 {
-                    db_manager.Roles.Add(new Role() { Name = item.Value });
+                    address = db_manager.Addresses.Add(model.Address);
+                    division = db_manager.Divisions.Add(model.Division);
+                    foreach (var item in AppSettings.Roles.ComboBox)
+                    {
+                        db_manager.Roles.Add(new Role() { Name = item.Value });
+                    }
+                    try
+                    {
+                        db_manager.SaveChanges();
+                    }
+                    catch (DbEntityValidationException dbEx)
+                    {
+                        foreach (var validationErrors in dbEx.EntityValidationErrors)
+                        {
+                            foreach (var validationError in validationErrors.ValidationErrors)
+                            {
+                                Trace.TraceInformation("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage);
+                            }
+                        }
+                    }
                 }
+                AccountUser user = new AccountUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    Address = address.Id,
+                    Division = division.Id,
+                    TimeZoneOffset = DateTime.UtcNow,// TODO: change to hours of offset
+                    CreationDate = DateTime.UtcNow
+                };
+                /* TODO: Need to address System.Data.SqlClient.SqlException
+                   The INSERT statement conflicted with the FOREIGN KEY constraint "FK_Address".
+                   Occurs when other values in the form are not filled.*/
+                var result = await UserManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    // create or add role
+                    UserManager.AddToRole(UserManager.FindByEmail(model.Email).Id, AppSettings.Roles.CONGRESS);
 
-                db_manager.SaveChanges();
+                    await SignInAsync(user, false);
+
+                    return RedirectToAction("Index", "Home"); // redirect to user creation
+                }
+                AddErrors(result);
+                return View(model);
             }
-
-
-            AccountUser user = new AccountUser
-            {
-                UserName = model.Email,
-                Email = model.Email,
-                Address = address.Id,
-                Division = division.Id,
-                TimeZoneOffset = DateTime.UtcNow,// TODO: change to hours of offset
-                CreationDate = DateTime.UtcNow
-            };
-
-            var result = await UserManager.CreateAsync(user, model.Password);
-            if (result.Succeeded)
-            {
-                // create or add role
-                UserManager.AddToRole(UserManager.FindByEmail(model.Email).Id, AppSettings.Roles.CONGRESS);
-
-                await SignInAsync(user, false);
-
-                return RedirectToAction("Index", "Home"); // redirect to user creation
-            }
-            AddErrors(result);
-            return View(model);
+            return Setup();
         }
 
 
