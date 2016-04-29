@@ -12,7 +12,7 @@ namespace Financial_Management_Application.Controllers
     {
         public ActionResult Index()
         {
-            List<Category> categories = SessionSaver.Load.categories(Session);
+            List<Category> categories = SessionSaver.Load.categories(TempData);
 
             return View(new Models.CategoryVM.IndexViewModel()
             {
@@ -45,15 +45,9 @@ namespace Financial_Management_Application.Controllers
         public async Task<ActionResult> Create(CreateViewModel model)
         {
             Category newCategory;
-            using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
-            {
-                newCategory = db_manager.Categories.Add(model.category);
-                await db_manager.SaveChangesAsync();
-            }
+            newCategory = await SessionSaver.Add.category(TempData, model.category);
 
-            List<Category> categories = SessionSaver.Load.categories(Session);
-            categories.Add(newCategory);
-            Session[AppSettings.SessionVariables.CATEGORY] = categories;
+            List<Category> categories = SessionSaver.Load.categories(TempData);
 
             ViewBag.StatusMessage = "Category '" + model.category.name + "' Created Successfully";
             return View();
@@ -105,7 +99,7 @@ namespace Financial_Management_Application.Controllers
         }
 
 
-        public ActionResult Delete(long? Id)
+        public async Task<ActionResult> Delete(long? Id)
         {
             if (Id == null)
                 return new HttpNotFoundResult();
@@ -124,22 +118,13 @@ namespace Financial_Management_Application.Controllers
 
                 if(products.Count == 0)
                 {
-                    // remove from database
-                    db_manager.Categories.Remove(db_manager.Categories.FirstOrDefault(m => m.Id == Id));
-                    db_manager.SaveChanges();
-
-                    // remove from session
-                    List<Category> categoriesList = (List<Category>)Session[AppSettings.SessionVariables.CATEGORY];
-                    if(categoriesList != null)
-                    {
-                        categoriesList.Remove(categoriesList.FirstOrDefault(m => m.Id == Id));
-                    }
+                    await SessionSaver.Remove.category(TempData, (long)Id);
                 }
             }
             categoryProductCount = products.Count;
             long[] productDefCategory = new long[categoryProductCount];
 
-            List<SelectListItem> categories = SessionSaver.Load.categoriesCombobox(Session);
+            List<SelectListItem> categories = SessionSaver.Load.categoriesCombobox(TempData);
 
             return View(new DeleteViewModel()
             {
@@ -147,6 +132,17 @@ namespace Financial_Management_Application.Controllers
                 categories = categories,
                 productDefCategory = productDefCategory
             });
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Delete(long? Id, DeleteViewModel model)
+        {
+            if (Id == null)
+                return new HttpNotFoundResult();
+
+            await SessionSaver.Remove.category(TempData, (long) Id, model.productDefCategory);
+
+            return Redirect(Url.Action("Index", "Category"));
         }
     }
 }
