@@ -25,22 +25,25 @@ namespace Financial_Management_Application.Controllers
                 products = products
             });
         }
-        [HttpPost]
-        public ActionResult Index(long? Id)
-        {
-            using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
-            {
-                if (Session[AppSettings.SessionVariables.PRODUCT] != null)
-                { // if session var exists remove product from session var
-                    List<Product> products = (List<Product>)Session[AppSettings.SessionVariables.PRODUCT];
-                    products.Remove(products.FirstOrDefault(m => m.Id == Id));
-                    Session[AppSettings.SessionVariables.PRODUCT] = products;
-                }
-                db_manager.Products.Remove(db_manager.Products.FirstOrDefault(m => m.Id == Id));
-                db_manager.SaveChanges();
-            }
-            return View();
-        }
+
+        
+        //[HttpPost]
+        
+        //public ActionResult Index(long? Id)
+        //{
+        //    using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
+        //    {
+        //        if (Session[AppSettings.SessionVariables.PRODUCT] != null)
+        //        { // if session var exists remove product from session var
+        //            List<Product> products = (List<Product>)Session[AppSettings.SessionVariables.PRODUCT];
+        //            products.Remove(products.FirstOrDefault(m => m.Id == Id));
+        //            Session[AppSettings.SessionVariables.PRODUCT] = products;
+        //        }
+        //        db_manager.Products.Remove(db_manager.Products.FirstOrDefault(m => m.Id == Id));
+        //        db_manager.SaveChanges();
+        //    }
+        //    return View();
+        //}
         public ActionResult Create()
         {
             List<SelectListItem> categories = new SessionSaver<List<SelectListItem>>().use(Session, AppSettings.SessionVariables.CATEGORYCOMBOBOX, (out List<SelectListItem> saveobject) =>
@@ -166,6 +169,52 @@ namespace Financial_Management_Application.Controllers
                 db_manager.SaveChanges();
             }
             return Redirect(Url.Action("Index"));
+        }
+
+
+        public ActionResult Delete(long? Id)
+        {
+            if (Id == null)
+                return new HttpNotFoundResult();
+
+            List<Transaction> transactions;
+            int productTransactionCount = 0;
+            using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
+            {
+                var db_productList = db_manager.Products.FirstOrDefault(m => m.Id == Id);
+                if (db_productList == null)
+                { // if item has already been deleted return the category view and display that the value had previously been deleted
+                    ViewBag.alreadyDeletedMessage = "Product was already deleted";
+                    return Redirect(Url.Action("Index", "Category"));
+                }
+                transactions = db_productList.Transactions.ToList();
+
+                if (transactions.Count == 0)
+                {
+                    // remove from database
+                    db_manager.Products.Remove(db_manager.Products.FirstOrDefault(m => m.Id == Id));
+                    db_manager.SaveChanges();
+
+                    // remove from session
+                    List<Product> productsList = (List<Product>)Session[AppSettings.SessionVariables.PRODUCT];
+                    if (productsList != null)
+                    {
+                        productsList.Remove(productsList.FirstOrDefault(m => m.Id == Id));
+                    }
+                    Session[AppSettings.SessionVariables.PRODUCT] = productsList;
+                }
+            }
+            productTransactionCount = transactions.Count;
+            long[] transactionDefProduct = new long[productTransactionCount];
+
+            List<SelectListItem> products = SessionSaver.Load.productsCombobox(Session);
+
+            return View(new DeleteViewModel()
+            {
+                products = products,
+                transactions = transactions,
+                transactionDefProduct = transactionDefProduct
+            });
         }
     }
 }
