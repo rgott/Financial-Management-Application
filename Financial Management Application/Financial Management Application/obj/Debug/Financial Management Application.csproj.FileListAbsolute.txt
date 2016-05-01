@@ -377,3 +377,7 @@ C:\Users\Richy Truitt\Source\Repos\COSC412\Financial Management Application\Fina
 C:\Users\Richy Truitt\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\PayPal.dll
 C:\Users\Richy Truitt\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\log4net.xml
 C:\Users\Richy Truitt\Source\Repos\COSC412\Financial Management Application\Financial Management Application\bin\PayPal.xml
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\log4net.dll
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\PayPal.dll
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\log4net.xml
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\PayPal.xml

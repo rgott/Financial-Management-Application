@@ -53,7 +53,7 @@ namespace Financial_Management_Application.Controllers
             model.product.categoryId = model.categoryId;
             await SessionSaver.Add.product(TempData, model.product);
 
-            ViewBag.SuccessMessage = "Added product '" + model.product.name + "'";
+            ViewBagHelper.setMessage(ViewBag,ViewBagHelper.MessageType.SuccessMsgBox,"Added product '" + model.product.name + "'");
             List<SelectListItem> categories = SessionSaver.Load.categoriesCombobox(TempData);
             model.categories = categories;
 
@@ -115,7 +115,7 @@ namespace Financial_Management_Application.Controllers
                 var db_productList = db_manager.Products.FirstOrDefault(m => m.Id == Id);
                 if (db_productList == null)
                 { // if item has already been deleted return the category view and display that the value had previously been deleted
-                    ViewBag.alreadyDeletedMessage = "Product was already deleted";
+                    ViewBagHelper.setMessage(ViewBag, ViewBagHelper.MessageType.WarningMsgBox, "Product was already deleted");
                     return Redirect(Url.Action("Index", "Category"));
                 }
                 transactions = db_productList.Transactions.ToList();

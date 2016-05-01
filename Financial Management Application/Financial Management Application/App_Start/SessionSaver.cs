@@ -336,7 +336,8 @@ namespace Financial_Management_Application
                     }
                 }
             }
-            public async static Task<bool> category(TempDataDictionary Session, long categoryId, long[] productLinkCatId)
+
+            public async static Task category(TempDataDictionary Session, long categoryId, long productLinkCatId)
             {
                 // remove from database
                 using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
@@ -349,7 +350,35 @@ namespace Financial_Management_Application
                         // remove products from categories
                         for (int i = 0; i < prod.Count; i++)
                         {
-                            categoryDef = db_manager.Categories.FirstOrDefault(m => m.Id == productLinkCatId[i]);
+                            categoryDef = db_manager.Categories.FirstOrDefault(m => m.Id == productLinkCatId);
+                            prod[i].categoryId = (long)productLinkCatId;
+                            prod[i].Category = categoryDef;
+
+                            Update.product(Session, prod[i]);
+                        }
+
+                        db_manager.Categories.Remove(category);
+                        await db_manager.SaveChangesAsync();
+                    }
+                }
+            }
+
+            public async static Task<bool> category(TempDataDictionary Session, long categoryId, long[] productLinkCatId)
+            {
+                // remove from database
+                using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
+                {
+                    Category category = db_manager.Categories.FirstOrDefault(m => m.Id == categoryId);
+                    if (category != null)
+                    {
+                        List<Product> prod = category.Products.ToList();
+                        Category categoryDef;
+                        long tmpCat;
+                        // remove products from categories
+                        for (int i = 0; i < prod.Count; i++)
+                        {
+                            tmpCat = productLinkCatId[i];
+                            categoryDef = db_manager.Categories.FirstOrDefault(m => m.Id == tmpCat);
                             prod[i].categoryId = (long)productLinkCatId[i];
                             prod[i].Category = categoryDef;
 

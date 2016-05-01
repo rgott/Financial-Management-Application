@@ -1,0 +1,68 @@
+﻿@model Financial_Management_Application.Models.CategoryVM.DeleteViewModel
+@{
+    ViewBag.Title = "Delete";
+}
+@Html.ActionLink("View Categories", "Index", null, new { @class = "btn" })
+
+
+@if (@Model.products.Count == 0)
+{
+    <h2>No Conflicts Found Category has been deleted</h2>
+}
+else
+{
+    if (@Model.products.Count > 1)
+    {
+        using (Html.BeginForm("Delete", "Category", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            <h2>All linked products must have a category</h2>
+            <div class="form-group">
+                For all products assign to category:
+                <div class="col-md-10">
+                    @Html.DropDownListFor(m => m.allProducts, @Model.categories, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" class="btn btn-default" value="Save Category" />
+                </div>
+            </div>
+
+            <hr />
+        }
+    }
+    using (Html.BeginForm("Delete", "Category", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Category</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            @for (int i = 0; i < Model.products.Count; i++)
+            {
+                <tr id="Edit@(Model.products[i].Id)">
+                    <td>@Model.products[i].name</td>
+                    <td>@Model.products[i].price</td>
+                    <td class="form-group">
+                        <div class="col-md-10">
+                            @Html.ActionLink("Create new Category", "Create", "Category")
+                            @Html.DropDownListFor(m => m.productDefCategory[i], @Model.categories, new { @class = "form-control" })
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="btn btn-default" value="Save Category" />
+        </div>
+    </div>
+    }
+}

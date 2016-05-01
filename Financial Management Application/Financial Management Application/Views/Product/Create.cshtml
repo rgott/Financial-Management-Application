@@ -1,7 +1,9 @@
 ﻿@model Financial_Management_Application.Models.ProductVM.CreateViewModel
 
-@Html.ActionLink("View Products","Index","Product")
-@ViewBag.SuccessMessage
+<hr style="margin:12px 0 0 0"/>
+@Html.ActionLink("View Products","Index","Product", new { @class = "btn" })
+<hr style="margin:0 0 12px 0"/>
+
 @using (Html.BeginForm("Create", "Product",FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     <div class="form-group">
@@ -25,7 +27,7 @@
     </div>
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Register" />
+            <input type="submit" class="btn btn-default" value="Create" />
         </div>
     </div>
 }

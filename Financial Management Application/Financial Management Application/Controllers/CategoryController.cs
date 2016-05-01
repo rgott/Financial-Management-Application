@@ -49,7 +49,7 @@ namespace Financial_Management_Application.Controllers
 
             List<Category> categories = SessionSaver.Load.categories(TempData);
 
-            ViewBag.StatusMessage = "Category '" + model.category.name + "' Created Successfully";
+            ViewBagHelper.setMessage(ViewBag, ViewBagHelper.MessageType.SuccessMsgBox, "Category '" + model.category.name + "' Created Successfully");
             return View();
         }
         public ActionResult Edit(long? Id)
@@ -104,28 +104,51 @@ namespace Financial_Management_Application.Controllers
             if (Id == null)
                 return new HttpNotFoundResult();
 
+            List<SelectListItem> categories = SessionSaver.Load.categoriesCombobox(TempData);
+            categories.Remove(categories.FirstOrDefault(m => m.Value == Id.ToString())); // remove category currently being deleted
+            if (categories.Count == 0)
+            {
+                ViewBagHelper.setMessage(ViewBag, ViewBagHelper.MessageType.SuccessMsgBox, "No other categories available to transfer products to. Please create a <a href='" + Url.Action("Create", "Category") + "'>category</a>");
+
+                // return index view
+                List<Category> categoriesview = SessionSaver.Load.categories(TempData);
+                return View("Index",new Models.CategoryVM.IndexViewModel()
+                {
+                    categories = categoriesview
+                });
+            }
+
             List<Product> products;
+            Category category;
             int categoryProductCount = 0;
             using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
             {
-                var db_productList = db_manager.Categories.FirstOrDefault(m => m.Id == Id);
-                if(db_productList == null)
+                category = db_manager.Categories.FirstOrDefault(m => m.Id == Id);
+                if(category == null)
                 { // if item has already been deleted return the category view and display that the value had previously been deleted
-                    ViewBag.alreadyDeletedMessage = "Category was already deleted";
+                    ViewBagHelper.setMessage(ViewBag, ViewBagHelper.MessageType.WarningMsgBox, "Category was already deleted");
                     return Redirect(Url.Action("Index", "Category"));
                 }
-                products = db_productList.Products.ToList();
+                products = category.Products.ToList();
 
                 if(products.Count == 0)
                 {
                     await SessionSaver.Remove.category(TempData, (long)Id);
+
+
+                    // return index view
+                    ViewBagHelper.setMessage(ViewBag, ViewBagHelper.MessageType.SuccessMsgBox, "No Conflicts Found Category has been deleted");
+                    List<Category> categoriesview = SessionSaver.Load.categories(TempData);
+                    return View("Index", new Models.CategoryVM.IndexViewModel()
+                    {
+                        categories = categoriesview
+                    });
                 }
             }
             categoryProductCount = products.Count;
             long[] productDefCategory = new long[categoryProductCount];
 
-            List<SelectListItem> categories = SessionSaver.Load.categoriesCombobox(TempData);
-
+           
             return View(new DeleteViewModel()
             {
                 products = products,
@@ -140,7 +163,14 @@ namespace Financial_Management_Application.Controllers
             if (Id == null)
                 return new HttpNotFoundResult();
 
-            await SessionSaver.Remove.category(TempData, (long) Id, model.productDefCategory);
+            if(model.allProducts != 0)
+            {
+                await SessionSaver.Remove.category(TempData, (long) Id, model.allProducts);
+            }
+            else
+            {
+                await SessionSaver.Remove.category(TempData, (long) Id, model.productDefCategory);
+            }
 
             return Redirect(Url.Action("Index", "Category"));
         }
