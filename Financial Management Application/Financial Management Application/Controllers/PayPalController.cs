@@ -18,90 +18,90 @@ namespace Financial_Management_Application.Controllers
             return View();
         }
 
-        public ActionResult PaymentWithCreditCard()
-        {
-            Item item = new Item();
-            item.name = "Demo Item";
-            item.currency = "USD";
-            item.price = "5";
-            item.quantity = "1";
-            item.sku = "sku";
+        //public ActionResult PaymentWithCreditCard()
+        //{
+        //    Item item = new Item();
+        //    item.name = "Demo Item";
+        //    item.currency = "USD";
+        //    item.price = "5";
+        //    item.quantity = "1";
+        //    item.sku = "sku";
 
-            List<Item> itms = new List<Item>();
-            itms.Add(item);
-            ItemList itemList = new ItemList();
-            itemList.items = itms;
+        //    List<Item> itms = new List<Item>();
+        //    itms.Add(item);
+        //    ItemList itemList = new ItemList();
+        //    itemList.items = itms;
 
-            Address billingAddress = new Address();
-            billingAddress.city = "Baltimore";
-            billingAddress.country_code = "US";
-            billingAddress.line1 = "7800 York Road";
-            billingAddress.postal_code = "21286";
-            billingAddress.state = "MD";
+        //    Address billingAddress = new Address();
+        //    billingAddress.city = "Baltimore";
+        //    billingAddress.country_code = "US";
+        //    billingAddress.line1 = "7800 York Road";
+        //    billingAddress.postal_code = "21286";
+        //    billingAddress.state = "MD";
 
-            CreditCard crdtCard = new CreditCard();
-            crdtCard.billing_address = billingAddress;
-            crdtCard.cvv2 = "874";  //card cvv2 number
-            crdtCard.expire_month = 4; //card expire date
-            crdtCard.expire_year = 2021; //card expire year
-            crdtCard.first_name = "Patrick";
-            crdtCard.last_name = "Lenhart";
-            crdtCard.number = "4032035141244814"; //enter your credit card number here
-            crdtCard.type = "visa"; //credit card type here paypal allows 4 types
+        //    CreditCard crdtCard = new CreditCard();
+        //    crdtCard.billing_address = billingAddress;
+        //    crdtCard.cvv2 = "874";  //card cvv2 number
+        //    crdtCard.expire_month = 4; //card expire date
+        //    crdtCard.expire_year = 2021; //card expire year
+        //    crdtCard.first_name = "Patrick";
+        //    crdtCard.last_name = "Lenhart";
+        //    crdtCard.number = "4032035141244814"; //enter your credit card number here
+        //    crdtCard.type = "visa"; //credit card type here paypal allows 4 types
 
-            Details details = new Details();
-            details.shipping = "1";
-            details.subtotal = "5";
-            details.tax = "1";
+        //    Details details = new Details();
+        //    details.shipping = "1";
+        //    details.subtotal = "5";
+        //    details.tax = "1";
 
-            Amount amnt = new Amount();
-            amnt.currency = "USD";
-            // Total = shipping tax + subtotal.
-            amnt.total = "7";
-            amnt.details = details;
+        //    Amount amnt = new Amount();
+        //    amnt.currency = "USD";
+        //    // Total = shipping tax + subtotal.
+        //    amnt.total = "7";
+        //    amnt.details = details;
 
-            Transaction tran = new Transaction();
-            tran.amount = amnt;
-            tran.description = "Total of Items.";
-            tran.item_list = itemList;
-            tran.invoice_number = "0000000002";
+        //    Transaction tran = new Transaction();
+        //    tran.amount = amnt;
+        //    tran.description = "Total of Items.";
+        //    tran.item_list = itemList;
+        //    tran.invoice_number = "0000000002";
 
-            List<Transaction> transactions = new List<Transaction>();
-            transactions.Add(tran);
+        //    List<Transaction> transactions = new List<Transaction>();
+        //    transactions.Add(tran);
 
-            FundingInstrument fundInstrument = new FundingInstrument();
-            fundInstrument.credit_card = crdtCard;
+        //    FundingInstrument fundInstrument = new FundingInstrument();
+        //    fundInstrument.credit_card = crdtCard;
 
-            List<FundingInstrument> fundingInstrumentList = new List<FundingInstrument>();
-            fundingInstrumentList.Add(fundInstrument);
+        //    List<FundingInstrument> fundingInstrumentList = new List<FundingInstrument>();
+        //    fundingInstrumentList.Add(fundInstrument);
 
-            Payer payr = new Payer();
-            payr.funding_instruments = fundingInstrumentList;
-            payr.payment_method = "credit_card";
+        //    Payer payr = new Payer();
+        //    payr.funding_instruments = fundingInstrumentList;
+        //    payr.payment_method = "credit_card";
 
-            Payment pymnt = new Payment();
-            pymnt.intent = "sale";
-            pymnt.payer = payr;
-            pymnt.transactions = transactions;
+        //    Payment pymnt = new Payment();
+        //    pymnt.intent = "sale";
+        //    pymnt.payer = payr;
+        //    pymnt.transactions = transactions;
 
-            try
-            {
-                APIContext apiContext = Model.Configuration.GetAPIContext();
-                Payment newPayment = pymnt.Create(apiContext);
-                if(newPayment.state.ToLower() != "approved")
-                {
-                    return View("FailureView");
-                }
-            }
-            catch(PayPal.PayPalException ex)
-            {
-                Model.Logger.Log("Error: " + ex.Message);
-                return View("FailureView");
-            }
+        //    try
+        //    {
+        //        APIContext apiContext = Model.Configuration.GetAPIContext();
+        //        Payment newPayment = pymnt.Create(apiContext);
+        //        if(newPayment.state.ToLower() != "approved")
+        //        {
+        //            return View("FailureView");
+        //        }
+        //    }
+        //    catch(PayPal.PayPalException ex)
+        //    {
+        //        Model.Logger.Log("Error: " + ex.Message);
+        //        return View("FailureView");
+        //    }
 
-            return View("SuccessView");
+        //    return View("SuccessView");
 
-        }
+        //}
 
         public ActionResult PaymentWithPayPal()
         {
