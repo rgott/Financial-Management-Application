@@ -1,46 +1,60 @@
-﻿using Financial_Management_Application.Models.ProductVM;
-using Financial_Management_Application.Models;
+﻿using Financial_Management_Application.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using System.Data.Entity.Infrastructure;
 using System.Threading.Tasks;
+using Financial_Management_Application.Models.ProductVM;
 
 namespace Financial_Management_Application.Controllers
 {
+
     public class ProductController : ControllerModel
     {
+        /// <summary>
+        /// Allows the viewbag to pass
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult IndexView()
+        {
+            // return index view
+            List<Product> productsView = SessionSaver.Load.products(TempData);
+
+            for (int i = 0; i < productsView.Count; i++)
+            {
+                if(productsView[i].Category == null)
+                {
+                    productsView = null;
+                }
+            }
+
+
+            return View("Index", new Models.ProductVM.IndexViewModel()
+            {
+                products = productsView
+            });
+        }
+
         public ActionResult Index()
         {
-            List<Product> products = SessionSaver.Load.products(TempData, true);
+            List<Product> products = SessionSaver.Load.products(TempData);
+
+            for (int i = 0; i < products.Count; i++)
+            {
+                if(products[i].Category == null)
+                {
+                    return new HttpNotFoundResult();
+                }
+            }
 
             return View(new Models.ProductVM.IndexViewModel()
             {
                 products = products
             });
         }
-        
-        //[HttpPost]
-        
-        //public ActionResult Index(long? Id)
-        //{
-        //    using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
-        //    {
-        //        if (Session[AppSettings.SessionVariables.PRODUCT] != null)
-        //        { // if session var exists remove product from session var
-        //            List<Product> products = (List<Product>)Session[AppSettings.SessionVariables.PRODUCT];
-        //            products.Remove(products.FirstOrDefault(m => m.Id == Id));
-        //            Session[AppSettings.SessionVariables.PRODUCT] = products;
-        //        }
-        //        db_manager.Products.Remove(db_manager.Products.FirstOrDefault(m => m.Id == Id));
-        //        db_manager.SaveChanges();
-        //    }
-        //    return View();
-        //}
+
         public ActionResult Create()
         {
             List<SelectListItem> categories = SessionSaver.Load.categoriesCombobox(TempData);
-
             return View(new CreateViewModel()
             {
                 categories = categories
@@ -53,24 +67,22 @@ namespace Financial_Management_Application.Controllers
             model.product.categoryId = model.categoryId;
             await SessionSaver.Add.product(TempData, model.product);
 
-            ViewBagHelper.setMessage(ViewBag,ViewBagHelper.MessageType.SuccessMsgBox,"Added product '" + model.product.name + "'");
             List<SelectListItem> categories = SessionSaver.Load.categoriesCombobox(TempData);
             model.categories = categories;
 
-            return View(model);
+            ViewBagHelper.setMessage(ViewBag, ViewBagHelper.MessageType.SuccessMsgBox, "Product '" + model.product.name + "' Created Successfully");
+            return IndexView();
         }
 
         public ActionResult Edit(long? Id)
         {
-            if(Id == null)
-            {
+            if (Id == null)
                 return new HttpNotFoundResult();
-            }
 
             Product product;
             using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
             {
-                product = db_manager.Products.Include(AppSettings.Includes.Category).FirstOrDefault(m => m.Id == Id);
+                product = db_manager.Products.FirstOrDefault(m => m.Id == Id);
             }
 
             List<SelectListItem> categories = SessionSaver.Load.categoriesCombobox(TempData);
@@ -80,72 +92,92 @@ namespace Financial_Management_Application.Controllers
                 categories = categories
             });
         }
+
         [HttpPost]
         public ActionResult Edit(long? Id, EditViewModel model)
-        {
-            if(Id == null)
-            {
-                return new HttpNotFoundResult();
-            }
-            using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
-            {
-                model.product.categoryId = model.categoryId;
-                model.product.Category = db_manager.Categories.FirstOrDefault(m => m.Id == model.categoryId);
-                model.product.Id = (long)Id;
-                Category newCategory = db_manager.Categories.FirstOrDefault(m => m.Id == model.categoryId);
-                model.product.Category = newCategory;
-                SessionSaver.Update.product(TempData, model.product);
-            }
-            
-            return Redirect(Url.Action("Index"));
-        }
-
-        //TODO: change to Sessionsaver.remove
-        public ActionResult Delete(long? Id)
         {
             if (Id == null)
                 return new HttpNotFoundResult();
 
-            //bool s = SessionSaver.Remove.product(Session, Id);
+            using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
+            {
+                model.product.Id = (long)Id;
+                model.product.categoryId = model.categoryId;
+                model.product.Category = db_manager.Categories.FirstOrDefault(m => m.Id == model.categoryId);
+            }
+            SessionSaver.Update.product(TempData, model.product);
+
+            ViewBagHelper.setMessage(ViewBag, ViewBagHelper.MessageType.SuccessMsgBox, "Product " + model.product.name + " updated successfully");
+            return IndexView();
+        }
+
+        
+
+        public async Task<ActionResult> Delete(long? Id)
+        {
+            if (Id == null)
+                return new HttpNotFoundResult();
+
+            List<SelectListItem> products = SessionSaver.Load.productsCombobox(TempData);
+            products.Remove(products.FirstOrDefault(m => m.Value == Id.ToString())); // remove product currently being deleted
+            if (products.Count == 0 && SessionSaver.Load.transactions(TempData).Count != 0)
+            {
+                ViewBagHelper.setMessage(ViewBag, ViewBagHelper.MessageType.WarningMsgBox, "No other products available to transfer transactions to. Please create a <a href='" + Url.Action("Create", "Product") + "'>product</a>");
+                return IndexView();
+            }
+
 
             List<Transaction> transactions;
+            Product product;
             int productTransactionCount = 0;
             using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
             {
-                var db_productList = db_manager.Products.FirstOrDefault(m => m.Id == Id);
-                if (db_productList == null)
-                { // if item has already been deleted return the category view and display that the value had previously been deleted
+                product = db_manager.Products.FirstOrDefault(m => m.Id == Id);
+                if (product == null)
+                { // if item has already been deleted return the product view and display that the value had previously been deleted
                     ViewBagHelper.setMessage(ViewBag, ViewBagHelper.MessageType.WarningMsgBox, "Product was already deleted");
-                    return Redirect(Url.Action("Index", "Category"));
+                    return Redirect(Url.Action("Index", "Product"));
                 }
-                transactions = db_productList.Transactions.ToList();
+                transactions = product.Transactions.ToList();
 
                 if (transactions.Count == 0)
                 {
-                    // remove from database
-                    db_manager.Products.Remove(db_manager.Products.FirstOrDefault(m => m.Id == Id));
-                    db_manager.SaveChanges();
+                    await SessionSaver.Remove.product(TempData, (long)Id);
 
-                    // remove from session
-                    List<Product> productsList = (List<Product>)Session[AppSettings.SessionVariables.PRODUCT];
-                    if (productsList != null)
-                    {
-                        productsList.Remove(productsList.FirstOrDefault(m => m.Id == Id));
-                    }
-                    Session[AppSettings.SessionVariables.PRODUCT] = productsList;
+
+                    // return index view
+                    ViewBagHelper.setMessage(ViewBag, ViewBagHelper.MessageType.SuccessMsgBox, "No Conflicts Found Product has been deleted");
+                    return IndexView();
                 }
             }
             productTransactionCount = transactions.Count;
             long[] transactionDefProduct = new long[productTransactionCount];
 
-            List<SelectListItem> products = SessionSaver.Load.productsCombobox(TempData);
 
             return View(new DeleteViewModel()
             {
-                products = products,
                 transactions = transactions,
+                products = products,
                 transactionDefProduct = transactionDefProduct
             });
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Delete(long? Id, DeleteViewModel model)
+        {
+            if (Id == null)
+                return new HttpNotFoundResult();
+
+            if (model.allTransactions != 0)
+            {
+                await SessionSaver.Remove.product(TempData, (long)Id, model.allTransactions);
+            }
+            else
+            {
+                await SessionSaver.Remove.product(TempData, (long)Id, model.transactionDefProduct);
+            }
+
+            return Redirect(Url.Action("Index", "Product"));
         }
     }
 }

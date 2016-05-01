@@ -7,9 +7,23 @@ using Financial_Management_Application.Models.CategoryVM;
 
 namespace Financial_Management_Application.Controllers
 {
-   
+    
     public class CategoryController : ControllerModel
     {
+        /// <summary>
+        /// Allows the viewbag to pass
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult IndexView()
+        {
+            // return index view
+            List<Category> categoriesview = SessionSaver.Load.categories(TempData);
+            return View("Index", new Models.CategoryVM.IndexViewModel()
+            {
+                categories = categoriesview
+            });
+        }
+
         public ActionResult Index()
         {
             List<Category> categories = SessionSaver.Load.categories(TempData);
@@ -50,7 +64,7 @@ namespace Financial_Management_Application.Controllers
             List<Category> categories = SessionSaver.Load.categories(TempData);
 
             ViewBagHelper.setMessage(ViewBag, ViewBagHelper.MessageType.SuccessMsgBox, "Category '" + model.category.name + "' Created Successfully");
-            return View();
+            return IndexView();
         }
         public ActionResult Edit(long? Id)
         {
@@ -67,35 +81,24 @@ namespace Financial_Management_Application.Controllers
 
             return View(new EditViewModel()
             {
-                category = category,
+                category = category
             });
         }
 
         [HttpPost]
         public ActionResult Edit(long? Id, EditViewModel model)
         {
+            if (Id == null)
+                return new HttpNotFoundResult();
+
             using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
             {
-                Category newCategory = db_manager.Categories.FirstOrDefault(m => m.Id == Id);
-                if (Session[AppSettings.SessionVariables.CATEGORY] != null)
-                { // if session var exists edit product from session var
-                    List<Category> categories = (List<Category>)Session[AppSettings.SessionVariables.CATEGORY];
-                    if(categories != null)
-                    {
-                        int index = categories.IndexOf(categories.FirstOrDefault(m => m.Id == Id));
-                        categories[index].name = model.category.name;
-                    }
-
-                    Session[AppSettings.SessionVariables.CATEGORY] = categories;
-                }
-
-                Category tmpCategory = db_manager.Categories.FirstOrDefault(m => m.Id == Id);
-                tmpCategory.name = model.category.name;
-
-                db_manager.Entry(tmpCategory);
-                db_manager.SaveChanges();
+                model.category.Id = (long)Id;
+                SessionSaver.Update.category(TempData, model.category);
             }
-            return Redirect(Url.Action("Index"));
+
+            ViewBagHelper.setMessage(ViewBag, ViewBagHelper.MessageType.SuccessMsgBox, "Category " + model.category.name + " updated successfully");
+            return IndexView();
         }
 
 
@@ -108,14 +111,8 @@ namespace Financial_Management_Application.Controllers
             categories.Remove(categories.FirstOrDefault(m => m.Value == Id.ToString())); // remove category currently being deleted
             if (categories.Count == 0)
             {
-                ViewBagHelper.setMessage(ViewBag, ViewBagHelper.MessageType.SuccessMsgBox, "No other categories available to transfer products to. Please create a <a href='" + Url.Action("Create", "Category") + "'>category</a>");
-
-                // return index view
-                List<Category> categoriesview = SessionSaver.Load.categories(TempData);
-                return View("Index",new Models.CategoryVM.IndexViewModel()
-                {
-                    categories = categoriesview
-                });
+                ViewBagHelper.setMessage(ViewBag, ViewBagHelper.MessageType.WarningMsgBox, "No other categories available to transfer products to. Please create a <a href='" + Url.Action("Create", "Category") + "'>category</a>");
+                return IndexView();
             }
 
             List<Product> products;
@@ -134,15 +131,8 @@ namespace Financial_Management_Application.Controllers
                 if(products.Count == 0)
                 {
                     await SessionSaver.Remove.category(TempData, (long)Id);
-
-
-                    // return index view
-                    ViewBagHelper.setMessage(ViewBag, ViewBagHelper.MessageType.SuccessMsgBox, "No Conflicts Found Category has been deleted");
-                    List<Category> categoriesview = SessionSaver.Load.categories(TempData);
-                    return View("Index", new Models.CategoryVM.IndexViewModel()
-                    {
-                        categories = categoriesview
-                    });
+                    ViewBagHelper.setMessage(ViewBag, ViewBagHelper.MessageType.WarningMsgBox, "No other categories available tfffo transfer products to. Plea");
+                    return IndexView();
                 }
             }
             categoryProductCount = products.Count;
@@ -172,7 +162,7 @@ namespace Financial_Management_Application.Controllers
                 await SessionSaver.Remove.category(TempData, (long) Id, model.productDefCategory);
             }
 
-            return Redirect(Url.Action("Index", "Category"));
+            return RedirectToAction("Index");
         }
     }
 }

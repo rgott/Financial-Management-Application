@@ -30,7 +30,7 @@ namespace Financial_Management_Application.Models.ProductVM
         public long categoryId { get; set; }
         public long categoryReplacementId { get; set; }
         public List<Transaction> transactions { get; set; }
-        public long allProducts { get; set; }
+        public long allTransactions { get; set; }
         public List<SelectListItem> products { get; set; }
     }
 }

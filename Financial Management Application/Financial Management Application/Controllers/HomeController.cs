@@ -18,6 +18,7 @@ namespace Financial_Management_Application.Controllers
         {
             ViewBag.Message = "Your application description page.";
             Session.Clear();
+            TempData.Clear();
             return View();
         }
 
