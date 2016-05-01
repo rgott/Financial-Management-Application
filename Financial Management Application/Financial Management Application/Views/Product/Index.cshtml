@@ -2,10 +2,11 @@
 
 @using (Html.BeginForm("Edit", "Product", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
-
+    <hr style="margin:12px 0 0 0" />
     @Html.ActionLink("Add Product","Create", null,new { @class = "btn" })
     @Html.ActionLink("Add Category", "Create", "Category", null, new { @class = "btn" })
     @Html.ActionLink("View Categories", "Index", "Category", null, new { @class = "btn" })
+    <hr style="margin:0 0 12px 0" />
 
     <table class="table">
         <thead>
@@ -25,13 +26,17 @@
                     <td>@item.Category.name</td>
                     <td>
                         @Html.ActionLink("Edit", "Edit", new { Id = item.Id }, new { @class="btn" })
-                        @Ajax.ActionLink("Delete", "Delete", new { Id = item.Id },new AjaxOptions { HttpMethod="POST" }, new { @class = "btn", @onclick= "javascript:document.getElementById('tableBody').removeChild(document.getElementById('Edit" + item.Id + "'))" })
+                        @Html.ActionLink("Delete", "Delete", new { Id = item.Id }, new { @class = "btn", @onclick= "replaceWithMsg(" + @item.Id + ",'Please wait Redirecting to delete page')" })
                     </td>
                 </tr>
             }
         </tbody>
     </table>
 }
-@section scripts{
-    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
-}
+<script>
+    function replaceWithMsg(Id, msg)
+    {
+        var cat = document.getElementById('Edit' + Id);
+        cat.innerHTML = "<td style='background-color:#DA4453; width:140;'>" + msg + "</td><td></td><td></td>";
+    }
+</script>

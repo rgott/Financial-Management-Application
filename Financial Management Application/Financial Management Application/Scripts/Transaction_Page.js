@@ -12,7 +12,6 @@
         newItem.innerHTML = item.innerHTML;
         newQuantity.innerHTML = quantity.value;
         document.getElementById("quantity"+id).value = ""; 
-
     }
 
     else {
@@ -20,7 +19,7 @@
     }
 }
 
- 
+
 
 function doSearch() {
    

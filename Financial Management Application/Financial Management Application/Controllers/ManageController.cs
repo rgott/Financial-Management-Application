@@ -420,7 +420,7 @@ namespace Financial_Management_Application.Controllers
             {
                TempData.Add("Setup", true);
             }
-            Session.Add("SetupUser", true);
+            Session.Add("SetupUser", true); 
             return View(new SetupViewModel()
             {
                 Role = AppSettings.Roles.CONGRESS

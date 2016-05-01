@@ -3,9 +3,12 @@
     ViewBag.Title = "Edit";
 }
 
-<h2>Edit</h2>
+<hr style="margin:12px 0 0 0" />
 @Html.ActionLink("View Products", "Index", "Product", null, new { @class = "btn" })
 @Html.ActionLink("View Categories", "Index", "Category", null, new { @class = "btn" })
+<hr style="margin:0 0 12px 0" />
+
+<h2>Edit</h2>
 @using (Ajax.BeginForm("Edit", "Category", new AjaxOptions { HttpMethod = "POST" }, new { @class = "form-horizontal", role = "form" }))
 {
     <div class="form-group">

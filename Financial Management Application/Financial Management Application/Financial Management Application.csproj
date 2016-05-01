@@ -34,6 +34,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <IncludeIisSettings>true</IncludeIisSettings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -198,9 +199,12 @@
     <Compile Include="App_Start\Identity\SmsService.cs" />
     <Compile Include="App_Start\Mail.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\SessionSaver.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="App_Start\ViewBagHelper.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PayPalController.cs" />
@@ -209,6 +213,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\CategoryViewModel.cs" />
     <Compile Include="Models\Configuration.cs" />
     <Compile Include="Models\Logger.cs" />
     <Compile Include="Models\ProductViewModel.cs" />
@@ -276,10 +281,6 @@
   <ItemGroup>
     <Content Include="App_Data\databaseModel.sql" />
     <Content Include="App_Data\dummy_data.sql" />
-    <Content Include="App_Data\FM_Datastore.mdf" />
-    <Content Include="App_Data\FM_Datastore_log.ldf">
-      <DependentUpon>FM_Datastore.mdf</DependentUpon>
-    </Content>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
@@ -313,7 +314,6 @@
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
@@ -361,12 +361,14 @@
     <Content Include="Views\Account\RegisterRequestCompletion.cshtml" />
     <Content Include="Views\Transaction\View.cshtml" />
     <Content Include="Views\Transaction\Edit.cshtml" />
-    <Content Include="Views\Product\EditPartial.cshtml" />
-    <Content Include="Views\Product\CreatePartial.cshtml" />
     <Content Include="Views\Product\Index.cshtml" />
-    <Content Include="Views\Product\ViewPartial.cshtml" />
-    <Content Include="Views\Product\CategoryPartial.cshtml" />
-    <Content Include="Views\Shared\_LayoutDataPage.cshtml" />
+    <Content Include="Views\Category\Create.cshtml" />
+    <Content Include="Views\Category\Delete.cshtml" />
+    <Content Include="Views\Category\Edit.cshtml" />
+    <Content Include="Views\Category\Index.cshtml" />
+    <Content Include="Views\Product\Create.cshtml" />
+    <Content Include="Views\Product\Edit.cshtml" />
+    <Content Include="Views\Product\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

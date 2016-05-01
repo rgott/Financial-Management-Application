@@ -1,10 +1,9 @@
 ﻿@model Financial_Management_Application.Models.CategoryVM.IndexViewModel
-
+<hr style="margin:12px 0 0 0" />
 @Html.ActionLink("View Products", "Index", "Product", null, new { @class = "btn" })
 @Html.ActionLink("Add Category", "Create", "Category", null, new { @class = "btn" })
+<hr style="margin:0 0 12px 0" />
 
-<label style="color:greenyellow">@ViewBag.alreadyDeletedMessage</label>
-    
 <table class="table">
     <thead>
         <tr>
@@ -13,18 +12,28 @@
         </tr>
     </thead>
     <tbody id="tableBody">
+        
         @foreach (var item in Model.categories)
         {
             <tr id="Edit@(item.Id)">
                 <td>@item.name</td>
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { Id = item.Id }, new { @class = "btn" })
-                    @Html.ActionLink("Delete", "Delete", new { Id = item.Id }, new { @class = "btn", @onclick = "javascript:document.getElementById('tableBody').removeChild(document.getElementById('Edit" + item.Id + "'))" })
+                    @Html.ActionLink("Delete", "Delete", new { Id = item.Id }, new { @class = "btn", @onclick = "replaceWithMsg(" + @item.Id + ",'Please wait Redirecting to delete page')" })
                 </td>
             </tr>
         }
+
     </tbody>
 </table>
+
+<script>
+    function replaceWithMsg(Id, msg)
+    {
+        var cat = document.getElementById('Edit' + Id);
+        cat.innerHTML = "<td style='background-color:#DA4453; width:140;'>" + msg + "</td><td></td><td></td>";
+    }
+</script>
 @section scripts{
     @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
 }
