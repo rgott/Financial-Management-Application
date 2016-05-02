@@ -1,4 +1,4 @@
-﻿@model Financial_Management_Application.Models.TViewViewModel
+﻿@model Financial_Management_Application.Models.TransactionVM.IndexViewModel
 @{
     ViewBag.Title = "View";
 }
@@ -14,17 +14,17 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.transactions)
+        @*@foreach (var item in Model.)
         {
             //using (Html.BeginForm("Notify", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             //{
             <tr>
-                <td>@item.Id</td>
+                <td>@item</td>
                 <td>@item.Product.name</td>
                 <td>@item.quantity</td>
 
             </tr>
             //}
-        }
+        }*@
     </tbody>
 </table>

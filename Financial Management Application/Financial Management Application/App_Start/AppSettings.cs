@@ -22,6 +22,7 @@ namespace Financial_Management_Application
         public static class Includes
         {
             public const string Category = "Category";
+            public const string Product = "Product";
         }
 
         // Roles

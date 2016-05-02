@@ -29,11 +29,26 @@
         <table id="myCart" class="table" style="float:left">
             <thead>
                 <tr>
-                    <th>Your items</th>
-                    <th>Quantity</th>
+                    <th>Cart Id</th>
+                    <th>P Name</th>
+                    <th>p price</th>
+                    <th>purch date</th>
+                    <th>quantity</th>
+                    <th>unit price</th>
                 </tr>
                 <tr></tr>
             </thead>
+            <tbody>
+                @for (int i = 0; i < Model.SelectedProductTable.Count; i++)
+                {
+                    <tr>
+                        <td>@Model.SelectedProductTable[i].cartId</td>
+                        <td>@Model.SelectedProductTable[i].purchaseDate</td>
+                        <td>@Model.SelectedProductTable[i].quantity</td>
+                        <td>@Model.SelectedProductTable[i].unitPrice</td>
+                    </tr>
+                }
+</tbody>
         </table>
     </div>
 </div>
@@ -72,13 +87,19 @@
                 using (Html.BeginForm("RequestTransaction", "Transaction", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                 {
                     <tr>
-
                         <td>@i</td>
-                        <td name="ProductNumber">@Model.ProductTable[i].name</td>
-                        <td>@Model.ProductTable[i].Category.name</td>
-                        <td>@Model.ProductTable[i].price.ToString("0.00")</td>
-                        <td><input type="text" id="quantity@(i)"/></td>
-                        <td name="productId"><a onclick="addItem(@i)">Add</a></td>
+                        <td>@Html.DisplayFor(m => m.ProductTable[i].Category.name)</td>
+                        <td>@Html.DisplayFor(m => m.ProductTable[i].price)</td>
+                        
+                        <td>@Html.TextBoxFor(m => m.quantity)@Model.ProductTable[i].Id.ToString()</td>
+                        <td>
+                            <div class="form-group">
+                                @Html.Hidden("productId", Model.ProductTable[i].Id)
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" class="btn btn-default" value="Add" />
+                                </div>
+                            </div>
+                        </td>
 
                     </tr>
                 }

@@ -120,7 +120,7 @@ namespace Financial_Management_Application.Controllers
 
             List<SelectListItem> products = SessionSaver.Load.productsCombobox(TempData);
             products.Remove(products.FirstOrDefault(m => m.Value == Id.ToString())); // remove product currently being deleted
-            if (products.Count == 0 && SessionSaver.Load.transactions(TempData).Count != 0)
+            if (products.Count == 0 && SessionSaver.Load.transactions(Session, false).Count != 0)
             {
                 ViewBagHelper.setMessage(ViewBag, ViewBagHelper.MessageType.WarningMsgBox, "No other products available to transfer transactions to. Please create a <a href='" + Url.Action("Create", "Product") + "'>product</a>");
                 return IndexView();
@@ -170,11 +170,11 @@ namespace Financial_Management_Application.Controllers
 
             if (model.allTransactions != 0)
             {
-                await SessionSaver.Remove.product(TempData, (long)Id, model.allTransactions);
+                await SessionSaver.Remove.product(TempData, Session, (long)Id, model.allTransactions);
             }
             else
             {
-                await SessionSaver.Remove.product(TempData, (long)Id, model.transactionDefProduct);
+                await SessionSaver.Remove.product(TempData, Session, (long)Id, model.transactionDefProduct);
             }
 
             return Redirect(Url.Action("Index", "Product"));
