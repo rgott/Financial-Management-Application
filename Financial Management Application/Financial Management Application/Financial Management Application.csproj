@@ -281,10 +281,6 @@
   <ItemGroup>
     <Content Include="App_Data\databaseModel.sql" />
     <Content Include="App_Data\dummy_data.sql" />
-    <Content Include="App_Data\FM_Datastore.mdf" />
-    <Content Include="App_Data\FM_Datastore_log.ldf">
-      <DependentUpon>FM_Datastore.mdf</DependentUpon>
-    </Content>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />

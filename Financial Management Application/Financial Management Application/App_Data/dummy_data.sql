@@ -26,8 +26,3 @@ INSERT INTO Product (name, categoryId, price) VALUES('Pizza', 3, 1.99);
 INSERT INTO Product (name, categoryId, price) VALUES('Chicken wings', 3, 15.99); 
 INSERT INTO Product (name, categoryId, price) VALUES('Spaghetti', 3, 6.99); 
  
-
-
-
-
-

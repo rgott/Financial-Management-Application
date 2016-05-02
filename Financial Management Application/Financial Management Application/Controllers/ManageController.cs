@@ -479,9 +479,6 @@ namespace Financial_Management_Application.Controllers
                     TimeZoneOffset = DateTime.UtcNow,// TODO: change to hours of offset
                     CreationDate = DateTime.UtcNow
                 };
-                /* TODO: Need to address System.Data.SqlClient.SqlException
-                   The INSERT statement conflicted with the FOREIGN KEY constraint "FK_Address".
-                   Occurs when other values in the form are not filled.*/
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
