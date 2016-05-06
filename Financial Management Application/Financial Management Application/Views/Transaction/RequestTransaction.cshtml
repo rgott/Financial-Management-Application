@@ -66,14 +66,14 @@
 
             @for (int i = 0; i < Model.ProductTable.Count; i++)
             {
-                using (Html.BeginForm("RequestTransaction", "Transaction", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                using (Html.BeginForm("RequestTransaction", "Transaction", FormMethod.Get, new { @class = "form-horizontal", role = "form" }))
                 {
                     <tr>
                         <td>@i</td>
                         <td>@Html.DisplayFor(m => m.ProductTable[i].Category.name)</td>
                         <td>@Html.DisplayFor(m => m.ProductTable[i].price)</td>
                         
-                        <td>@Html.TextBoxFor(m => m.quantity)@Model.ProductTable[i].Id.ToString()</td>
+                        <td>@Html.TextBoxFor(m => m.quantity)</td>
                         <td>
                             <div class="form-group">
                                 @Html.Hidden("productId", Model.ProductTable[i].Id)
