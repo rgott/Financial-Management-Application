@@ -359,7 +359,7 @@
     <Content Include="Views\Manage\Setup.cshtml" />
     <Content Include="Views\Manage\Notify.cshtml" />
     <Content Include="Views\Account\RegisterRequestCompletion.cshtml" />
-    <Content Include="Views\Transaction\View.cshtml" />
+    <Content Include="Views\Transaction\Index.cshtml" />
     <Content Include="Views\Transaction\Edit.cshtml" />
     <Content Include="Views\Product\Index.cshtml" />
     <Content Include="Views\Category\Create.cshtml" />
@@ -381,9 +381,7 @@
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\AuthorizeRolesAttribute\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

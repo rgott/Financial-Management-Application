@@ -113,13 +113,20 @@ namespace Financial_Management_Application
                 });
             }
 
-            public static List<Transaction> transactions(TempDataDictionary Session)
+            public static List<Transaction> transactions(HttpSessionStateBase Session, bool includeProduct = true)
             {
                 return new SessionSaver<List<Transaction>>().use(Session, AppSettings.SessionVariables.TRANSACTION, (out List<Transaction> saveobject) =>
                 {
                     using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
                     {
-                        saveobject = db_manager.Transactions.ToList();
+                        if(includeProduct)
+                        {
+                            saveobject = db_manager.Transactions.Include(AppSettings.Includes.Product).ToList();
+                        }
+                        else
+                        {
+                            saveobject = db_manager.Transactions.ToList();
+                        }
                     }
                 });
             }
@@ -196,6 +203,15 @@ namespace Financial_Management_Application
                     Value = category.Id.ToString()
                 });
                 return category;
+            }
+
+            public static Transaction transaction(HttpSessionStateBase Session, Transaction transaction)
+            {
+                // add to session
+                List<Transaction> transactions = Load.transactions(Session, false);
+                transactions.Add(transaction);
+
+                return transaction;
             }
         }
         
@@ -287,7 +303,7 @@ namespace Financial_Management_Application
                 }
             }
 
-            public static void transaction(TempDataDictionary Session, Transaction transaction)
+            public static void transaction(HttpSessionStateBase Session, Transaction transaction)
             {
                 // Update Database
                 using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
@@ -297,7 +313,7 @@ namespace Financial_Management_Application
                 }
 
                 // Update session
-                List<Transaction> transactions = Load.transactions(Session);
+                List<Transaction> transactions = Load.transactions(Session, false);
                 Transaction tmpTransaction = transactions.FirstOrDefault(m => m.Id == transaction.Id);
                 if (tmpTransaction != null)
                 {
@@ -340,7 +356,7 @@ namespace Financial_Management_Application
                     products.Remove(tmpProd);
                 }
             }
-            public async static Task product(TempDataDictionary Session, long productId, long transactionLinkProdId)
+            public async static Task product(TempDataDictionary TempData,HttpSessionStateBase Session, long productId, long transactionLinkProdId)
             {
                 // remove from database
                 using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
@@ -367,7 +383,7 @@ namespace Financial_Management_Application
                 }
 
                 // remove from session
-                List<Product> products = Load.products(Session);
+                List<Product> products = Load.products(TempData);
                 Product tmpProd = products.FirstOrDefault(m => m.Id == productId);
                 if (tmpProd != null)
                 {
@@ -375,7 +391,7 @@ namespace Financial_Management_Application
                 }
 
                 // remove from session combobox
-                List<SelectListItem> comboboxItems = Load.productsCombobox(Session);
+                List<SelectListItem> comboboxItems = Load.productsCombobox(TempData);
                 SelectListItem tmpCBI = comboboxItems.FirstOrDefault(m => m.Value == productId.ToString());
                 if (tmpCBI != null)
                 {
@@ -383,7 +399,7 @@ namespace Financial_Management_Application
                 }
             }
 
-            public async static Task product(TempDataDictionary Session, long productId, long[] transactionLinkProdId)
+            public async static Task product(TempDataDictionary TempData,HttpSessionStateBase Session, long productId, long[] transactionLinkProdId)
             {
                 // remove from database
                 using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
@@ -410,7 +426,7 @@ namespace Financial_Management_Application
                 }
 
                 // remove from session
-                List<Product> products = Load.products(Session);
+                List<Product> products = Load.products(TempData);
                 Product tmpProd = products.FirstOrDefault(m => m.Id == productId);
                 if (tmpProd != null)
                 {
@@ -418,7 +434,7 @@ namespace Financial_Management_Application
                 }
 
                 // remove from session combobox
-                List<SelectListItem> comboboxItems = Load.productsCombobox(Session);
+                List<SelectListItem> comboboxItems = Load.productsCombobox(TempData);
                 SelectListItem tmpCBI = comboboxItems.FirstOrDefault(m => m.Value == productId.ToString());
                 if (tmpCBI != null)
                 {
