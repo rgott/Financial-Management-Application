@@ -25,11 +25,14 @@
     <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
     <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
 </form>
+
+
+
 <br/>
 <br/>
 
 <div class="container" >
-    <form action="#" method="get" onsubmit="return false" style="z>
+    <form action="#" method="get" onsubmit="return false" style="";>
         <label for="q">Enter your Search Term:</label>
         <input type="text" class="form-control" size="30" name="q" id="searchTerm" value="" onkeyup="doSearch()"/>
 
@@ -60,8 +63,7 @@
                         <td>@Model.ProductTable[i].Category.name</td>
                         <td>@Model.ProductTable[i].price.ToString("0.00")</td>
                         <td><input type="text" id="quantity@(i)"/></td>
-                        <td name="productId"><a onclick="addItem(@i)">Add</a></td>
-
+                        <td><input type="submit" class="btn btn-default" value="Add" /></td>
                     </tr>
                 }
 
