@@ -487,7 +487,7 @@ namespace Financial_Management_Application.Controllers
 
                     await SignInAsync(user, false);
 
-                    return RedirectToAction("Index", "Home"); // redirect to user creation
+                    return RedirectToAction("Index", "Manage"); // redirect to manage home
                 }
                 AddErrors(result);
                 return View(model);
