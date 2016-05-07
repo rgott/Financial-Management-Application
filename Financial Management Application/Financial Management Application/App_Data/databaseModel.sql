@@ -89,7 +89,6 @@ CREATE TABLE [dbo].[Product]
     [name] NVARCHAR(MAX) NOT NULL, 
     [categoryId] BIGINT NOT NULL, 
     [price] MONEY NOT NULL, 
-    
 )
 GO
 
@@ -112,7 +111,6 @@ CREATE TABLE [dbo].[Transaction]
     [purchaseDate] DATETIME NOT NULL, 
     [cartId] BIGINT NOT NULL, 
     [isDeleted] BIT NOT NULL, 
-    
 )
 GO
 
