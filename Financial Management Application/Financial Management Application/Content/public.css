@@ -1,0 +1,48 @@
+﻿@import url("https://fonts.googleapis.com/css?family=Open+Sans"); 
+
+
+body {
+}
+
+img {
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  vertical-align: middle;
+  border: 0;
+  -ms-interpolation-mode: bicubic;
+}
+
+.carousel-inner .item img {
+  /*position: absolute;*/
+  top: 0;
+  left: 0px; 
+  min-width: 50%;
+  height: 240px;
+  max-width: none;
+}
+
+.carousel-control.left, .carousel-control.right {
+    background-image: none
+}
+
+.carousel-control .icon-prev, .carousel-control .icon-next, 
+.carousel-control .glyphicon-chevron-left, .carousel-control 
+.glyphicon-chevron-right, .glyphicon-circle-arrow-left, 
+.carousel-control .glyphicon-circle-arrow-left, 
+.carousel-control .glyphicon-circle-arrow-right {
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    z-index: 5;
+}
+
+h1{
+ font-familt:Open Sans;
+}
+
+
+.whatsNew li{
+    font-family:'Times New Roman';
+    font-size: 18px;
+}

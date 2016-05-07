@@ -281,8 +281,16 @@
   <ItemGroup>
     <Content Include="App_Data\databaseModel.sql" />
     <Content Include="App_Data\dummy_data.sql" />
+    <Content Include="Content\Images\background.jpg" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Images\defense_seeal.jpg" />
+    <Content Include="Content\Images\jet.jpg" />
+    <Content Include="Content\Images\seal.jpg" />
+    <Content Include="Content\Images\ship.jpg" />
+    <Content Include="Content\Images\soldiers.jpg" />
+    <Content Include="Content\layout.css" />
+    <Content Include="Content\public.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />

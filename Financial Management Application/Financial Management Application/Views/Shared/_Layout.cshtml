@@ -7,7 +7,8 @@
     <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico" />
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-   
+
+    <link href="~/Content/layout.css" rel="stylesheet" />
 </head>
 <body>
     <div class="navbar-default navbar-fixed-top">
@@ -46,7 +47,7 @@
     <div class="container body-content">
         @RenderBody()
         <hr />
-        <footer>
+        <footer align="center">
             <p>&copy; @DateTime.Now.Year - Gold Team Technologies</p>
         </footer>
     </div>
