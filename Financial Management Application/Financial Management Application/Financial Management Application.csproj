@@ -213,17 +213,14 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\CategoryViewModel.cs" />
-    <Compile Include="Models\Configuration.cs" />
-    <Compile Include="Models\Logger.cs" />
-    <Compile Include="Models\ProductViewModel.cs" />
-    <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Address.cs">
       <DependentUpon>FM_Datastore_Entities_EF.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Category.cs">
       <DependentUpon>FM_Datastore_Entities_EF.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CategoryViewModel.cs" />
+    <Compile Include="Models\Configuration.cs" />
     <Compile Include="Models\Division.cs">
       <DependentUpon>FM_Datastore_Entities_EF.tt</DependentUpon>
     </Compile>
@@ -242,8 +239,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>FM_Datastore_Entities_EF.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Models\TransactionViewModel.cs" />
-    <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Logger.cs" />
     <Compile Include="Models\Notification.cs">
       <DependentUpon>FM_Datastore_Entities_EF.tt</DependentUpon>
     </Compile>
@@ -253,6 +249,8 @@
     <Compile Include="Models\Product.cs">
       <DependentUpon>FM_Datastore_Entities_EF.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ProductViewModel.cs" />
+    <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ReturnLink.cs">
       <DependentUpon>FM_Datastore_Entities_EF.tt</DependentUpon>
     </Compile>
@@ -265,6 +263,8 @@
     <Compile Include="Models\Transaction.cs">
       <DependentUpon>FM_Datastore_Entities_EF.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TransactionViewModel.cs" />
+    <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\UrlEncryption.cs" />
     <Compile Include="Models\User.cs">
       <DependentUpon>FM_Datastore_Entities_EF.tt</DependentUpon>
