@@ -284,6 +284,7 @@
     <Content Include="Content\Images\background.jpg" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Images\corner.jpg" />
     <Content Include="Content\Images\defense_seeal.jpg" />
     <Content Include="Content\Images\jet.jpg" />
     <Content Include="Content\Images\seal.jpg" />

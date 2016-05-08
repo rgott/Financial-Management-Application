@@ -16,6 +16,7 @@
 
     else {
         alert("invalid entry");
+        exit; 
     }
 }
 

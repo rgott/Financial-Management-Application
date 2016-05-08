@@ -163,7 +163,8 @@ namespace Financial_Management_Application.Controllers
                 return View("FailureView");
             }
 
-            return View("SuccessView");
+            return View("Suc
+                );
         }
 
         private PayPal.Api.Payment payment;
