@@ -380,3 +380,4 @@ C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Managemen
 C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\obj\Debug\Financial Management Application.dll
 C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\obj\Debug\Financial Management Application.pdb
+C:\opt\Repos\GitHub\COSC412\Financial Management Application\Financial Management Application\obj\Debug\Financial Management Application.csprojResolveAssemblyReference.cache

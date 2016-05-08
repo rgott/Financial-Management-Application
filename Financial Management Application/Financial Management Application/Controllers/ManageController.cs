@@ -308,7 +308,6 @@ namespace Financial_Management_Application.Controllers
             model.notifyList = (List<Notification>)Session["notifyListDB"];
             model.Role = (long)Session["roleResult"];
             model.Roles = (List<SelectListItem>)Session["RolesList"];
-            bool continueRemove = true;
             long result;
             if(!long.TryParse(id, out result))
                 return View(model);
@@ -334,20 +333,19 @@ namespace Financial_Management_Application.Controllers
                                 oldNotify.AddressId,
                                 oldNotify.DivisionId,
                                 role));
-                    break;
+                        oldNotify.notifyType = AppSettings.Notify.pendingUser;
+                    return Notify();
                 case "Deny":
                     // send denial email to user
                     Mail.send(oldNotify.Email,"Denied Access", "Appologies user you have been denied access by administration to the application.");
+
+                    model.notifyList.Remove(model.notifyList.First(m => m.Id == result)); // remove from current model
+                    db_model.Notifications.Remove(oldNotify);
                     break;
                 default:
                     break;
             }
 
-            if (continueRemove)
-            {
-                model.notifyList.Remove(model.notifyList.First(m => m.Id == result)); // remove from current model
-                db_model.Notifications.Remove(oldNotify);
-            }
             db_model.SaveChanges();
             db_model.Dispose();
             return View(model);

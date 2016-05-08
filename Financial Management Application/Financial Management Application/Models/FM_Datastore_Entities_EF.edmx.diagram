@@ -5,19 +5,19 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="7ec147ac367441bbb7a9cd1b1ebcf711" Name="Diagram1" ZoomLevel="83">
-        <EntityTypeShape EntityType="FM_DatastoreModel.Address" Width="1.5" PointX="0.75" PointY="4.5" />
-        <EntityTypeShape EntityType="FM_DatastoreModel.Category" Width="1.5" PointX="3.75" PointY="1.125" />
-        <EntityTypeShape EntityType="FM_DatastoreModel.Division" Width="1.5" PointX="0.75" PointY="8.875" />
-        <EntityTypeShape EntityType="FM_DatastoreModel.Notification" Width="1.5" PointX="6" PointY="8.5" />
-        <EntityTypeShape EntityType="FM_DatastoreModel.NotRestricted" Width="1.5" PointX="6" PointY="4.75" />
-        <EntityTypeShape EntityType="FM_DatastoreModel.Product" Width="1.5" PointX="6" PointY="0.75" />
-        <EntityTypeShape EntityType="FM_DatastoreModel.ReturnLink" Width="1.5" PointX="10.5" PointY="8.75" />
-        <EntityTypeShape EntityType="FM_DatastoreModel.ReturnState" Width="1.5" PointX="8.25" PointY="5" />
-        <EntityTypeShape EntityType="FM_DatastoreModel.Role" Width="1.5" PointX="3.75" PointY="4" />
-        <EntityTypeShape EntityType="FM_DatastoreModel.Transaction" Width="1.5" PointX="8.25" PointY="8.125" />
-        <EntityTypeShape EntityType="FM_DatastoreModel.User" Width="1.5" PointX="3" PointY="6.5" />
-        <EntityTypeShape EntityType="FM_DatastoreModel.UserClaim" Width="1.5" PointX="5.25" PointY="15.375" />
-        <EntityTypeShape EntityType="FM_DatastoreModel.UserLogin" Width="1.5" PointX="5.25" PointY="12.625" />
+        <EntityTypeShape EntityType="FM_DatastoreModel.Address" Width="1.5" PointX="3.75" PointY="11.875" />
+        <EntityTypeShape EntityType="FM_DatastoreModel.Category" Width="1.5" PointX="3.75" PointY="1.375" />
+        <EntityTypeShape EntityType="FM_DatastoreModel.Division" Width="1.5" PointX="0.75" PointY="8.25" />
+        <EntityTypeShape EntityType="FM_DatastoreModel.Notification" Width="1.5" PointX="3" PointY="7.875" />
+        <EntityTypeShape EntityType="FM_DatastoreModel.NotRestricted" Width="1.5" PointX="3" PointY="4.125" />
+        <EntityTypeShape EntityType="FM_DatastoreModel.Product" Width="1.5" PointX="6" PointY="1.125" />
+        <EntityTypeShape EntityType="FM_DatastoreModel.ReturnLink" Width="1.5" PointX="10.5" PointY="7.125" />
+        <EntityTypeShape EntityType="FM_DatastoreModel.ReturnState" Width="1.5" PointX="8.25" PointY="3.375" />
+        <EntityTypeShape EntityType="FM_DatastoreModel.Role" Width="1.5" PointX="0.75" PointY="4.25" />
+        <EntityTypeShape EntityType="FM_DatastoreModel.Transaction" Width="1.5" PointX="8.25" PointY="6.375" />
+        <EntityTypeShape EntityType="FM_DatastoreModel.User" Width="1.5" PointX="6" PointY="5.875" />
+        <EntityTypeShape EntityType="FM_DatastoreModel.UserClaim" Width="1.5" PointX="8.25" PointY="13.75" />
+        <EntityTypeShape EntityType="FM_DatastoreModel.UserLogin" Width="1.5" PointX="8.25" PointY="11.25" />
         <AssociationConnector Association="FM_DatastoreModel.FK_Address" />
         <AssociationConnector Association="FM_DatastoreModel.FK_Notifications_AddressId" />
         <AssociationConnector Association="FM_DatastoreModel.FK_categoryId" />

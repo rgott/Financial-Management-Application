@@ -163,7 +163,7 @@ namespace Financial_Management_Application.Controllers
                 // posts notification
                 db_manager.Notifications.Add(new Notification()
                 {
-                    notifyType = "newUser",
+                    notifyType = AppSettings.Notify.newUser,
                     notifyText = model.Email,
                     Email = model.Email,
                     Address = db_manager.Addresses.FirstOrDefault(m => m.Id == model.address),
