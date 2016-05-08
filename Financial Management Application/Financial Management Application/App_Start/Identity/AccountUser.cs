@@ -17,7 +17,6 @@
         public Nullable<System.DateTime> ExpireDate { get; set; }
         public Nullable<System.DateTime> ApprovalDate { get; set; }
         public Nullable<System.DateTime> LastLoginDate { get; set; }
-        public Nullable<System.DateTime> LockoutEndDateUtc { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(AccountUserManager userManager)
         {

@@ -76,6 +76,13 @@ namespace Financial_Management_Application
             };
         }
 
+        public static class Notify
+        {
+            public const string newUser = "newUser";
+            public const string pendingUser = "pendingUser";
+
+        }
+
         public static class Mail
         {
             public const string displayName = "Gold Team Technologies";
