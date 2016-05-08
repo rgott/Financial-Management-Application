@@ -267,8 +267,7 @@ namespace Financial_Management_Application.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
-
-        public ActionResult Notify()
+        public ActionResult NotifyView()
         {
             FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF();
             var notifyListDB = db_manager.Notifications.ToList();
@@ -296,6 +295,10 @@ namespace Financial_Management_Application.Controllers
                 notifyList = notifyListDB
             });
         }
+        public ActionResult Notify()
+        {
+            return NotifyView();
+        }
 
         [HttpPost]
         public ActionResult Notify(NotifyViewModel model, string submitButton, string id)
@@ -312,13 +315,13 @@ namespace Financial_Management_Application.Controllers
             if(!long.TryParse(id, out result))
                 return View(model);
 
-            FM_Datastore_Entities_EF db_model = new FM_Datastore_Entities_EF();
+            FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF();
 
             // get notification
-            Notification oldNotify = db_model.Notifications.FirstOrDefault(m => m.Id == result);
+            Notification oldNotify = db_manager.Notifications.FirstOrDefault(m => m.Id == result);
             switch (submitButton)
             {
-                case "Accept":
+                case "Resend Notification":
                     //send email to new user
                     Mail.send(
                         oldNotify.Email,
@@ -333,21 +336,43 @@ namespace Financial_Management_Application.Controllers
                                 oldNotify.AddressId,
                                 oldNotify.DivisionId,
                                 role));
+                    return NotifyView();
+                case "Accept":
+                    if(oldNotify.notifyType.Equals(AppSettings.Notify.newUser))
+                    {
+                        //send email to new user
+                        Mail.send(
+                            oldNotify.Email,
+                            "Access Approved",
+                            "here is the link to sign up this link will only be available for so long - "
+                                + Request.Url.GetLeftPart(UriPartial.Authority)
+                                + Url.Action("Register", "Account")
+                                + "?rqst="
+                                + UrlEncryption.Encrypt(
+                                    DateTime.UtcNow,
+                                    oldNotify.Email,
+                                    oldNotify.AddressId,
+                                    oldNotify.DivisionId,
+                                    role));
                         oldNotify.notifyType = AppSettings.Notify.pendingUser;
-                    return Notify();
+                        db_manager.Entry(oldNotify);
+                        db_manager.SaveChanges();
+                    }
+                    return NotifyView();
                 case "Deny":
                     // send denial email to user
                     Mail.send(oldNotify.Email,"Denied Access", "Appologies user you have been denied access by administration to the application.");
 
                     model.notifyList.Remove(model.notifyList.First(m => m.Id == result)); // remove from current model
-                    db_model.Notifications.Remove(oldNotify);
+                    db_manager.Notifications.Remove(oldNotify);
                     break;
+                
                 default:
                     break;
             }
 
-            db_model.SaveChanges();
-            db_model.Dispose();
+            db_manager.SaveChanges();
+            db_manager.Dispose();
             return View(model);
         }
 

@@ -15,7 +15,6 @@ else
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Notify Type</th>
                 <th>Notify Text</th>
                 <th>User Role</th>
@@ -28,24 +27,38 @@ else
                 using (Html.BeginForm("Notify", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                 {
                     <tr>
-                        <td>@item.Id</td>
-                        <td>@item.notifyType</td>
-                        <td>@item.notifyText</td>
-                        <td class="form-group">
-                            @Html.LabelFor(m => m.Role, new { @class = "col-md-2 control-label" })
-                            <div class="col-md-10">
-                                @Html.DropDownListFor(m => m.Role, Model.Roles, new { @class = "form-control" })
-                            </div>
-                        </td>
-                        <td class="form-group row">
-                            <input type="hidden" name="id" value="@item.Id"/>
-                            <div class="col-md-3">
-                                <input type="submit" name="submitButton" class="btn btn-default" value="Accept" />
-                            </div>
-                            <div class="col-md-3">
-                                <input type="submit" name="submitButton" class="btn btn-default" value="Deny" />
-                            </div>
-                        </td>
+                        @if (item.notifyType.Equals(AppSettings.Notify.newUser))
+                        {
+                            <td>@item.notifyType</td>
+                            <td>@item.notifyText</td>
+                            <td class="form-group">
+                                @Html.LabelFor(m => m.Role, new { @class = "col-md-2 control-label" })
+                                <div class="col-md-10">
+                                    @Html.DropDownListFor(m => m.Role, Model.Roles, new { @class = "form-control" })
+                                </div>
+                            </td>
+                            <td class="form-group row">
+                                <input type="hidden" name="id" value="@item.Id" />
+                                <div class="col-md-3">
+                                    <input type="submit" name="submitButton" class="btn btn-default" value="Accept" />
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="submit" name="submitButton" class="btn btn-default" value="Deny" />
+                                </div>
+                            </td>
+                        }
+                        else if(item.notifyType.Equals(AppSettings.Notify.pendingUser))
+                        { // alternate display
+                            <td>@item.notifyType</td>
+                            <td>@item.notifyText</td>
+                            <td></td>
+                            <td class="form-group row">
+                                <input type="hidden" name="id" value="@item.Id" />
+                                <div class="col-md-3">
+                                    <input type="submit" name="submitButton" class="btn btn-default" value="Resend Notification" />
+                                </div>
+                            </td>
+                        }
                     </tr>
                 }
             }

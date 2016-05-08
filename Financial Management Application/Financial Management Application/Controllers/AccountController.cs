@@ -263,6 +263,16 @@ namespace Financial_Management_Application.Controllers
 
                     await SignInAsync(user, false);
 
+                    // check if notification is in table (if so remove)
+                    using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
+                    {
+                        Notification notify = db_manager.Notifications.FirstOrDefault(m => m.Email == user.Email);
+                        if(notify != null)
+                        {
+                            db_manager.Notifications.Remove(notify);
+                        }
+                    }
+
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
