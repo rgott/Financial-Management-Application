@@ -303,10 +303,15 @@
     <Content Include="Content\Images\soldiers.jpg" />
     <Content Include="Content\layout.css" />
     <Content Include="Content\public.css" />
+    <Content Include="Content\Site.css">
+      <DependentUpon>Site.scss</DependentUpon>
+    </Content>
+    <Content Include="Content\Site.min.css">
+      <DependentUpon>Site.css</DependentUpon>
+    </Content>
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Content\Site.css" />
     <Content Include="Models\FM_Datastore_Entities_EF.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>FM_Datastore_Entities_EF.edmx</DependentUpon>
@@ -326,6 +331,11 @@
     <Content Include="Models\FM_Datastore_Entities_EF.edmx.diagram">
       <DependentUpon>FM_Datastore_Entities_EF.edmx</DependentUpon>
     </Content>
+    <Content Include="Content\Site.scss" />
+    <None Include="compilerconfig.json" />
+    <None Include="compilerconfig.json.defaults">
+      <DependentUpon>compilerconfig.json</DependentUpon>
+    </None>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\Chart.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />

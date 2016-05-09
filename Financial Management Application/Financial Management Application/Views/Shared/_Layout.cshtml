@@ -10,7 +10,7 @@
 
     <link href="~/Content/layout.css" rel="stylesheet" />
 </head>
-<body>
+<body class="main-content">
     <div class="navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -43,14 +43,17 @@
             </div>
         </div>
     }
+    <div class="wrapper">
 
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer align="center" class="footer">
-            <p>&copy; @DateTime.Now.Year - Gold Team Technologies</p>
-        </footer>
+        <div class="container body-content layout">
+            @RenderBody()
+            <div class="push"></div>
+        </div>
     </div>
+
+    <footer align="center" class="footer">
+        <p>&copy; @DateTime.Now.Year - Gold Team Technologies</p>
+    </footer>
     @if (ViewBag.TextForMsgBox != null)
     {// so the MsgBox doesnt clip the footer 
         <div style="height:50px;"></div>
