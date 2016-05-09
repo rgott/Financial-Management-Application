@@ -257,6 +257,7 @@
     </Compile>
     <Compile Include="Models\ProductViewModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Report.cs" />
     <Compile Include="Models\ReturnLink.cs">
       <DependentUpon>FM_Datastore_Entities_EF.tt</DependentUpon>
     </Compile>
