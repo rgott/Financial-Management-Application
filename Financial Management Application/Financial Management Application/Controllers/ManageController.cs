@@ -327,7 +327,7 @@ namespace Financial_Management_Application.Controllers
                         oldNotify.Email,
                         "Access Approved",
                         "here is the link to sign up this link will only be available for so long - "
-                            + Request.Url.GetLeftPart(UriPartial.Authority)
+                            + HttpContext.Request.Url.Authority
                             + Url.Action("Register", "Account")
                             + "?rqst="
                             + UrlEncryption.Encrypt(
@@ -345,7 +345,7 @@ namespace Financial_Management_Application.Controllers
                             oldNotify.Email,
                             "Access Approved",
                             "here is the link to sign up this link will only be available for so long - "
-                                + Request.Url.GetLeftPart(UriPartial.Authority)
+                                + HttpContext.Request.Url.Authority
                                 + Url.Action("Register", "Account")
                                 + "?rqst="
                                 + UrlEncryption.Encrypt(

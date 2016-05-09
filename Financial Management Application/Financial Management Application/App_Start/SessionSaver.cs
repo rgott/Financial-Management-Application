@@ -1,4 +1,5 @@
-﻿using Financial_Management_Application.Models;
+﻿
+using Financial_Management_Application.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace Financial_Management_Application
 {
     public class SessionSaver<T>
     {
+
         #region basic methods
         public delegate void useSessionFunc(out T savedObject);
 

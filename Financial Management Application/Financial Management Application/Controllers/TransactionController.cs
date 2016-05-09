@@ -1,5 +1,6 @@
 ﻿using Financial_Management_Application.Models;
 using Financial_Management_Application.Models.TransactionVM;
+using paypal = PayPal.Api;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,12 @@ namespace Financial_Management_Application.Controllers
 {
     public class TransactionController : ControllerModel
     {
+        /// <summary>
+        /// Displays the transactions view as well as acts as post back to add items
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="productId"></param>
+        /// <returns></returns>
         public ActionResult RequestTransaction(RequestTransactionViewModel model, string productId)
         {
             long parsed;
@@ -55,8 +62,6 @@ namespace Financial_Management_Application.Controllers
             model.SelectedProductTable = transactions;
 
             return View(model);
-            
-            
         }
         static long getRandomLong(Random rand)
         {
@@ -64,7 +69,6 @@ namespace Financial_Management_Application.Controllers
             rand.NextBytes(buf);
             return BitConverter.ToInt64(buf, 0);
         }
-
 
         public static long getCartId()
         {
@@ -87,37 +91,46 @@ namespace Financial_Management_Application.Controllers
 
         // NOTE:TODO: create another view for requester users
 
+        /// <summary>
+        /// Add post to request transaction
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult RequestTransaction()
         {
-            //long parsed;
-            //if(productId != null && long.TryParse(productId, out parsed))
-            //{
-            //    model.productId = parsed;
-
-            //    // get unit price from database
-            //    decimal unitPrice;
-            //    using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
-            //    {
-            //        unitPrice = db_manager.Products.FirstOrDefault(m => m.Id == model.productId).price;
-            //    }
-
-            //    // creat transaction
-            //    Transaction transaction = new Transaction()
-            //    {
-            //        cartId = getCartId(),
-            //        purchaseDate = DateTime.UtcNow,
-            //        requestedForUserId = null,
-            //        quantity = model.quantity,
-            //        unitPrice = unitPrice,
-            //        productId = model.productId,
-            //        isDeleted = false // on creating transaction it starts as not deleted
-            //    };
-
-            //    SessionSaver.Add.transaction(Session, transaction); // add to session
-            //}
-
-            List<Product> ProductTable;
+            PayPalHelper.CreatePayment(PayPalHelper.apiContext, Url.Action(""),
+            new PayPal.Api.Transaction()
+            {
+                description = "User added description",
+                invoice_number = "000000003",
+                amount = new paypal.Amount()
+                {
+                    currency = "USD",
+                    total = "7",
+                    details = new paypal.Details()
+                    {
+                        tax = "1",
+                        shipping = "1",
+                        subtotal = "5"
+                    }
+                },
+                item_list = new paypal.ItemList()
+                {
+                    items = new List<paypal.Item>()
+                    {
+                        new paypal.Item()
+                        {
+                            name = "Item Name",
+                            currency = "USD",
+                            price = "5",
+                            quantity = "1",
+                            sku = "sku"
+                        }
+                    }
+                }
+            });
+            
+            List <Product> ProductTable;
             using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
             {
                 ProductTable = db_manager.Products.Include(AppSettings.Includes.Category).ToList();
@@ -129,41 +142,14 @@ namespace Financial_Management_Application.Controllers
 
             return View();
         }
-
+        public ActionResult Trans()
+        {
+            return null;
+        }
 
         public ActionResult Index()
         {
             return View();
         }
-
-
-        ///// <summary>
-        ///// Querys database for transactions and 
-        ///// </summary>
-        ///// <returns></returns>
-        //public ActionResult ViewTransaction()
-        //{
-        //    List<Transaction> transactions;
-
-        //    if (Session[TransactionSessionVar] == null || !(Session[TransactionSessionVar] is List<Transaction>))
-        //    {
-        //        using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
-        //        {
-        //            transactions = db_manager.Transactions.ToList();
-        //        }
-        //        Session.Add(TransactionSessionVar, transactions);
-        //    }
-        //    else
-        //    {
-        //        transactions = (List<Transaction>)Session[TransactionSessionVar];
-        //    }
-
-        //    return View(new TViewViewModel()
-        //    {
-        //        transactions = transactions
-        //    });
-        //}
-
-        
     }
 }

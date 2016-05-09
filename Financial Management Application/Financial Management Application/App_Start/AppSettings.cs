@@ -90,5 +90,32 @@ namespace Financial_Management_Application
             public const string password = "GoldTeam1";
         }
 
+        public static class ComboboxLists
+        {
+            public static readonly List<SelectListItem> Countries = new List<SelectListItem>()
+            {
+                new SelectListItem()
+                {
+                    Text = "United States",
+                    Value = "United States"
+                }                
+            };
+
+            public class Countires
+            {
+                public class UnitedStates
+                {
+                    public static readonly List<SelectListItem> Countries = new List<SelectListItem>()
+                    {
+                        new SelectListItem()
+                        {
+                            Text = "Maryland",
+                            Value = "United States"
+                        }
+                    };
+                }
+            }
+        }
+
     }
 }
