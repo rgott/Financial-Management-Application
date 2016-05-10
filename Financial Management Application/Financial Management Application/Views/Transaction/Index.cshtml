@@ -3,28 +3,29 @@
     ViewBag.Title = "View";
 }
 
-<h2>View</h2>
+<h2>View Transactions</h2>
 <table class="table">
     <thead>
         <tr>
             <th>Id</th>
             <th>Product</th>
             <th>Quantity</th>
+            <th>Unit price</th>
+            <th>purchase Date</th>
 
         </tr>
     </thead>
     <tbody>
-        @*@foreach (var item in Model.)
+        @foreach (var item in Model.transactions)
         {
-            //using (Html.BeginForm("Notify", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-            //{
             <tr>
-                <td>@item</td>
+                <td>@item.cartId</td>
                 <td>@item.Product.name</td>
                 <td>@item.quantity</td>
+                <td>@item.unitPrice</td>
+                <td>@item.purchaseDate</td>
 
             </tr>
-            //}
-        }*@
+        }
     </tbody>
 </table>
