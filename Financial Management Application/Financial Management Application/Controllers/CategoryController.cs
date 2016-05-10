@@ -17,7 +17,8 @@ namespace Financial_Management_Application.Controllers
         public ActionResult IndexView()
         {
             // return index view
-            List<Category> categoriesview = SessionSaver.Load.categories(TempData);
+            List<Category> categoriesview;
+            SessionSaver.Load.categories(TempData, out categoriesview);
             return View("Index", new Models.CategoryVM.IndexViewModel()
             {
                 categories = categoriesview
@@ -26,7 +27,8 @@ namespace Financial_Management_Application.Controllers
 
         public ActionResult Index()
         {
-            List<Category> categories = SessionSaver.Load.categories(TempData);
+            List<Category> categories;
+            SessionSaver.Load.categories(TempData, out categories);
 
             return View(new Models.CategoryVM.IndexViewModel()
             {
@@ -61,10 +63,9 @@ namespace Financial_Management_Application.Controllers
             Category newCategory;
             newCategory = await SessionSaver.Add.category(TempData, model.category);
 
-            List<Category> categories = SessionSaver.Load.categories(TempData);
-
+            ModelState.Clear();
             ViewBagHelper.setMessage(ViewBag, ViewBagHelper.MessageType.SuccessMsgBox, "Category '" + model.category.name + "' Created Successfully");
-            return IndexView();
+            return View();
         }
         public ActionResult Edit(long? Id)
         {
@@ -107,7 +108,8 @@ namespace Financial_Management_Application.Controllers
             if (Id == null)
                 return new HttpNotFoundResult();
 
-            List<SelectListItem> categories = SessionSaver.Load.categoriesCombobox(TempData);
+            List<SelectListItem> categories;
+            SessionSaver.Load.categoriesCombobox(TempData, out categories);
             categories.Remove(categories.FirstOrDefault(m => m.Value == Id.ToString())); // remove category currently being deleted
             if (categories.Count == 0)
             {
@@ -131,7 +133,7 @@ namespace Financial_Management_Application.Controllers
                 if(products.Count == 0)
                 {
                     await SessionSaver.Remove.category(TempData, (long)Id);
-                    ViewBagHelper.setMessage(ViewBag, ViewBagHelper.MessageType.WarningMsgBox, "No other categories available tfffo transfer products to. Plea");
+                    ViewBagHelper.setMessage(ViewBag, ViewBagHelper.MessageType.SuccessMsgBox, "No products are linked to category. \"" + category.name + "\" has been deleted.");
                     return IndexView();
                 }
             }

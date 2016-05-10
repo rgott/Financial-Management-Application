@@ -19,8 +19,6 @@
     }
 }
 
-
-
 function doSearch() {
    
     var searchText = document.getElementById('searchTerm').value;

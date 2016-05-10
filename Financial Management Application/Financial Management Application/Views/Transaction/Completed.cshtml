@@ -1,0 +1,41 @@
+﻿@model Financial_Management_Application.Models.TransactionVM.CompletedViewModel
+@{
+    ViewBag.Title = "Completed";
+}
+
+<h2>Completed</h2>
+
+Congrats you have sucessfully bought these items
+
+
+
+
+<div class="container">
+    <div class="col-xs-6">
+        <h3>My Cart</h3>
+        <table id="myCart" class="table" style="float:left">
+            <thead>
+                <tr>
+                    <th>Cart Id</th>
+                    <th>P Date</th>
+                    <th>Quantity</th>
+                    <th>P Price</th>
+                    @*<th>quantity</th>
+                        <th>unit price</th>*@
+                </tr>
+                <tr></tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.boughtItems.Count; i++)
+                {
+                    <tr>
+                        <td>@Model.boughtItems[i].cartId</td>
+                        <td>@Model.boughtItems[i].purchaseDate</td>
+                        <td>@Model.boughtItems[i].quantity</td>
+                        <td>@Model.boughtItems[i].unitPrice</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

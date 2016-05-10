@@ -11,40 +11,44 @@
         <table id="myCart" class="table" style="float:left">
             <thead>
                 <tr>
-                    <th>Cart Id</th>
-                    <th>P Date</th>
+                    <th>Name</th>
+                    <th>UnitPrice</th>
                     <th>Quantity</th>
-                    <th>P Price</th>
-                    @*<th>quantity</th>
-                    <th>unit price</th>*@
+                    <th>Total</th>
+                    <th></th>
                 </tr>
                 <tr></tr>
             </thead>
-            <tbody>
+            <tbody id="tableBody">
                 @for (int i = 0; i < Model.SelectedProductTable.Count; i++)
                 {
-                    <tr>
-                        <td>@Model.SelectedProductTable[i].cartId</td>
-                        <td>@Model.SelectedProductTable[i].purchaseDate</td>
-                        <td>@Model.SelectedProductTable[i].quantity</td>
+                    <tr id="Edit@(i)">
+                        <td>@Model.SelectedProductTable[i].Product.name</td>
                         <td>@Model.SelectedProductTable[i].unitPrice</td>
+                        <td>@Model.SelectedProductTable[i].quantity</td>
+                        <td>@(Model.SelectedProductTable[i].quantity * Model.SelectedProductTable[i].unitPrice)</td>
+                        <td>@Html.ActionLink("Remove", "Remove", new { Id = i }, new { @class = "btn", @onclick = "replaceWithMsg(" + @i + ",'Updating Cart')" })</td>
                     </tr>
                 }
-</tbody>
+            </tbody>
         </table>
     </div>
 </div>
-<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+@using(Html.BeginForm("RequestTransaction","Transaction",FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    <input type="submit" class="btn" value="Checkout"/>
+}
+@*<form action="https://sandbox.paypal.com/cgi-bin/webscr" method="post" target="_top">
     <input type="hidden" name="cmd" value="_s-xclick">
     <input type="hidden" name="hosted_button_id" value="7NPC4F53SQRK2">
     <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
     <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
-</form>
+</form>*@
 <br/>
 <br/>
 
 <div class="container" >
-    <form action="#" method="get" onsubmit="return false" style="z>
+    <form action="#" method="get" onsubmit="return false">
         <label for="q">Enter your Search Term:</label>
         <input type="text" class="form-control" size="30" name="q" id="searchTerm" value="" onkeyup="doSearch()"/>
 
@@ -73,10 +77,10 @@
                         <td>@Html.DisplayFor(m => m.ProductTable[i].Category.name)</td>
                         <td>@Html.DisplayFor(m => m.ProductTable[i].price)</td>
                         
-                        <td>@Html.TextBoxFor(m => m.quantity)</td>
+                        <td>@Html.TextBoxFor(m => m.quantity, new { Value = "" , @class="form-control"})</td>
                         <td>
                             <div class="form-group">
-                                @Html.Hidden("productId", Model.ProductTable[i].Id)
+                                @Html.HiddenFor(m => m.productId, new { Value = Model.ProductTable[i].Id.ToString() })
                                 <div class="col-md-offset-2 col-md-10">
                                     <input type="submit" class="btn btn-default" value="Add" />
                                 </div>

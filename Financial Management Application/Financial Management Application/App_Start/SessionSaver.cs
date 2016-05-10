@@ -1,7 +1,4 @@
-﻿
-using Financial_Management_Application.Models;
-using System;
-using System.Collections;
+﻿using Financial_Management_Application.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,7 +9,6 @@ namespace Financial_Management_Application
 {
     public class SessionSaver<T>
     {
-
         #region basic methods
         public delegate void useSessionFunc(out T savedObject);
 
@@ -23,36 +19,46 @@ namespace Financial_Management_Application
         /// <param name="sessionVarName"></param>
         /// <param name="methodsetObject">method where the T value is set to the session with key param:sessionVarName. If null then automatically loads value from storage</param>
         /// <returns></returns>
-        public T use(HttpSessionStateBase Session, string sessionVarName, useSessionFunc methodsetObject)
+        public bool use(HttpSessionStateBase Session,out T savedObject, string sessionVarName, useSessionFunc methodsetObject)
         {
-            T savedObject = default(T);
+            bool newData;
+            savedObject = default(T);
             object sessionVar = Session[sessionVarName];
 
             if ((sessionVar == null || !(sessionVar.GetType() == typeof(T))) && methodsetObject != null)
             {
+                newData = false;
                 methodsetObject(out savedObject); // set saved to value
                 Session.Add(sessionVarName, savedObject);
             }
             else
+            {
+                newData = false;
                 savedObject = (T)Session[sessionVarName];
+            }
 
-            return savedObject;
+            return newData;
         }
 
-        public T use(TempDataDictionary ViewData, string sessionVarName, useSessionFunc methodsetObject)
+        public bool use(TempDataDictionary ViewData, out T savedObject, string sessionVarName, useSessionFunc methodsetObject)
         {
-            T savedObject = default(T);
+            bool newData;
+            savedObject = default(T);
             object sessionVar = ViewData[sessionVarName];
 
             if ((sessionVar == null || !(sessionVar.GetType() == typeof(T))) && methodsetObject != null)
             {
+                newData = true;
                 methodsetObject(out savedObject); // set saved to value
                 ViewData.Add(sessionVarName, savedObject);
             }
             else
+            {
+                newData = false;
                 savedObject = (T)ViewData[sessionVarName];
+            }
 
-            return savedObject;
+            return newData;
         }
 
         #endregion
@@ -61,9 +67,9 @@ namespace Financial_Management_Application
     {
         public static class Load
         {
-            public static List<Category> categories(TempDataDictionary Session)
+            public static bool categories(TempDataDictionary TempData,out List<Category> categories)
             {
-                return new SessionSaver<List<Category>>().use(Session, AppSettings.SessionVariables.CATEGORY, (out List<Category> saveobject) =>
+                return new SessionSaver<List<Category>>().use(TempData,out categories, AppSettings.SessionVariables.CATEGORY, (out List<Category> saveobject) =>
                 {
                     using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
                     {
@@ -71,9 +77,9 @@ namespace Financial_Management_Application
                     }
                 });
             }
-            public static List<SelectListItem> categoriesCombobox(TempDataDictionary Session)
+            public static bool categoriesCombobox(TempDataDictionary TempData, out List<SelectListItem> categoriesCombobox)
             {
-                return new SessionSaver<List<SelectListItem>>().use(Session, AppSettings.SessionVariables.CATEGORYCOMBOBOX, (out List<SelectListItem> saveobject) =>
+                return new SessionSaver<List<SelectListItem>>().use(TempData,out categoriesCombobox, AppSettings.SessionVariables.CATEGORYCOMBOBOX, (out List<SelectListItem> saveobject) =>
                 {
                     List<SelectListItem> CategoriesList = new List<SelectListItem>();
                     using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
@@ -97,9 +103,9 @@ namespace Financial_Management_Application
             /// <param name="Session"></param>
             /// <param name="includeCategories">load categories by default as most operations require it</param>
             /// <returns></returns>
-            public static List<Product> products(TempDataDictionary Session, bool includeCategories = true)
+            public static bool products(TempDataDictionary TempData, out List<Product> products, bool includeCategories = true)
             {
-                return new SessionSaver<List<Product>>().use(Session, AppSettings.SessionVariables.PRODUCT, (out List<Product> saveobject) =>
+                return new SessionSaver<List<Product>>().use(TempData,out products, AppSettings.SessionVariables.PRODUCT, (out List<Product> saveobject) =>
                 {
                     using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
                     {
@@ -115,27 +121,17 @@ namespace Financial_Management_Application
                 });
             }
 
-            public static List<Transaction> transactions(HttpSessionStateBase Session, bool includeProduct = true)
+            public static bool transactions(HttpSessionStateBase Session, out List<Transaction> transactions, bool includeProduct = true)
             {
-                return new SessionSaver<List<Transaction>>().use(Session, AppSettings.SessionVariables.TRANSACTION, (out List<Transaction> saveobject) =>
+                return new SessionSaver<List<Transaction>>().use(Session,out transactions, AppSettings.SessionVariables.TRANSACTION, (out List<Transaction> saveobject) =>
                 {
-                    using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
-                    {
-                        if(includeProduct)
-                        {
-                            saveobject = db_manager.Transactions.Include(AppSettings.Includes.Product).ToList();
-                        }
-                        else
-                        {
-                            saveobject = db_manager.Transactions.ToList();
-                        }
-                    }
+                    saveobject = new List<Transaction>();
                 });
             }
 
-            public static List<SelectListItem> productsCombobox(TempDataDictionary Session)
+            public static bool productsCombobox(TempDataDictionary TempData, out List<SelectListItem> productsCombobox)
             {
-                return new SessionSaver<List<SelectListItem>>().use(Session, AppSettings.SessionVariables.PRODUCTCOMBOBOX, (out List<SelectListItem> saveobject) =>
+                return new SessionSaver<List<SelectListItem>>().use(TempData, out productsCombobox, AppSettings.SessionVariables.PRODUCTCOMBOBOX, (out List<SelectListItem> saveobject) =>
                 {
                     List<SelectListItem> ProductsList = new List<SelectListItem>();
                     using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
@@ -156,7 +152,7 @@ namespace Financial_Management_Application
 
         public static class Add
         {
-            public async static Task<Product> product(TempDataDictionary Session, Product product)
+            public async static Task<Product> product(TempDataDictionary TempData, Product product)
             {
                 // add to database
                 using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
@@ -171,20 +167,27 @@ namespace Financial_Management_Application
                 }
 
                 // add to session
-                List<Product> products = Load.products(Session,false);
-                products.Add(product);
+                List<Product> products;
+                if(!Load.products(TempData,out products, false))
+                {
+                    products.Add(product);
+                }
 
                 // add to session combobox
-                List<SelectListItem> comboboxItems = Load.productsCombobox(Session);
-                comboboxItems.Add(new SelectListItem()
+                List<SelectListItem> comboboxItems;
+                if(!Load.productsCombobox(TempData,out comboboxItems))
                 {
-                    Text = product.name,
-                    Value = product.Id.ToString()
-                });
+                    comboboxItems.Add(new SelectListItem()
+                    {
+                        Text = product.name,
+                        Value = product.Id.ToString()
+                    });
+                }
+
                 return product;
             }
 
-            public async static Task<Category> category(TempDataDictionary Session, Category category)
+            public async static Task<Category> category(TempDataDictionary TempData, Category category)
             {
                 // add to database
                 using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
@@ -194,24 +197,34 @@ namespace Financial_Management_Application
                 }
 
                 // add to session
-                List<Category> categories = Load.categories(Session);
-                categories.Add(category);
+                List<Category> categories;
+                if(!Load.categories(TempData, out categories))
+                {
+                    categories.Add(category);
+                }
 
                 // add to session combobox
-                List<SelectListItem> comboboxItems = Load.categoriesCombobox(Session);
-                comboboxItems.Add(new SelectListItem()
+                List<SelectListItem> comboboxItems;
+                if (!Load.categoriesCombobox(TempData,out comboboxItems))
                 {
-                    Text = category.name,
-                    Value = category.Id.ToString()
-                });
+                    comboboxItems.Add(new SelectListItem()
+                    {
+                        Text = category.name,
+                        Value = category.Id.ToString()
+                    });
+                }
+                
                 return category;
             }
 
             public static Transaction transaction(HttpSessionStateBase Session, Transaction transaction)
             {
                 // add to session
-                List<Transaction> transactions = Load.transactions(Session, false);
-                transactions.Add(transaction);
+                List<Transaction> transactions;
+                if(!Load.transactions(Session,out transactions, false))
+                {
+                    transactions.Add(transaction);
+                }
 
                 return transaction;
             }
@@ -224,7 +237,7 @@ namespace Financial_Management_Application
             /// </summary>
             /// <param name="Session"></param>
             /// <param name="product">.Id must be valid</param>
-            public static void product(TempDataDictionary Session, Product product)
+            public static void product(TempDataDictionary TempData, Product product)
             {
                 // Update Database
                 Product db_product;
@@ -246,7 +259,9 @@ namespace Financial_Management_Application
                     db_product.Category = product.Category;
 
                     // Update session
-                    List<Product> products = Load.products(Session);
+                    List<Product> products;
+                    Load.products(TempData, out products);
+
                     Product tmpProd = products.FirstOrDefault(m => m.Id == product.Id);
                     if(tmpProd != null)
                     {
@@ -255,7 +270,8 @@ namespace Financial_Management_Application
                     }
 
                     // Update session combobox
-                    List<SelectListItem> productsCombobox = Load.productsCombobox(Session);
+                    List<SelectListItem> productsCombobox;
+                    Load.productsCombobox(TempData, out productsCombobox);
                     SelectListItem tmpSLI = productsCombobox.FirstOrDefault(m => m.Value == db_product.Id.ToString());
                     if (tmpSLI != null)
                     {
@@ -270,7 +286,7 @@ namespace Financial_Management_Application
             /// </summary>
             /// <param name="Session"></param>
             /// <param name="category">.Id must be valid</param>
-            public static void category(TempDataDictionary Session, Category category)
+            public static void category(TempDataDictionary TempData, Category category)
             {
                 Category db_category;
                 // Update Database
@@ -287,7 +303,8 @@ namespace Financial_Management_Application
                 }
 
                 // Update session
-                List<Category> categories = Load.categories(Session);
+                List<Category> categories;
+                Load.categories(TempData,out categories);
                 Category tmpCategory = categories.FirstOrDefault(m => m.Id == db_category.Id);
                 if (tmpCategory != null)
                 {
@@ -296,7 +313,8 @@ namespace Financial_Management_Application
                 }
 
                 // Update session combobox
-                List<SelectListItem> productsCombobox = Load.categoriesCombobox(Session);
+                List<SelectListItem> productsCombobox;
+                Load.categoriesCombobox(TempData, out productsCombobox);
                 SelectListItem tmpSLI = productsCombobox.FirstOrDefault(m => m.Value == db_category.Id.ToString());
                 if (tmpSLI != null)
                 {
@@ -315,7 +333,8 @@ namespace Financial_Management_Application
                 }
 
                 // Update session
-                List<Transaction> transactions = Load.transactions(Session, false);
+                List<Transaction> transactions;
+                Load.transactions(Session,out transactions, false);
                 Transaction tmpTransaction = transactions.FirstOrDefault(m => m.Id == transaction.Id);
                 if (tmpTransaction != null)
                 {
@@ -329,7 +348,7 @@ namespace Financial_Management_Application
 
         public static class Remove
         {
-            public async static Task product(TempDataDictionary Session, long productId)
+            public async static Task product(TempDataDictionary TempData, long productId)
             {
                 // remove from database
                 using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
@@ -343,7 +362,8 @@ namespace Financial_Management_Application
                 }
 
                 // remove from session
-                List<Product> products = Load.products(Session);
+                List<Product> products;
+                Load.products(TempData,out products);
                 Product tmpProd = products.FirstOrDefault(m => m.Id == productId);
                 if (tmpProd != null)
                 {
@@ -351,7 +371,8 @@ namespace Financial_Management_Application
                 }
 
                 // remove from session combobox
-                List<SelectListItem> comboboxItems = Load.productsCombobox(Session);
+                List<SelectListItem> comboboxItems;
+                Load.productsCombobox(TempData,out comboboxItems);
                 SelectListItem tmpCBI = comboboxItems.FirstOrDefault(m => m.Value == productId.ToString());
                 if (tmpCBI != null)
                 {
@@ -385,7 +406,8 @@ namespace Financial_Management_Application
                 }
 
                 // remove from session
-                List<Product> products = Load.products(TempData);
+                List<Product> products;
+                Load.products(TempData,out products);
                 Product tmpProd = products.FirstOrDefault(m => m.Id == productId);
                 if (tmpProd != null)
                 {
@@ -393,7 +415,8 @@ namespace Financial_Management_Application
                 }
 
                 // remove from session combobox
-                List<SelectListItem> comboboxItems = Load.productsCombobox(TempData);
+                List<SelectListItem> comboboxItems;
+                Load.productsCombobox(TempData, out comboboxItems);
                 SelectListItem tmpCBI = comboboxItems.FirstOrDefault(m => m.Value == productId.ToString());
                 if (tmpCBI != null)
                 {
@@ -428,7 +451,8 @@ namespace Financial_Management_Application
                 }
 
                 // remove from session
-                List<Product> products = Load.products(TempData);
+                List<Product> products;
+                Load.products(TempData,out products);
                 Product tmpProd = products.FirstOrDefault(m => m.Id == productId);
                 if (tmpProd != null)
                 {
@@ -436,14 +460,15 @@ namespace Financial_Management_Application
                 }
 
                 // remove from session combobox
-                List<SelectListItem> comboboxItems = Load.productsCombobox(TempData);
+                List<SelectListItem> comboboxItems;
+                Load.productsCombobox(TempData,out comboboxItems);
                 SelectListItem tmpCBI = comboboxItems.FirstOrDefault(m => m.Value == productId.ToString());
                 if (tmpCBI != null)
                 {
                     products.Remove(tmpProd);
                 }
             }
-            public async static Task category(TempDataDictionary Session, long categoryId)
+            public async static Task category(TempDataDictionary TempData, long categoryId)
             {
                 // remove from database
                 using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
@@ -456,7 +481,8 @@ namespace Financial_Management_Application
                     }
                 }
                 // remove from session
-                List<Category> categories = Load.categories(Session);
+                List<Category> categories;
+                Load.categories(TempData, out categories);
                 Category tmpCategory = categories.FirstOrDefault(m => m.Id == categoryId);
                 if (tmpCategory != null)
                 {
@@ -464,7 +490,8 @@ namespace Financial_Management_Application
                 }
 
                 // remove from session combobox
-                List<SelectListItem> comboboxItems = Load.categoriesCombobox(Session);
+                List<SelectListItem> comboboxItems;
+                Load.categoriesCombobox(TempData,out comboboxItems);
                 SelectListItem tmpCBI = comboboxItems.FirstOrDefault(m => m.Value == categoryId.ToString());
                 if (tmpCBI != null)
                 {
@@ -472,7 +499,7 @@ namespace Financial_Management_Application
                 }
             }
 
-            public async static Task category(TempDataDictionary Session, long categoryId, long productLinkCatId)
+            public async static Task category(TempDataDictionary TempData, long categoryId, long productLinkCatId)
             {
                 // remove from database
                 using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
@@ -489,7 +516,7 @@ namespace Financial_Management_Application
                             prod[i].categoryId = (long)productLinkCatId;
                             prod[i].Category = categoryDef;
 
-                            Update.product(Session, prod[i]);
+                            Update.product(TempData, prod[i]);
                         }
 
                         db_manager.Categories.Remove(category);
@@ -497,7 +524,8 @@ namespace Financial_Management_Application
                     }
                 }
                 // remove from session
-                List<Category> categories = Load.categories(Session);
+                List<Category> categories;
+                Load.categories(TempData,out categories);
                 Category tmpCategory = categories.FirstOrDefault(m => m.Id == categoryId);
                 if (tmpCategory != null)
                 {
@@ -505,7 +533,8 @@ namespace Financial_Management_Application
                 }
 
                 // remove from session combobox
-                List<SelectListItem> comboboxItems = Load.categoriesCombobox(Session);
+                List<SelectListItem> comboboxItems;
+                Load.categoriesCombobox(TempData, out comboboxItems);
                 SelectListItem tmpCBI = comboboxItems.FirstOrDefault(m => m.Value == categoryId.ToString());
                 if (tmpCBI != null)
                 {
@@ -513,7 +542,7 @@ namespace Financial_Management_Application
                 }
             }
 
-            public async static Task<bool> category(TempDataDictionary Session, long categoryId, long[] productLinkCatId)
+            public async static Task<bool> category(TempDataDictionary TempData, long categoryId, long[] productLinkCatId)
             {
                 // remove from database
                 using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
@@ -532,7 +561,7 @@ namespace Financial_Management_Application
                             prod[i].categoryId = (long)productLinkCatId[i];
                             prod[i].Category = categoryDef;
 
-                            Update.product(Session, prod[i]);
+                            Update.product(TempData, prod[i]);
                         }
 
                         db_manager.Categories.Remove(category);
@@ -541,7 +570,8 @@ namespace Financial_Management_Application
                 }
 
                 // remove from session
-                List<Category> categories = Load.categories(Session);
+                List<Category> categories;
+                Load.categories(TempData, out categories);
                 Category tmpCategory = categories.FirstOrDefault(m => m.Id == categoryId);
                 if (tmpCategory != null)
                 {
@@ -549,13 +579,23 @@ namespace Financial_Management_Application
                 }
 
                 // remove from session combobox
-                List<SelectListItem> comboboxItems = Load.categoriesCombobox(Session);
+                List<SelectListItem> comboboxItems;
+                Load.categoriesCombobox(TempData, out comboboxItems);
                 SelectListItem tmpCBI = comboboxItems.FirstOrDefault(m => m.Value == categoryId.ToString());
                 if (tmpCBI != null)
                 {
                     categories.Remove(tmpCategory);
                 }
                 return true;
+            }
+            public static void transaction(HttpSessionStateBase Session, int index)
+            {
+                // add to session
+                List<Transaction> transactions;
+                if (!Load.transactions(Session, out transactions, false))
+                {
+                    transactions.RemoveAt(index);
+                }
             }
         }
     }
