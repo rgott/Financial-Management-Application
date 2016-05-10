@@ -265,6 +265,9 @@
     <Compile Include="Models\Transaction.cs">
       <DependentUpon>FM_Datastore_Entities_EF.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TransactionRequest.cs">
+      <DependentUpon>FM_Datastore_Entities_EF.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\TransactionViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\UrlEncryption.cs" />
@@ -397,6 +400,7 @@
     <Content Include="Views\Transaction\Completed.cshtml" />
     <Content Include="Views\Transaction\PaypalFatal.cshtml" />
     <Content Include="Views\Transaction\Remove.cshtml" />
+    <Content Include="Views\Transaction\RequestCompletion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

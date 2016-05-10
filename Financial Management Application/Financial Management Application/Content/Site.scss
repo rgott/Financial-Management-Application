@@ -25,9 +25,17 @@ html
   position: relative;
   min-height: 100%;
 }
+carousel-inner
+{
+    height:400px !important;
+}
 .carousel-inner > .item > img, .carousel-inner > .item > a > img {
     width: auto !important;
     height:400px !important;
+}
+.dropdown-menu > li:hover
+{
+    background-color:$AccentColor;
 }
 .login-panel
 {
@@ -80,12 +88,20 @@ textarea {
 
 @media only screen and (max-width: 768px) 
 {
+    .carousel-inner > .item > img, .carousel-inner > .item > a > img {
+        width: auto !important;
+        height:200px !important;
+    }
+    carousel-inner
+    {
+        height:200px !important;
+    }
     .mobileNav
     {
         position: absolute;
         right: 80px !important;
         top: 0;
-        width: 195px;
+        width: auto !important;
         text-align: right;
     }
 

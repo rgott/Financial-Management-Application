@@ -104,6 +104,18 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="TransactionRequests">
+      <EntityTypeMapping TypeName="FM_DatastoreModel.TransactionRequest">
+        <MappingFragment StoreEntitySet="TransactionRequest">
+          <ScalarProperty Name="unitPrice" ColumnName="unitPrice" />
+          <ScalarProperty Name="cartId" ColumnName="cartId" />
+          <ScalarProperty Name="quantity" ColumnName="quantity" />
+          <ScalarProperty Name="productId" ColumnName="productId" />
+          <ScalarProperty Name="requestedForUserId" ColumnName="requestedForUserId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="Users">
       <EntityTypeMapping TypeName="FM_DatastoreModel.User">
         <MappingFragment StoreEntitySet="User">

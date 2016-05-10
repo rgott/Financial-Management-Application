@@ -47,7 +47,7 @@ else
                                 </div>
                             </td>
                         }
-                        else if(item.notifyType.Equals(AppSettings.Notify.pendingUser))
+                        else if (item.notifyType.Equals(AppSettings.Notify.pendingUser))
                         { // alternate display
                             <td>@item.notifyType</td>
                             <td>@item.notifyText</td>
@@ -58,6 +58,21 @@ else
                                     <input type="submit" name="submitButton" class="btn btn-default" value="Resend Notification" />
                                 </div>
                             </td>
+                        }
+                        else
+                        {
+                            if (User.IsInRole(AppSettings.Roles.PURCHASINGAGENT))
+                            {
+                                <td>@item.notifyType</td>
+                                <td>@item.notifyText</td>
+                                <td></td>
+                                <td class="form-group row">
+                                    <input type="hidden" name="id" value="@item.Id" />
+                                    <div class="col-md-3">
+                                        @Html.ActionLink("Load Transaction (Deletes current cart)","RequestTransaction", "Transaction", new { Id = @item.notifyText }, new { })
+                                    </div>
+                                </td>
+                            }
                         }
                     </tr>
                 }

@@ -177,7 +177,7 @@ namespace Financial_Management_Application
 
                 // add to session
                 List<Product> products;
-                if(!Load.products(TempData,out products, false))
+                if(!Load.products(TempData,out products))
                 {
                     products.Add(product);
                 }

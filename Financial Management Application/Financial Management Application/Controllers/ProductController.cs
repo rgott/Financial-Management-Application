@@ -18,7 +18,7 @@ namespace Financial_Management_Application.Controllers
         {
             // return index view
             List<Product> productsView;
-            SessionSaver.Load.products(TempData,out productsView);
+            SessionSaver.Load.products(TempData,out productsView, true);
 
             return View("Index", new Models.ProductVM.IndexViewModel()
             {
@@ -103,7 +103,7 @@ namespace Financial_Management_Application.Controllers
             }
             SessionSaver.Update.product(TempData, model.product);
 
-            ViewBagHelper.setMessage(ViewBag, ViewBagHelper.MessageType.SuccessMsgBox, "Product " + model.product.name + " updated successfully");
+            ViewBagHelper.setMessage(ViewBag, ViewBagHelper.MessageType.SuccessMsgBox, "Product \"" + model.product.name + "\" updated successfully");
             return IndexView();
         }
 

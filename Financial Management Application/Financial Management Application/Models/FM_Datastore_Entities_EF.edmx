@@ -98,6 +98,17 @@
           <Property Name="cartId" Type="bigint" Nullable="false" />
           <Property Name="isDeleted" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="TransactionRequest">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="requestedForUserId" Type="bigint" />
+          <Property Name="productId" Type="bigint" Nullable="false" />
+          <Property Name="quantity" Type="int" Nullable="false" />
+          <Property Name="cartId" Type="bigint" Nullable="false" />
+          <Property Name="unitPrice" Type="money" Nullable="false" />
+        </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="Id" />
@@ -272,6 +283,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_TransactionRequest_requestedForUserId">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="TransactionRequest" Type="Self.TransactionRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TransactionRequest">
+              <PropertyRef Name="requestedForUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UserClaim_User">
           <End Role="User" Type="Self.User" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -363,6 +386,7 @@
           <EntitySet Name="ReturnState" EntityType="Self.ReturnState" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Transaction" EntityType="Self.Transaction" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TransactionRequest" EntityType="Self.TransactionRequest" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserClaim" EntityType="Self.UserClaim" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserLogin" EntityType="Self.UserLogin" Schema="dbo" store:Type="Tables" />
@@ -407,6 +431,10 @@
             <End Role="Transaction" EntitySet="Transaction" />
             <End Role="ReturnLink" EntitySet="ReturnLink" />
           </AssociationSet>
+          <AssociationSet Name="FK_TransactionRequest_requestedForUserId" Association="Self.FK_TransactionRequest_requestedForUserId">
+            <End Role="User" EntitySet="User" />
+            <End Role="TransactionRequest" EntitySet="TransactionRequest" />
+          </AssociationSet>
           <AssociationSet Name="FK_UserClaim_User" Association="Self.FK_UserClaim_User">
             <End Role="User" EntitySet="User" />
             <End Role="UserClaim" EntitySet="UserClaim" />
@@ -447,6 +475,7 @@
           <EntitySet Name="ReturnStates" EntityType="FM_DatastoreModel.ReturnState" />
           <EntitySet Name="Roles" EntityType="FM_DatastoreModel.Role" />
           <EntitySet Name="Transactions" EntityType="FM_DatastoreModel.Transaction" />
+          <EntitySet Name="TransactionRequests" EntityType="FM_DatastoreModel.TransactionRequest" />
           <EntitySet Name="Users" EntityType="FM_DatastoreModel.User" />
           <EntitySet Name="UserClaims" EntityType="FM_DatastoreModel.UserClaim" />
           <EntitySet Name="UserLogins" EntityType="FM_DatastoreModel.UserLogin" />
@@ -497,6 +526,10 @@
           <AssociationSet Name="FK_requestedForUserId" Association="FM_DatastoreModel.FK_requestedForUserId">
             <End Role="User" EntitySet="Users" />
             <End Role="Transaction" EntitySet="Transactions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TransactionRequest_requestedForUserId" Association="FM_DatastoreModel.FK_TransactionRequest_requestedForUserId">
+            <End Role="User" EntitySet="Users" />
+            <End Role="TransactionRequest" EntitySet="TransactionRequests" />
           </AssociationSet>
           <AssociationSet Name="FK_UserClaim_User" Association="FM_DatastoreModel.FK_UserClaim_User">
             <End Role="User" EntitySet="Users" />
@@ -625,6 +658,18 @@
           <NavigationProperty Name="User" Relationship="FM_DatastoreModel.FK_purchaserId" FromRole="Transaction" ToRole="User" />
           <NavigationProperty Name="User1" Relationship="FM_DatastoreModel.FK_requestedForUserId" FromRole="Transaction" ToRole="User" />
         </EntityType>
+        <EntityType Name="TransactionRequest">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="requestedForUserId" Type="Int64" />
+          <Property Name="productId" Type="Int64" Nullable="false" />
+          <Property Name="quantity" Type="Int32" Nullable="false" />
+          <Property Name="cartId" Type="Int64" Nullable="false" />
+          <Property Name="unitPrice" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <NavigationProperty Name="User" Relationship="FM_DatastoreModel.FK_TransactionRequest_requestedForUserId" FromRole="TransactionRequest" ToRole="User" />
+        </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="Id" />
@@ -655,6 +700,7 @@
           <NavigationProperty Name="Division1" Relationship="FM_DatastoreModel.FK_Division" FromRole="User" ToRole="Division" />
           <NavigationProperty Name="Transactions" Relationship="FM_DatastoreModel.FK_purchaserId" FromRole="User" ToRole="Transaction" />
           <NavigationProperty Name="Transactions1" Relationship="FM_DatastoreModel.FK_requestedForUserId" FromRole="User" ToRole="Transaction" />
+          <NavigationProperty Name="TransactionRequests" Relationship="FM_DatastoreModel.FK_TransactionRequest_requestedForUserId" FromRole="User" ToRole="TransactionRequest" />
           <NavigationProperty Name="UserClaims" Relationship="FM_DatastoreModel.FK_UserClaim_User" FromRole="User" ToRole="UserClaim" />
           <NavigationProperty Name="UserLogins" Relationship="FM_DatastoreModel.FK_UserLogin_User" FromRole="User" ToRole="UserLogin" />
           <NavigationProperty Name="Roles" Relationship="FM_DatastoreModel.UserRole" FromRole="User" ToRole="Role" />
@@ -824,6 +870,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_TransactionRequest_requestedForUserId">
+          <End Type="FM_DatastoreModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="FM_DatastoreModel.TransactionRequest" Role="TransactionRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TransactionRequest">
+              <PropertyRef Name="requestedForUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UserClaim_User">
           <End Type="FM_DatastoreModel.User" Role="User" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -961,6 +1019,18 @@
                 <ScalarProperty Name="productId" ColumnName="productId" />
                 <ScalarProperty Name="requestedForUserId" ColumnName="requestedForUserId" />
                 <ScalarProperty Name="purchaserId" ColumnName="purchaserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TransactionRequests">
+            <EntityTypeMapping TypeName="FM_DatastoreModel.TransactionRequest">
+              <MappingFragment StoreEntitySet="TransactionRequest">
+                <ScalarProperty Name="unitPrice" ColumnName="unitPrice" />
+                <ScalarProperty Name="cartId" ColumnName="cartId" />
+                <ScalarProperty Name="quantity" ColumnName="quantity" />
+                <ScalarProperty Name="productId" ColumnName="productId" />
+                <ScalarProperty Name="requestedForUserId" ColumnName="requestedForUserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

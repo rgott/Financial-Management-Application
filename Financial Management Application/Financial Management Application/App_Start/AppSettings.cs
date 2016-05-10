@@ -80,6 +80,7 @@ namespace Financial_Management_Application
         {
             public const string newUser = "newUser";
             public const string pendingUser = "pendingUser";
+            public const string pendingTransactionRequest = "Pending Transaction Request";
 
         }
 

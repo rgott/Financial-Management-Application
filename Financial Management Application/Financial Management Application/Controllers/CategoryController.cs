@@ -113,8 +113,14 @@ namespace Financial_Management_Application.Controllers
             categories.Remove(categories.FirstOrDefault(m => m.Value == Id.ToString())); // remove category currently being deleted
             if (categories.Count == 0)
             {
-                ViewBagHelper.setMessage(ViewBag, ViewBagHelper.MessageType.WarningMsgBox, "No other categories available to transfer products to. Please create a <a href='" + Url.Action("Create", "Category") + "'>category</a>");
-                return IndexView();
+                using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
+                {
+                    if(db_manager.Products.Count() == 0)
+                    {
+                        ViewBagHelper.setMessage(ViewBag, ViewBagHelper.MessageType.WarningMsgBox, "No other categories available to transfer products to. Please create a <a href='" + Url.Action("Create", "Category") + "'>category</a>");
+                        return IndexView();
+                    }
+                }
             }
 
             List<Product> products;

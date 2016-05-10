@@ -114,6 +114,18 @@ CREATE TABLE [dbo].[Transaction]
 )
 GO
 
+CREATE TABLE [dbo].[TransactionRequest]
+(
+	[Id] BIGINT NOT NULL PRIMARY KEY IDENTITY (1, 1), 
+    [requestedForUserId] BIGINT NULL, 
+    [productId] BIGINT NOT NULL, 
+    [quantity] INT NOT NULL, 
+    [cartId] BIGINT NOT NULL, 
+    [unitPrice] MONEY NOT NULL
+)
+GO
+
+
 CREATE TABLE [dbo].[ReturnState]
 (
 	[Id] BIGINT NOT NULL PRIMARY KEY IDENTITY (1, 1), 
@@ -195,6 +207,9 @@ ALTER TABLE [dbo].[Transaction] ADD CONSTRAINT [FK_purchaserId] FOREIGN KEY ([pu
 GO
 
 ALTER TABLE [dbo].[Transaction] ADD CONSTRAINT [FK_requestedForUserId] FOREIGN KEY ([requestedForUserId]) REFERENCES [User]([Id])
+GO
+
+ALTER TABLE [dbo].[TransactionRequest] ADD CONSTRAINT [FK_TransactionRequest_requestedForUserId] FOREIGN KEY ([requestedForUserId]) REFERENCES [User]([Id])
 GO
 
 ALTER TABLE [dbo].[ReturnLink] ADD CONSTRAINT [FK_transactionId] FOREIGN KEY ([transactionId]) REFERENCES [Transaction]([Id])
