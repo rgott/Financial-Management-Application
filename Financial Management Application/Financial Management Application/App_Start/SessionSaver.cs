@@ -128,7 +128,16 @@ namespace Financial_Management_Application
                     saveobject = new List<Transaction>();
                 });
             }
-
+            public static bool transactions(TempDataDictionary TempData, out List<Transaction> categories)
+            {
+                return new SessionSaver<List<Transaction>>().use(TempData, out categories, AppSettings.SessionVariables.CATEGORY, (out List<Transaction> saveobject) =>
+                {
+                    using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
+                    {
+                        saveobject = db_manager.Transactions.Include(AppSettings.Includes.Product).Include(AppSettings.Includes.Category).ToList();
+                    }
+                });
+            }
             public static bool productsCombobox(TempDataDictionary TempData, out List<SelectListItem> productsCombobox)
             {
                 return new SessionSaver<List<SelectListItem>>().use(TempData, out productsCombobox, AppSettings.SessionVariables.PRODUCTCOMBOBOX, (out List<SelectListItem> saveobject) =>
@@ -435,10 +444,12 @@ namespace Financial_Management_Application
                         // remove transactions from products
                         List<Transaction> trans = product.Transactions.ToList();
                         Product productDef;
+                        long tmp;
                         // remove transactions from products
                         for (int i = 0; i < trans.Count; i++)
                         {
-                            productDef = db_manager.Products.FirstOrDefault(m => m.Id == transactionLinkProdId[i]);
+                            tmp = transactionLinkProdId[i];
+                            productDef = db_manager.Products.FirstOrDefault(m => m.Id == tmp);
                             trans[i].productId = transactionLinkProdId[i];
                             trans[i].Product = productDef;
 

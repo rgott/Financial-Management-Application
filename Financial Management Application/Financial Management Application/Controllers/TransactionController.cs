@@ -1,5 +1,5 @@
 ﻿using Financial_Management_Application.Models;
-using Financial_Management_Application.Models.TransactionVM;
+using VM = Financial_Management_Application.Models.TransactionVM;
 using paypal = PayPal.Api;
 using System;
 using System.Collections.Generic;
@@ -16,7 +16,7 @@ namespace Financial_Management_Application.Controllers
         /// <param name="model"></param>
         /// <param name="productId"></param>
         /// <returns></returns>
-        public ActionResult RequestTransaction(RequestTransactionViewModel model)
+        public ActionResult RequestTransaction(VM.RequestTransactionViewModel model)
         {
             
              if (model.productId != null && model.quantity != null)
@@ -65,7 +65,7 @@ namespace Financial_Management_Application.Controllers
             else
             {
                 
-                model = new RequestTransactionViewModel();
+                model = new VM.RequestTransactionViewModel();
             }
 
             List<Product> ProductTable;
@@ -110,7 +110,7 @@ namespace Financial_Management_Application.Controllers
         // NOTE:TODO: create another view for requester users
 
         /// <summary>
-        /// Add post to request transaction
+        /// submits to paypal
         /// </summary>
         /// <returns></returns>
         [HttpPost]
@@ -223,12 +223,23 @@ namespace Financial_Management_Application.Controllers
             }
             Session[AppSettings.SessionVariables.TRANSACTION] = null; // reset the cart
 
-            return View(new CompletedViewModel()
+            return View(new VM.CompletedViewModel()
             {
                 boughtItems = boughtItems
             });
         }
 
+        /// <summary>
+        /// Takes a transactions page and allows the non purchasing agent to submit a request to a purchasing agent
+        /// 
+        /// Put a if block in the requesttransaction to show a different button with a diffeerent request to this controller which will post the data either 
+        /// in a string format to be read in later or a separte database table that stores intermittant requests
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult RequestPayer()
+        {
+            return View();
+        }
         public ActionResult Remove(int? Id)
         {
             if(Id == null)
@@ -240,7 +251,15 @@ namespace Financial_Management_Application.Controllers
         }
         public ActionResult Index()
         {
-            return View();
+            List<Transaction> transactions;
+            using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
+            {
+                transactions = db_manager.Transactions.Include(AppSettings.Includes.Product).ToList();
+            }
+            return View(new VM.IndexViewModel()
+            {
+                transactions = transactions
+            });
         }
     }
 }

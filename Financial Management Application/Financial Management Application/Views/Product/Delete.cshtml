@@ -2,9 +2,10 @@
 @{
     ViewBag.Title = "Delete";
 }
+<hr style="margin:0 0 12px 0" />
 @Html.ActionLink("View Products", "Index", null, new { @class = "btn" })
-
-
+<hr style="margin:0 0 12px 0" />
+transfer from the old product to a newer one that reference the same transaction
 @if (@Model.transactions.Count > 1)
 {
     using (Html.BeginForm("Delete", "Product", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
@@ -31,9 +32,11 @@
 <table class="table">
     <thead>
         <tr>
+            <th>Cart Id</th>
             <th>Name</th>
             <th>Price</th>
-            <th>Category</th>
+            <th>Quantity</th>
+            <th></th>
         </tr>
     </thead>
     <tbody id="tableBody">
@@ -41,7 +44,9 @@
         {
             <tr id="Edit@(Model.transactions[i].Id)">
                 <td>@Model.transactions[i].cartId</td>
-                <td>@Model.transactions[i].isDeleted</td>
+                <td>@Model.transactions[i].Product.name</td>
+                <td>@Model.transactions[i].unitPrice</td>
+                <td>@Model.transactions[i].quantity</td>
                 <td class="form-group">
                     <div class="col-md-10">
                         @Html.ActionLink("Create new Product", "Create", "Product")
