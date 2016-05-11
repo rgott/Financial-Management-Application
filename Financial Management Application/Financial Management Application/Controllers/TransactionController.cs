@@ -168,7 +168,7 @@ namespace Financial_Management_Application.Controllers
             switch (submit)
             {
                 case "Checkout":
-                    if(!User.IsInRole(AppSettings.Roles.PURCHASINGAGENT))
+                    if(!(User.IsInRole(AppSettings.Roles.PURCHASINGAGENT) || User.IsInRole(AppSettings.Roles.CONGRESS)))
                     {
                         return new HttpNotFoundResult();
                     }
@@ -319,9 +319,18 @@ namespace Financial_Management_Application.Controllers
 
             List<Transaction> boughtItems;
             SessionSaver.Load.transactions(Session, out boughtItems);
-            for (int i = 0; i < boughtItems.Count; i++)
+            using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
             {
-                SessionSaver.Update.transaction(Session, boughtItems[i]);
+                string email = User.Identity.Name;
+                Models.User usr = db_manager.Users.FirstOrDefault(m => m.Email == email);
+                
+                for (int i = 0; i < boughtItems.Count; i++)
+                {
+                    boughtItems[i].purchaserId = usr.Id;
+                    boughtItems[i].purchaseDate = DateTime.Now;
+                    db_manager.Transactions.Add(boughtItems[i]);
+                }
+                db_manager.SaveChanges();
             }
             Session[AppSettings.SessionVariables.TRANSACTION] = null; // reset the cart
 

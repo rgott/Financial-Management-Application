@@ -35,7 +35,7 @@
     </div>
 </div>
 
-@if(User.IsInRole(AppSettings.Roles.PURCHASINGAGENT))
+@if(User.IsInRole(AppSettings.Roles.PURCHASINGAGENT) || User.IsInRole(AppSettings.Roles.CONGRESS))
 {
 
     using(Html.BeginForm("RequestTransaction","Transaction",FormMethod.Post, new { @class = "form-horizontal", role = "form" }))

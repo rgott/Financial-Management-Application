@@ -17,8 +17,18 @@ namespace Financial_Management_Application.Controllers
         {
             return View(); 
         }
-
-
+        public static void AddOrInsert(ref Dictionary<string,int> dictionary,string key, int value)
+        {
+            var data = dictionary.FirstOrDefault(m => m.Key == key);
+            if (!data.Equals(default(KeyValuePair<string, int>)))
+            {
+                dictionary[data.Key] += value;
+            }
+            else
+            {
+                dictionary.Add(key, value);
+            }
+        }
         // GET: Report
         public ActionResult barChart()
         {
@@ -33,12 +43,11 @@ namespace Financial_Management_Application.Controllers
                 prods = db_manager.Products.ToList();
                 cats = db_manager.Categories.ToList();
             }
-
             // transactions
             Dictionary<string, int> transData = new Dictionary<string, int>();
             foreach (var item in trans)
             {
-                transData.Add(item.Product.name, item.quantity);
+                AddOrInsert(ref transData,item.Product.name, item.quantity);
             }
             string transactions = printJSArray("ProductID", "Quantity", transData);
 
@@ -46,7 +55,7 @@ namespace Financial_Management_Application.Controllers
             Dictionary<string, int> transBarData = new Dictionary<string, int>();
             foreach (var item in transBar)
             {
-                transBarData.Add(item.productId.ToString(), item.quantity);
+                AddOrInsert(ref transBarData, item.productId.ToString(), item.quantity);
             }
             string transactionsBar = printJSArray("ProductID", "Quantity", transBarData);
 
@@ -56,7 +65,7 @@ namespace Financial_Management_Application.Controllers
             Dictionary<string, int> prodsData = new Dictionary<string, int>();
             foreach (var item in prods)
             {
-                prodsData.Add(item.name.ToString(), (int)item.price);
+                AddOrInsert(ref prodsData, item.name, (int)item.price);
             }
             string products = printJSArray("ProductID", "Price", prodsData);
 
@@ -66,7 +75,7 @@ namespace Financial_Management_Application.Controllers
             Dictionary<string, int> catsData = new Dictionary<string, int>();
             foreach (var item in cats)
             {
-                catsData.Add(item.name.ToString(), item.name.Length);
+                AddOrInsert(ref catsData, item.name, item.name.Length);
             }
             string categories = printJSArray("category", "name length", catsData);
 
