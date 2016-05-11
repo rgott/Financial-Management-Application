@@ -1,4 +1,5 @@
 ﻿@model Financial_Management_Application.Models.ReportVM.ReportItemsViewModel
+
 @{
     ViewBag.Title = "Index";
 }
@@ -7,11 +8,28 @@
 
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<div id="transactionBar" class="col-md-5" style="width: 500px; height: 300px;"></div>
 <div id="piechartTransactions" class="col-md-5" style="width: 500px; height: 300px;"></div>
 <div id="piechartProducts" class="col-md-5" style="width: 500px; height: 300px;"></div>
 <div id="piechartCategories" class="col-md-5" style="width: 500px; height: 300px;"></div>
+
+
 <script>
     google.charts.load('current', {'packages':['corechart']});
+
+
+    google.charts.setOnLoadCallback(drawBarTransactions);
+    function drawBarTransactions()
+    {
+        var data = google.visualization.arrayToDataTable(@Html.Raw(@Model.transBar));
+        var options = {
+            title: 'Transactions Bar chart',
+        };
+        var chart = new google.visualization.BarChart(document.getElementById('transactionBar'));
+        chart.draw(data, options);
+    }
+
+
     google.charts.setOnLoadCallback(drawTransactions);
     function drawTransactions()
     {
@@ -42,5 +60,6 @@
         var chart = new google.visualization.PieChart(document.getElementById('piechartCategories'));
         chart.draw(data, options);
     }
+
 </script>
       
