@@ -14,6 +14,8 @@
                     <li>@Html.ActionLink("View Transactions", "Index", "Transaction")</li>
                     <li>@Html.ActionLink("View Products", "Index", "Product")</li>
                     <li>@Html.ActionLink("View Categories", "Index", "Category")</li>
+                    <li>@Html.ActionLink("View Reports", "barChart", "Report")</li>
+
                     <li>
                         <input type="submit" style="border-right:1px solid #333" class="btn btnSqr" onclick="location.href='@Url.Action("Index", "Manage")';return false;" value="Manage" />
                         <input class="btn btnSqr" type="submit" name="Logout" value="Log Out" />

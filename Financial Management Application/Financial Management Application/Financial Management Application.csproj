@@ -401,6 +401,7 @@
     <Content Include="Views\Transaction\PaypalFatal.cshtml" />
     <Content Include="Views\Transaction\Remove.cshtml" />
     <Content Include="Views\Transaction\RequestCompletion.cshtml" />
+    <Content Include="Views\Report\PubReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

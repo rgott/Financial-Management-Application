@@ -13,15 +13,23 @@ namespace Financial_Management_Application.Controllers
     [Authorize]
     public class ReportController : Controller
     {
+        public ActionResult PubReport()
+        {
+            return View(); 
+        }
+
+
         // GET: Report
         public ActionResult barChart()
         {
             List<Transaction> trans = new List<Transaction>();
+            List<Transaction> transBar = new List<Transaction>(); 
             List<Product> prods = new List<Product>();
             List<Category> cats = new List<Category>();
             using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
             {
-                trans = db_manager.Transactions.ToList();
+                trans = db_manager.Transactions.Include(AppSettings.Includes.Product).ToList();
+                transBar = db_manager.Transactions.ToList(); 
                 prods = db_manager.Products.ToList();
                 cats = db_manager.Categories.ToList();
             }
@@ -30,28 +38,41 @@ namespace Financial_Management_Application.Controllers
             Dictionary<string, int> transData = new Dictionary<string, int>();
             foreach (var item in trans)
             {
-                transData.Add(item.productId.ToString(), item.quantity);
+                transData.Add(item.Product.name, item.quantity);
             }
             string transactions = printJSArray("ProductID", "Quantity", transData);
+
+
+            Dictionary<string, int> transBarData = new Dictionary<string, int>();
+            foreach (var item in transBar)
+            {
+                transBarData.Add(item.productId.ToString(), item.quantity);
+            }
+            string transactionsBar = printJSArray("ProductID", "Quantity", transBarData);
+
+
 
             // products
             Dictionary<string, int> prodsData = new Dictionary<string, int>();
             foreach (var item in prods)
             {
-                prodsData.Add(item.Id.ToString(), (int)item.price);
+                prodsData.Add(item.name.ToString(), (int)item.price);
             }
             string products = printJSArray("ProductID", "Price", prodsData);
+
+
 
             // categories
             Dictionary<string, int> catsData = new Dictionary<string, int>();
             foreach (var item in cats)
             {
-                catsData.Add(item.Id.ToString(), item.name.Length);
+                catsData.Add(item.name.ToString(), item.name.Length);
             }
             string categories = printJSArray("category", "name length", catsData);
 
             return View(new ReportItemsViewModel()
             {
+                transBar = transactionsBar,
                 transactions = transactions,
                 products = products,
                 categories = categories

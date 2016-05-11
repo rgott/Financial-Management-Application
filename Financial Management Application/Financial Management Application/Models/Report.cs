@@ -9,6 +9,7 @@ namespace Financial_Management_Application.Models.ReportVM
 {
     public class ReportItemsViewModel
     {
+        public string transBar { get; set; }  
         public string transactions { get; set; }
         public string products { get; set; }
         public string categories { get; set; }
