@@ -270,6 +270,7 @@ namespace Financial_Management_Application.Controllers
                         if(notify != null)
                         {
                             db_manager.Notifications.Remove(notify);
+                            db_manager.SaveChanges();
                         }
                     }
 

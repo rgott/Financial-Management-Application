@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace Financial_Management_Application.Controllers
 {
+    [Authorize]
     public class TransactionController : ControllerModel
     {
         /// <summary>
@@ -26,7 +27,11 @@ namespace Financial_Management_Application.Controllers
                     Session[AppSettings.SessionVariables.TRANSACTION] = null;
                     using (FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF())
                     {
-                        List<TransactionRequest> transR = db_manager.TransactionRequests.ToList();
+                        Notification notify = db_manager.Notifications.FirstOrDefault(m => m.notifyText == Id);
+                        db_manager.Notifications.Remove(notify);
+                        var transS = db_manager.TransactionRequests;
+                        db_manager.TransactionRequests.RemoveRange(transS);
+                        List<TransactionRequest> transR = transS.ToList();
                         transR = transR.FindAll(m => m.cartId == id).ToList();
                         foreach (var item in transR)
                         {
@@ -42,11 +47,10 @@ namespace Financial_Management_Application.Controllers
                                 isDeleted = false
                             });
                         }
-
+                        db_manager.SaveChanges();
                     }
                 }
             }
-
             else if (model.productId != null && model.quantity != null)
             {
                 if (model.quantity <= 0)
@@ -161,11 +165,6 @@ namespace Financial_Management_Application.Controllers
         [HttpPost]
         public ActionResult RequestTransaction(string submit)
         {
-            var RequestTransactionString = TempData["RequestTransactionString"];
-            if (RequestTransactionString != null)
-            {
-                ViewBagHelper.setMessage(ViewBag, ViewBagHelper.MessageType.SuccessMsgBox, (string)RequestTransactionString);
-            }
             switch (submit)
             {
                 case "Checkout":
@@ -305,14 +304,12 @@ namespace Financial_Management_Application.Controllers
             }
             return new HttpNotFoundResult();
         }
+
         public ActionResult RequestCompletion()
         {
             return View();
         }
-        public ActionResult Trans()
-        {
-            return null;
-        }
+
         public ActionResult Completed()
         {
             if (HttpContext.Request.UrlReferrer != null) // comes from another site
@@ -354,6 +351,7 @@ namespace Financial_Management_Application.Controllers
             SessionSaver.Remove.transaction(Session, (int)Id);
             return Redirect(Url.Action("RequestTransaction"));
         }
+
         public ActionResult Index()
         {
             List<Transaction> transactions;

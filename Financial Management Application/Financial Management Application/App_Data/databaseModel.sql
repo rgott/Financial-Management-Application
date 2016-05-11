@@ -179,7 +179,8 @@ CREATE TABLE [dbo].[Notifications]
 	[Email] NVARCHAR(MAX) NOT NULL,
 	[DivisionId] BIGINT NOT NULL,
     [notifyType] NVARCHAR(50) NOT NULL, 
-    [notifyText] TEXT NOT NULL, 
+    [notifyText] NVARCHAR(MAX) NULL, 
+    [Role] NVARCHAR(MAX) NULL, 
     [timeStamp] DATETIME2 NOT NULL
 )
 GO

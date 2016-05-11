@@ -125,6 +125,7 @@
     <Property Name="timeStamp" Type="DateTime" Nullable="false" Precision="7" />
     <NavigationProperty Name="Address" Relationship="FM_DatastoreModel.FK_Notifications_AddressId" FromRole="Notification" ToRole="Address" />
     <NavigationProperty Name="Division" Relationship="FM_DatastoreModel.FK_Notifications_DivisionId" FromRole="Notification" ToRole="Division" />
+    <Property Name="Role" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="NotRestricted">
     <Key>

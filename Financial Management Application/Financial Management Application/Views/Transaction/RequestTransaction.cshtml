@@ -70,8 +70,8 @@ else
     <table class="table" id="datatable" style="float:left">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Name</th>
+                <th>Category</th>
                 <th>Price</th>
                 <th>Quantity</th>
                 <th></th>
@@ -86,7 +86,7 @@ else
                 using (Html.BeginForm("RequestTransaction", "Transaction", FormMethod.Get, new { @class = "form-horizontal", role = "form" }))
                 {
                     <tr>
-                        <td>@i</td>
+                        <td>@Html.DisplayFor(m => m.ProductTable[i].name)</td>
                         <td>@Html.DisplayFor(m => m.ProductTable[i].Category.name)</td>
                         <td>@Html.DisplayFor(m => m.ProductTable[i].price)</td>
                         

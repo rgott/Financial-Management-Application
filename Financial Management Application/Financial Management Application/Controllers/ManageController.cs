@@ -272,8 +272,6 @@ namespace Financial_Management_Application.Controllers
             FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF();
             var notifyListDB = db_manager.Notifications.ToList();
 
-           
-
             // get division list
             List<SelectListItem> RolesList = new List<SelectListItem>();
             new SelectList(db_manager.Addresses, "Id", "addressLine1");
@@ -297,19 +295,34 @@ namespace Financial_Management_Application.Controllers
                 notifyList = notifyListDB
             });
         }
+
+
         public ActionResult Notify()
         {
             return NotifyView();
         }
 
+
         [HttpPost]
-        public ActionResult Notify(NotifyViewModel model, string submitButton, string id)
+        public ActionResult Notify(NotifyViewModel model, string submitButton, string id, long? Role)
         {
+            if(User.IsInRole(AppSettings.Roles.APPROVEDUSER) || User.IsInRole(AppSettings.Roles.AUDITORS))
+            {
+                return new HttpNotFoundResult();
+            }
+
             if(model.Role == null)
             {
                 return View(model); // redisplay the view if error
             }
+
             long role = (long)model.Role;
+
+            if(Role != null)
+            {
+                role = (long)Role;
+            }
+
             model.notifyList = (List<Notification>)Session["notifyListDB"];
             model.Role = (long)Session["roleResult"];
             model.Roles = (List<SelectListItem>)Session["RolesList"];
@@ -339,6 +352,7 @@ namespace Financial_Management_Application.Controllers
                                 oldNotify.AddressId,
                                 oldNotify.DivisionId,
                                 role));
+                    ViewBagHelper.setMessage(ViewBag,ViewBagHelper.MessageType.SuccessMsgBox,"New user request resent to \"" + oldNotify.Email + "\"");
                     return NotifyView();
                 case "Accept":
                     if(oldNotify.notifyType.Equals(AppSettings.Notify.newUser))
@@ -359,8 +373,10 @@ namespace Financial_Management_Application.Controllers
                                     oldNotify.DivisionId,
                                     role));
                         oldNotify.notifyType = AppSettings.Notify.pendingUser;
+                        oldNotify.Role = db_manager.Roles.FirstOrDefault(m => m.Id == role).Name;
                         db_manager.Entry(oldNotify);
                         db_manager.SaveChanges();
+                        db_manager.Dispose();
                     }
                     return NotifyView();
                 case "Deny":
@@ -370,7 +386,6 @@ namespace Financial_Management_Application.Controllers
                     model.notifyList.Remove(model.notifyList.First(m => m.Id == result)); // remove from current model
                     db_manager.Notifications.Remove(oldNotify);
                     break;
-                
                 default:
                     break;
             }
