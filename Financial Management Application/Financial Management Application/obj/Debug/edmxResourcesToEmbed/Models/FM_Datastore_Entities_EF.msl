@@ -33,6 +33,7 @@
     <EntitySetMapping Name="Notifications">
       <EntityTypeMapping TypeName="FM_DatastoreModel.Notification">
         <MappingFragment StoreEntitySet="Notifications">
+          <ScalarProperty Name="Role" ColumnName="Role" />
           <ScalarProperty Name="timeStamp" ColumnName="timeStamp" />
           <ScalarProperty Name="notifyText" ColumnName="notifyText" />
           <ScalarProperty Name="notifyType" ColumnName="notifyType" />

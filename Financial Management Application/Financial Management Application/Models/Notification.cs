@@ -20,6 +20,7 @@ namespace Financial_Management_Application.Models
         public long DivisionId { get; set; }
         public string notifyType { get; set; }
         public string notifyText { get; set; }
+        public string Role { get; set; }
         public System.DateTime timeStamp { get; set; }
     
         public virtual Address Address { get; set; }

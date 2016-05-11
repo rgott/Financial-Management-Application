@@ -40,7 +40,8 @@
           <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
           <Property Name="DivisionId" Type="bigint" Nullable="false" />
           <Property Name="notifyType" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="notifyText" Type="text" Nullable="false" />
+          <Property Name="notifyText" Type="nvarchar(max)" />
+          <Property Name="Role" Type="nvarchar(max)" />
           <Property Name="timeStamp" Type="datetime2" Precision="7" Nullable="false" />
         </EntityType>
         <EntityType Name="NotRestricted">
@@ -585,7 +586,8 @@
           <Property Name="Email" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="DivisionId" Type="Int64" Nullable="false" />
           <Property Name="notifyType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="notifyText" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="notifyText" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Role" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="timeStamp" Type="DateTime" Nullable="false" Precision="7" />
           <NavigationProperty Name="Address" Relationship="FM_DatastoreModel.FK_Notifications_AddressId" FromRole="Notification" ToRole="Address" />
           <NavigationProperty Name="Division" Relationship="FM_DatastoreModel.FK_Notifications_DivisionId" FromRole="Notification" ToRole="Division" />
@@ -953,6 +955,7 @@
             <EntityTypeMapping TypeName="FM_DatastoreModel.Notification">
               <MappingFragment StoreEntitySet="Notifications">
                 <ScalarProperty Name="timeStamp" ColumnName="timeStamp" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
                 <ScalarProperty Name="notifyText" ColumnName="notifyText" />
                 <ScalarProperty Name="notifyType" ColumnName="notifyType" />
                 <ScalarProperty Name="DivisionId" ColumnName="DivisionId" />

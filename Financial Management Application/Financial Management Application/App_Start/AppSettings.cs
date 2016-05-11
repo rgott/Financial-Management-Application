@@ -35,43 +35,49 @@ namespace Financial_Management_Application
             public const string SUPERVISOR = "Supervisors";
             public const string PURCHASINGAGENT = "Purchasing Agent";
             public const string APPROVEDUSER = "Approved User";
+            public const string EXTERNAL = "External";
 
             public static readonly List<SelectListItem> ComboBox = new List<SelectListItem>()
             {
                 new SelectListItem()
                 {
-                    Text = "Auditors",
-                    Value = "Auditors"
+                    Text = AUDITORS,
+                    Value = AUDITORS
                 },
                 new SelectListItem()
                 {
-                    Text = "Administrator",
-                    Value = "Administrator"
+                    Text = EXTERNAL,
+                    Value = EXTERNAL
                 },
                 new SelectListItem()
                 {
-                    Text = "Manager",
-                    Value = "Manager"
+                    Text = ADMIN,
+                    Value = ADMIN
                 },
                 new SelectListItem()
                 {
-                    Text = "Supervisors",
-                    Value = "Supervisors"
+                    Text = MANAGER,
+                    Value = MANAGER
                 },
                 new SelectListItem()
                 {
-                    Text = "Purchasing Agent",
-                    Value = "Purchasing Agent"
+                    Text = SUPERVISOR,
+                    Value = SUPERVISOR
                 },
                 new SelectListItem()
                 {
-                    Text = "Approved User",
-                    Value = "Approved User"
+                    Text = PURCHASINGAGENT,
+                    Value = PURCHASINGAGENT
                 },
                 new SelectListItem()
                 {
-                    Text = "Congress",
-                    Value = "Congress"
+                    Text = APPROVEDUSER,
+                    Value = APPROVEDUSER
+                },
+                new SelectListItem()
+                {
+                    Text = CONGRESS,
+                    Value = CONGRESS
                 }
             };
         }

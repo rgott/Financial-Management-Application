@@ -7,7 +7,7 @@ using Financial_Management_Application.Models.CategoryVM;
 
 namespace Financial_Management_Application.Controllers
 {
-    
+    [Authorize]
     public class CategoryController : ControllerModel
     {
         /// <summary>

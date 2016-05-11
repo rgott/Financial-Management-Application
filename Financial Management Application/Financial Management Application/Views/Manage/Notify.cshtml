@@ -24,58 +24,62 @@ else
         <tbody>
             @foreach (var item in Model.notifyList)
             {
-                using (Html.BeginForm("Notify", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                {
-                    <tr>
-                        @if (item.notifyType.Equals(AppSettings.Notify.newUser))
+                <tr>
+                    @*if you are a * then you can accept new users*@
+                    @if ((User.IsInRole(AppSettings.Roles.MANAGER) && (Model.Role.Equals(AppSettings.Roles.SUPERVISOR)))
+                        || (User.IsInRole(AppSettings.Roles.CONGRESS)) @* Congress can add them all*@
+                        || (User.IsInRole(AppSettings.Roles.ADMIN) && (Model.Role.Equals(AppSettings.Roles.MANAGER)))
+                        || (User.IsInRole(AppSettings.Roles.SUPERVISOR) && (Model.Role.Equals(AppSettings.Roles.APPROVEDUSER) || Model.Role.Equals(AppSettings.Roles.PURCHASINGAGENT) || Model.Role.Equals(AppSettings.Roles.EXTERNAL)))
+                        )
+                    {
+                        using (Html.BeginForm("Notify", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                         {
-                            <td>@item.notifyType</td>
-                            <td>@item.notifyText</td>
-                            <td class="form-group">
-                                @Html.LabelFor(m => m.Role, new { @class = "col-md-2 control-label" })
-                                <div class="col-md-10">
-                                    @Html.DropDownListFor(m => m.Role, Model.Roles, new { @class = "form-control" })
-                                </div>
-                            </td>
-                            <td class="form-group row">
-                                <input type="hidden" name="id" value="@item.Id" />
-                                <div class="col-md-3">
-                                    <input type="submit" name="submitButton" class="btn btn-default" value="Accept" />
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="submit" name="submitButton" class="btn btn-default" value="Deny" />
-                                </div>
-                            </td>
-                        }
-                        else if (item.notifyType.Equals(AppSettings.Notify.pendingUser))
-                        { // alternate display
-                            <td>@item.notifyType</td>
-                            <td>@item.notifyText</td>
-                            <td></td>
-                            <td class="form-group row">
-                                <input type="hidden" name="id" value="@item.Id" />
-                                <div class="col-md-3">
-                                    <input type="submit" name="submitButton" class="btn btn-default" value="Resend Notification" />
-                                </div>
-                            </td>
-                        }
-                        else
-                        {
-                            if (User.IsInRole(AppSettings.Roles.PURCHASINGAGENT))
+                            if (item.notifyType.Equals(AppSettings.Notify.newUser))
                             {
+
                                 <td>@item.notifyType</td>
                                 <td>@item.notifyText</td>
-                                <td></td>
+                                <td>@Html.DropDownListFor(m => m.Role, Model.Roles, new { @class = "form-control" })</td>
                                 <td class="form-group row">
                                     <input type="hidden" name="id" value="@item.Id" />
                                     <div class="col-md-3">
-                                        @Html.ActionLink("Load Transaction (Deletes current cart)","RequestTransaction", "Transaction", new { Id = @item.notifyText }, new { })
+                                        <input type="submit" name="submitButton" class="btn btn-default" value="Accept" />
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="submit" name="submitButton" class="btn btn-default" value="Deny" />
+                                    </div>
+                                </td>
+                            }
+                            else if (item.notifyType.Equals(AppSettings.Notify.pendingUser))
+                            { // alternate display
+                                <td>@item.notifyType</td>
+                                <td>@item.notifyText</td>
+                                <td>@item.Role</td>
+                                <td class="form-group row">
+                                    @Html.Hidden("Role", item.Role)
+                                    <input type="hidden" name="id" value="@item.Id" />
+                                    <div class="col-md-3">
+                                        <input type="submit" name="submitButton" class="btn btn-default" value="Resend Notification" />
                                     </div>
                                 </td>
                             }
                         }
-                    </tr>
-                }
+                    }
+
+                    @*show transaction requests to perchasing agents*@
+                    else if (item.notifyType.Equals(AppSettings.Notify.pendingTransactionRequest) && (User.IsInRole(AppSettings.Roles.PURCHASINGAGENT) || User.IsInRole(AppSettings.Roles.CONGRESS)))
+                    {
+                        <td>@item.notifyType</td>
+                        <td>@item.notifyText</td>
+                        <td>@item.Role</td>
+                        <td class="form-group row">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <div class="col-md-3">
+                                @Html.ActionLink("Load Transaction (Deletes current cart)", "RequestTransaction", "Transaction", new { Id = @item.notifyText }, new { })
+                            </div>
+                        </td>
+                    }
+                </tr>
             }
         </tbody>
     </table>

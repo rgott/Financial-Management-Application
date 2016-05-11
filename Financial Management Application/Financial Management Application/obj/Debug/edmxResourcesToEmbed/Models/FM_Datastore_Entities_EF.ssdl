@@ -36,6 +36,7 @@
     <Property Name="DivisionId" Type="bigint" Nullable="false" />
     <Property Name="notifyType" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="notifyText" Type="text" Nullable="false" />
+    <Property Name="Role" Type="text" />
     <Property Name="timeStamp" Type="datetime2" Precision="7" Nullable="false" />
   </EntityType>
   <EntityType Name="NotRestricted">

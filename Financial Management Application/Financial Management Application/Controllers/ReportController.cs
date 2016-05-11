@@ -10,6 +10,7 @@ using System.Text;
 
 namespace Financial_Management_Application.Controllers
 {
+    [Authorize]
     public class ReportController : Controller
     {
         // GET: Report
