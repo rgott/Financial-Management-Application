@@ -16,7 +16,7 @@ body
     background: -moz-linear-gradient(0, $shade,$shade,$shade,$shade,#FFF); /* For Firefox 3.6 to 15 */
     background: linear-gradient(0, $shade,$shade,$shade,$shade,#FFF); /* Standard syntax */
     
-    padding-top: 50px;
+    padding-top: 40px;
     padding-bottom: 20px;
     margin-bottom: 60px;
 }
@@ -35,10 +35,12 @@ carousel-inner
 }
 .dropdown-menu > li:hover
 {
-    background-color:$AccentColor;
+    background-color:$LightPrimaryColor;
 }
 .login-panel
 {
+    width: 100%;
+    text-align:right;
     padding-bottom:0; 
     background-color:white;
     li:last-child
@@ -47,7 +49,6 @@ carousel-inner
         border-top:3px solid $DarkPrimaryColor;
     }
 }
-
 footer 
 {
   padding:20px;
@@ -107,9 +108,12 @@ textarea {
 
     .navbar-nav .open .dropdown-menu 
     {
+        margin-top:2px;
+        float:right;
         text-align: right;
+        width:240px;
         border: 1px solid #efefef;
-        margin-top: 2px;
+        background-color:#FFF;
     }
 
     .navbar-default .navbar-nav > .open > a,
@@ -127,29 +131,6 @@ textarea {
     float: left;
     border-radius: 0;
     background-color: $LightPrimaryColor;
-}
-
-@media only screen and (max-width: 768px) {
-    .mobileNav {
-        position: absolute;
-        right: 80px !important;
-        top: 0;
-        width: 195px;
-        text-align: right;
-    }
-
-    .navbar-nav .open .dropdown-menu {
-        text-align: right;
-        border: 1px solid #efefef;
-        margin-top: 2px;
-    }
-
-    .navbar-default .navbar-nav > .open > a,
-    .navbar-default .navbar-nav > .open > a:hover,
-    .navbar-default .navbar-nav > .open > a:active,
-    .navbar-default .navbar-nav > .open > a:focus {
-        background: none;
-    }
 }
 
 /* navbar */
@@ -207,7 +188,7 @@ textarea {
 
 .navbar-default .navbar-toggle:hover,
 .navbar-default .navbar-toggle:focus {
-    background-color: transparent;
+    background-color: $DarkPrimaryColor;
 }
 
 .navbar-default .navbar-toggle .icon-bar {

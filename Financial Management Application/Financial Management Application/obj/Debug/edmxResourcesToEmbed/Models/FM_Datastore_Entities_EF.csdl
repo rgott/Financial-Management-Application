@@ -121,11 +121,11 @@
     <Property Name="Email" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="DivisionId" Type="Int64" Nullable="false" />
     <Property Name="notifyType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="notifyText" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="notifyText" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Role" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="timeStamp" Type="DateTime" Nullable="false" Precision="7" />
     <NavigationProperty Name="Address" Relationship="FM_DatastoreModel.FK_Notifications_AddressId" FromRole="Notification" ToRole="Address" />
     <NavigationProperty Name="Division" Relationship="FM_DatastoreModel.FK_Notifications_DivisionId" FromRole="Notification" ToRole="Division" />
-    <Property Name="Role" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="NotRestricted">
     <Key>
