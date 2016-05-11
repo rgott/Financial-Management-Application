@@ -272,6 +272,8 @@ namespace Financial_Management_Application.Controllers
             FM_Datastore_Entities_EF db_manager = new FM_Datastore_Entities_EF();
             var notifyListDB = db_manager.Notifications.ToList();
 
+           
+
             // get division list
             List<SelectListItem> RolesList = new List<SelectListItem>();
             new SelectList(db_manager.Addresses, "Id", "addressLine1");
@@ -327,7 +329,8 @@ namespace Financial_Management_Application.Controllers
                         oldNotify.Email,
                         "Access Approved",
                         "here is the link to sign up this link will only be available for so long - "
-                            + HttpContext.Request.Url.Authority
+                        + "https://"    
+                        + HttpContext.Request.Url.Authority
                             + Url.Action("Register", "Account")
                             + "?rqst="
                             + UrlEncryption.Encrypt(
@@ -345,6 +348,7 @@ namespace Financial_Management_Application.Controllers
                             oldNotify.Email,
                             "Access Approved",
                             "here is the link to sign up this link will only be available for so long - "
+                                + "https://"
                                 + HttpContext.Request.Url.Authority
                                 + Url.Action("Register", "Account")
                                 + "?rqst="

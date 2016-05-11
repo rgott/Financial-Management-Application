@@ -3,37 +3,43 @@
 @Html.ActionLink("View Products", "Index", "Product", null, new { @class = "btn" })
 @Html.ActionLink("Add Category", "Create", "Category", null, new { @class = "btn" })
 <hr style="margin:0 0 12px 0" />
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody id="tableBody">
-        
-        @foreach (var item in Model.categories)
-        {
-            <tr id="Edit@(item.Id)">
-                <td>@item.name</td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { Id = item.Id }, new { @class = "btn" })
-                    @Html.ActionLink("Delete", "Delete", new { Id = item.Id }, new { @class = "btn", @onclick = "replaceWithMsg(" + @item.Id + ",'Please wait Redirecting to delete page')" })
-                </td>
+@if (Model.categories.Count == 0)
+{
+    <p>No categories available </p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th></th>
             </tr>
+        </thead>
+        <tbody id="tableBody">
+        
+            @foreach (var item in Model.categories)
+            {
+                <tr id="Edit@(item.Id)">
+                    <td>@item.name</td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { Id = item.Id }, new { @class = "btn" })
+                        @Html.ActionLink("Delete", "Delete", new { Id = item.Id }, new { @class = "btn", @onclick = "replaceWithMsg(" + @item.Id + ",'Please wait Redirecting to delete page')" })
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+    <script>
+        function replaceWithMsg(Id, msg)
+        {
+            var cat = document.getElementById('Edit' + Id);
+            cat.innerHTML = "<td style='background-color:#DA4453; width:140;'>" + msg + "</td><td></td><td></td>";
         }
-
-    </tbody>
-</table>
-
-<script>
-    function replaceWithMsg(Id, msg)
-    {
-        var cat = document.getElementById('Edit' + Id);
-        cat.innerHTML = "<td style='background-color:#DA4453; width:140;'>" + msg + "</td><td></td><td></td>";
-    }
 </script>
+}
 @section scripts{
     @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
 }

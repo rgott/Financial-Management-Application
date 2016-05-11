@@ -35,6 +35,7 @@ namespace Financial_Management_Application.Models
         public virtual DbSet<ReturnState> ReturnStates { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Transaction> Transactions { get; set; }
+        public virtual DbSet<TransactionRequest> TransactionRequests { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserClaim> UserClaims { get; set; }
         public virtual DbSet<UserLogin> UserLogins { get; set; }

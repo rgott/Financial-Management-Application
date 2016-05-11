@@ -2,8 +2,10 @@
 
 @using (Ajax.BeginForm("Create", "Category", new AjaxOptions { HttpMethod = "POST" }, new { @class = "form-horizontal", role = "form" }))
 {
+    <hr style="margin:12px 0 0 0" />
     @Html.ActionLink("View Products", "Index", "Product", null, new { @class = "btn" })
     @Html.ActionLink("View Categories", "Index", "Category", null, new { @class = "btn" })
+    <hr style="margin:0 0 12px 0" />
 
     <div class="form-group">
         <label class="col-md-2 control-label">Name</label>
@@ -13,7 +15,7 @@
     </div>
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Save Category" />
+            <input type="submit" class="btn btn-default" value="Save Category"/>
         </div>
     </div>
 }

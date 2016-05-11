@@ -1,0 +1,330 @@
+﻿// site Palette
+$DarkPrimaryColor:  #338E3C;
+$PrimaryColor:      #4CAF50;
+$LightPrimaryColor: #C8E6C9;
+$Text_Icons:        #FFFFFF;
+$AccentColor:       #536DFE;
+$PrimaryText:       #212121;
+$SecondaryText:     #727272;
+$DividerColor:      #B6B6B6;
+$shade:             #EEEEEE;
+body
+{
+    background: $shade; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(0, $shade,$shade,$shade,$shade,#FFF); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(0, $shade,$shade,$shade,$shade,#FFF); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(0, $shade,$shade,$shade,$shade,#FFF); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(0, $shade,$shade,$shade,$shade,#FFF); /* Standard syntax */
+    
+    padding-top: 50px;
+    padding-bottom: 20px;
+    margin-bottom: 60px;
+}
+html
+{
+  position: relative;
+  min-height: 100%;
+}
+carousel-inner
+{
+    height:400px !important;
+}
+.carousel-inner > .item > img, .carousel-inner > .item > a > img {
+    width: auto !important;
+    height:400px !important;
+}
+.dropdown-menu > li:hover
+{
+    background-color:$AccentColor;
+}
+.login-panel
+{
+    padding-bottom:0; 
+    background-color:white;
+    li:last-child
+    {
+        margin-top:1px;
+        border-top:3px solid $DarkPrimaryColor;
+    }
+}
+
+footer 
+{
+  padding:20px;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: $LightPrimaryColor;
+}
+
+/* Fixed navbar styles */
+body > .container 
+{
+  padding-top: 60px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt 
+{
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.mobileNav {
+    position: absolute;
+    right: 20px;
+    top: 0;
+}
+
+@media only screen and (max-width: 768px) 
+{
+    .carousel-inner > .item > img, .carousel-inner > .item > a > img {
+        width: auto !important;
+        height:200px !important;
+    }
+    carousel-inner
+    {
+        height:200px !important;
+    }
+    .mobileNav
+    {
+        position: absolute;
+        right: 80px !important;
+        top: 0;
+        width: auto !important;
+        text-align: right;
+    }
+
+    .navbar-nav .open .dropdown-menu 
+    {
+        text-align: right;
+        border: 1px solid #efefef;
+        margin-top: 2px;
+    }
+
+    .navbar-default .navbar-nav > .open > a,
+    .navbar-default .navbar-nav > .open > a:hover,
+    .navbar-default .navbar-nav > .open > a:active,
+    .navbar-default .navbar-nav > .open > a:focus 
+    {
+        background: none;
+    }
+}
+
+.btnSqr
+{
+    width: 50%;
+    float: left;
+    border-radius: 0;
+    background-color: $LightPrimaryColor;
+}
+
+@media only screen and (max-width: 768px) {
+    .mobileNav {
+        position: absolute;
+        right: 80px !important;
+        top: 0;
+        width: 195px;
+        text-align: right;
+    }
+
+    .navbar-nav .open .dropdown-menu {
+        text-align: right;
+        border: 1px solid #efefef;
+        margin-top: 2px;
+    }
+
+    .navbar-default .navbar-nav > .open > a,
+    .navbar-default .navbar-nav > .open > a:hover,
+    .navbar-default .navbar-nav > .open > a:active,
+    .navbar-default .navbar-nav > .open > a:focus {
+        background: none;
+    }
+}
+
+/* navbar */
+.navbar-default {
+    background-color: $PrimaryColor;
+    border-color: $DarkPrimaryColor;
+}
+/* title */
+.navbar-default .navbar-brand {
+    color: #FFF;
+}
+
+    .navbar-default .navbar-brand:hover,
+    .navbar-default .navbar-brand:focus {
+        color: $LightPrimaryColor;
+    }
+/* link */
+.navbar-default .navbar-nav > li > a {
+    color: #FFF;
+}
+
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:hover,
+.navbar-default .navbar-nav > .active > a:focus,
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:focus,
+.navbar-default .navbar-nav > .open > a,
+.navbar-default .navbar-nav > .open > a:hover,
+.navbar-default .navbar-nav > .open > a:focus {
+    background-color: $DarkPrimaryColor;
+    color: #FFF;
+}
+
+/* caret */
+.navbar-default .navbar-nav > .dropdown > a .caret {
+    border-top-color: #FFF;
+    border-bottom-color: #FFF;
+}
+
+.navbar-default .navbar-nav > .dropdown > a:hover .caret,
+.navbar-default .navbar-nav > .dropdown > a:focus .caret {
+    border-top-color: #FFF;
+    border-bottom-color: #FFF;
+}
+
+.navbar-default .navbar-nav > .open > a .caret,
+.navbar-default .navbar-nav > .open > a:hover .caret,
+.navbar-default .navbar-nav > .open > a:focus .caret {
+    border-top-color: $PrimaryText;
+    border-bottom-color: #ddd;
+}
+/* mobile version */
+.navbar-default .navbar-toggle {
+}
+
+.navbar-default .navbar-toggle:hover,
+.navbar-default .navbar-toggle:focus {
+    background-color: transparent;
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: #FFF;
+}
+.round-btn
+{
+    position: absolute;
+    top: 0;
+    text-align: right;
+    right:10px;
+    margin:12px 0 0 14px;
+    background-color:transparent;
+}
+.round-btn button 
+{
+    border-radius: 100px;
+}
+@media (max-width: 767px) {
+     .mobile-text
+     {
+         font-size:15px;
+     }
+     .round-btn
+     {
+         position: absolute;
+         margin:10px 0 0 54px;
+     }
+    .navbar-brand
+    {
+        display:none;
+    }
+    .navbar-default .navbar-nav .open .dropdown-menu > li > a {
+        color: #777;
+    }
+
+    .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover,
+    .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
+        color: #777;
+    }
+}
+.navbar-collapse 
+{
+    text-align:center;
+}
+
+.slideInUp
+{
+    -webkit-animation-name: slideInUp;
+    animation-name: slideInUp;
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+@-webkit-keyframes slideInUp 
+{
+    0% 
+    {
+        -webkit-transform: translateY(100%);
+        transform: translateY(100%);
+        visibility: visible;
+    }
+    100% 
+    {
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+}
+@keyframes slideInUp 
+{
+    0% 
+    {
+        -webkit-transform: translateY(100%);
+        transform: translateY(100%);
+        visibility: visible;
+    }
+    100%
+    {
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+} 
+.slideOutDown 
+{
+    -webkit-animation-name: slideOutDown;
+    animation-name: slideOutDown;
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+@-webkit-keyframes slideOutDown 
+{
+    0% 
+    {
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+    100%
+    {
+        visibility: hidden;
+        -webkit-transform: translateY(100%);
+        transform: translateY(100%);
+    }
+}
+@keyframes slideOutDown 
+{
+    0% 
+    {
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+    100% 
+    {
+        visibility: hidden;
+        -webkit-transform: translateY(100%);
+        transform: translateY(100%);
+    }
+} 

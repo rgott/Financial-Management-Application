@@ -93,6 +93,17 @@
     <Property Name="cartId" Type="bigint" Nullable="false" />
     <Property Name="isDeleted" Type="bit" Nullable="false" />
   </EntityType>
+  <EntityType Name="TransactionRequest">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="requestedForUserId" Type="bigint" />
+    <Property Name="productId" Type="bigint" Nullable="false" />
+    <Property Name="quantity" Type="int" Nullable="false" />
+    <Property Name="cartId" Type="bigint" Nullable="false" />
+    <Property Name="unitPrice" Type="money" Nullable="false" />
+  </EntityType>
   <EntityType Name="User">
     <Key>
       <PropertyRef Name="Id" />
@@ -267,6 +278,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_TransactionRequest_requestedForUserId">
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <End Role="TransactionRequest" Type="Self.TransactionRequest" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TransactionRequest">
+        <PropertyRef Name="requestedForUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_UserClaim_User">
     <End Role="User" Type="Self.User" Multiplicity="1">
       <OnDelete Action="Cascade" />
@@ -358,6 +381,7 @@
     <EntitySet Name="ReturnState" EntityType="Self.ReturnState" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Transaction" EntityType="Self.Transaction" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TransactionRequest" EntityType="Self.TransactionRequest" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="UserClaim" EntityType="Self.UserClaim" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="UserLogin" EntityType="Self.UserLogin" Schema="dbo" store:Type="Tables" />
@@ -401,6 +425,10 @@
     <AssociationSet Name="FK_transactionId" Association="Self.FK_transactionId">
       <End Role="Transaction" EntitySet="Transaction" />
       <End Role="ReturnLink" EntitySet="ReturnLink" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TransactionRequest_requestedForUserId" Association="Self.FK_TransactionRequest_requestedForUserId">
+      <End Role="User" EntitySet="User" />
+      <End Role="TransactionRequest" EntitySet="TransactionRequest" />
     </AssociationSet>
     <AssociationSet Name="FK_UserClaim_User" Association="Self.FK_UserClaim_User">
       <End Role="User" EntitySet="User" />

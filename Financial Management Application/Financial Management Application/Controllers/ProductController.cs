@@ -17,16 +17,8 @@ namespace Financial_Management_Application.Controllers
         public ActionResult IndexView()
         {
             // return index view
-            List<Product> productsView = SessionSaver.Load.products(TempData);
-
-            for (int i = 0; i < productsView.Count; i++)
-            {
-                if(productsView[i].Category == null)
-                {
-                    productsView = null;
-                }
-            }
-
+            List<Product> productsView;
+            SessionSaver.Load.products(TempData,out productsView, true);
 
             return View("Index", new Models.ProductVM.IndexViewModel()
             {
@@ -36,7 +28,8 @@ namespace Financial_Management_Application.Controllers
 
         public ActionResult Index()
         {
-            List<Product> products = SessionSaver.Load.products(TempData);
+            List<Product> products;
+            SessionSaver.Load.products(TempData,out products);
 
             for (int i = 0; i < products.Count; i++)
             {
@@ -54,7 +47,8 @@ namespace Financial_Management_Application.Controllers
 
         public ActionResult Create()
         {
-            List<SelectListItem> categories = SessionSaver.Load.categoriesCombobox(TempData);
+            List<SelectListItem> categories;
+            SessionSaver.Load.categoriesCombobox(TempData, out categories);
             return View(new CreateViewModel()
             {
                 categories = categories
@@ -67,7 +61,8 @@ namespace Financial_Management_Application.Controllers
             model.product.categoryId = model.categoryId;
             await SessionSaver.Add.product(TempData, model.product);
 
-            List<SelectListItem> categories = SessionSaver.Load.categoriesCombobox(TempData);
+            List<SelectListItem> categories;
+            SessionSaver.Load.categoriesCombobox(TempData, out categories);
             model.categories = categories;
 
             ViewBagHelper.setMessage(ViewBag, ViewBagHelper.MessageType.SuccessMsgBox, "Product '" + model.product.name + "' Created Successfully");
@@ -85,7 +80,8 @@ namespace Financial_Management_Application.Controllers
                 product = db_manager.Products.FirstOrDefault(m => m.Id == Id);
             }
 
-            List<SelectListItem> categories = SessionSaver.Load.categoriesCombobox(TempData);
+            List<SelectListItem> categories;
+            SessionSaver.Load.categoriesCombobox(TempData, out categories);
             return View(new EditViewModel()
             {
                 product = product,
@@ -107,7 +103,7 @@ namespace Financial_Management_Application.Controllers
             }
             SessionSaver.Update.product(TempData, model.product);
 
-            ViewBagHelper.setMessage(ViewBag, ViewBagHelper.MessageType.SuccessMsgBox, "Product " + model.product.name + " updated successfully");
+            ViewBagHelper.setMessage(ViewBag, ViewBagHelper.MessageType.SuccessMsgBox, "Product \"" + model.product.name + "\" updated successfully");
             return IndexView();
         }
 
@@ -118,9 +114,12 @@ namespace Financial_Management_Application.Controllers
             if (Id == null)
                 return new HttpNotFoundResult();
 
-            List<SelectListItem> products = SessionSaver.Load.productsCombobox(TempData);
+            List<SelectListItem> products;
+            SessionSaver.Load.productsCombobox(TempData, out products);
             products.Remove(products.FirstOrDefault(m => m.Value == Id.ToString())); // remove product currently being deleted
-            if (products.Count == 0 && SessionSaver.Load.transactions(Session, false).Count != 0)
+            List<Transaction> transCount;
+            SessionSaver.Load.transactions(Session,out transCount, false);
+            if (products.Count == 0 && transCount.Count != 0)
             {
                 ViewBagHelper.setMessage(ViewBag, ViewBagHelper.MessageType.WarningMsgBox, "No other products available to transfer transactions to. Please create a <a href='" + Url.Action("Create", "Product") + "'>product</a>");
                 return IndexView();
