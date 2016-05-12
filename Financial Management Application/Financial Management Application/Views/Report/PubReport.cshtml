@@ -1,10 +1,68 @@
-﻿
+﻿@model Financial_Management_Application.Models.ReportVM.ReportItemsViewModel
+
+
 @{
-    ViewBag.Title = "PubReport";
-
+   
 }
+    
 
-<h2>PubReport</h2>
+<h2>Public reporting</h2>
 
-       
 
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<div id="transactionBar" class="col-md-5" style="width: 500px; height: 300px;"></div>
+<div id="piechartTransactions" class="col-md-5" style="width: 500px; height: 300px;"></div>
+@*<div id="piechartProducts" class="col-md-5" style="width: 500px; height: 300px;"></div>*@
+@*<div id="piechartCategories" class="col-md-5" style="width: 500px; height: 300px;"></div>*@
+
+
+<script>
+    google.charts.load('current', {'packages':['corechart']});
+
+
+    google.charts.setOnLoadCallback(drawBarTransactions);
+    function drawBarTransactions()
+    {
+        var data = google.visualization.arrayToDataTable(@Html.Raw(@Model.transBar));
+        var options = {
+            title: 'Products and quantities Sold',
+            colors: ['#e0440e', '#e6693e', '#ec8f6e', '#f3b49f', '#f6c7b6'],
+        };
+        var chart = new google.visualization.BarChart(document.getElementById('transactionBar'));
+        chart.draw(data, options);
+    }
+
+
+    google.charts.setOnLoadCallback(drawTransactions);
+    function drawTransactions()
+    {
+        var data = google.visualization.arrayToDataTable(@Html.Raw(@Model.transactions));
+        var options = {
+            title: 'Percent of items in all transactions',
+            colors: ['#e0440e', '#e6693e', '#ec8f6e', '#f3b49f', '#f6c7b6'],
+        };
+        var chart = new google.visualization.PieChart(document.getElementById('piechartTransactions'));
+        chart.draw(data, options);
+    }
+    google.charts.setOnLoadCallback(drawProducts);
+    function drawProducts()
+    {
+        var data = google.visualization.arrayToDataTable(@Html.Raw(@Model.products));
+        var options = {
+            title: 'Products',
+        };
+        var chart = new google.visualization.PieChart(document.getElementById('piechartProducts'));
+        chart.draw(data, options);
+    }
+    google.charts.setOnLoadCallback(drawCategories);
+    function drawCategories()
+    {
+        var data = google.visualization.arrayToDataTable(@Html.Raw(@Model.categories));
+        var options = {
+            title: 'Products',
+        };
+        var chart = new google.visualization.PieChart(document.getElementById('piechartCategories'));
+        chart.draw(data, options);
+    }
+
+</script>

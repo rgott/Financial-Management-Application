@@ -13,6 +13,7 @@ namespace Financial_Management_Application.Controllers
     [Authorize]
     public class ReportController : Controller
     {
+        [AllowAnonymous]
         public ActionResult PubReport()
         {
             List<Transaction> trans = new List<Transaction>();
@@ -38,7 +39,7 @@ namespace Financial_Management_Application.Controllers
             Dictionary<string, int> transBarData = new Dictionary<string, int>();
             foreach (var item in transBar)
             {
-                AddOrInsert(ref transBarData, item.productId.ToString(), item.quantity);
+                AddOrInsert(ref transBarData, item.Product.name, item.quantity);
             }
             string transactionsBar = printJSArray("ProductID", "Quantity", transBarData);
 

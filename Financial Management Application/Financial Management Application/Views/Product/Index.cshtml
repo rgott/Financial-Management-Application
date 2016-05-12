@@ -1,5 +1,7 @@
 ﻿@model Financial_Management_Application.Models.ProductVM.IndexViewModel
 
+@Scripts.Render("~/Scripts/product_page.js")
+
 @using (Html.BeginForm("Edit", "Product", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     <hr style="margin:12px 0 0 0" />
@@ -7,7 +9,12 @@
     @Html.ActionLink("View Categories", "Index", "Category", null, new { @class = "btn" })
     <hr style="margin:0 0 12px 0" />
 
-    <table class="table">
+    <form action="#" method="get" onsubmit="return false">
+        <label for="q">Enter your Search Term:</label>
+        <input type="text" class="form-control" size="30" name="q" id="searchTerm" value="" onkeyup="doSearch()" />
+
+    </form>
+    <table class="table" id="tableData">
         <thead>
             <tr>
                 <th>Name</th>
