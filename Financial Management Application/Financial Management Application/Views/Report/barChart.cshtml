@@ -23,7 +23,7 @@
     {
         var data = google.visualization.arrayToDataTable(@Html.Raw(@Model.transBar));
         var options = {
-            title: 'Transactions Bar chart',
+            title: 'How much of each product were sold',
         };
         var chart = new google.visualization.BarChart(document.getElementById('transactionBar'));
         chart.draw(data, options);
@@ -35,7 +35,7 @@
     {
         var data = google.visualization.arrayToDataTable(@Html.Raw(@Model.transactions));
         var options = {
-            title: 'Transactions',
+            title: 'Item name, and their quantities sold pie chart',
         };
         var chart = new google.visualization.PieChart(document.getElementById('piechartTransactions'));
         chart.draw(data, options);
@@ -45,7 +45,7 @@
     {
         var data = google.visualization.arrayToDataTable(@Html.Raw(@Model.products));
         var options = {
-            title: 'Products',
+            title: 'Percentage of products in all transactions',
         };
         var chart = new google.visualization.PieChart(document.getElementById('piechartProducts'));
         chart.draw(data, options);
@@ -55,7 +55,7 @@
     {
         var data = google.visualization.arrayToDataTable(@Html.Raw(@Model.categories));
         var options = {
-            title: 'Products',
+            title: 'Percentage of items in each category',
         };
         var chart = new google.visualization.PieChart(document.getElementById('piechartCategories'));
         chart.draw(data, options);

@@ -1,16 +1,19 @@
 ﻿@model Financial_Management_Application.Models.ReportVM.ReportItemsViewModel
+
+
 @{
-    ViewBag.Title = "Public Reporting";
+   
 }
-<h2>DOD Public Reporting</h2>
-       
+    
+
+<h2>Public reporting</h2>
 
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <div id="transactionBar" class="col-md-5" style="width: 500px; height: 300px;"></div>
 <div id="piechartTransactions" class="col-md-5" style="width: 500px; height: 300px;"></div>
-<div id="piechartProducts" class="col-md-5" style="width: 500px; height: 300px;"></div>
-<div id="piechartCategories" class="col-md-5" style="width: 500px; height: 300px;"></div>
+@*<div id="piechartProducts" class="col-md-5" style="width: 500px; height: 300px;"></div>*@
+@*<div id="piechartCategories" class="col-md-5" style="width: 500px; height: 300px;"></div>*@
 
 
 <script>
@@ -22,7 +25,8 @@
     {
         var data = google.visualization.arrayToDataTable(@Html.Raw(@Model.transBar));
         var options = {
-            title: 'Transactions Bar chart',
+            title: 'Products and quantities Sold',
+            colors: ['#e0440e', '#e6693e', '#ec8f6e', '#f3b49f', '#f6c7b6'],
         };
         var chart = new google.visualization.BarChart(document.getElementById('transactionBar'));
         chart.draw(data, options);
@@ -34,7 +38,8 @@
     {
         var data = google.visualization.arrayToDataTable(@Html.Raw(@Model.transactions));
         var options = {
-            title: 'Transactions',
+            title: 'Percent of items in all transactions',
+            colors: ['#e0440e', '#e6693e', '#ec8f6e', '#f3b49f', '#f6c7b6'],
         };
         var chart = new google.visualization.PieChart(document.getElementById('piechartTransactions'));
         chart.draw(data, options);
